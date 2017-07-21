@@ -8,7 +8,10 @@ namespace FormelParser
     /// 
     /// Expression := [ "-" ] Term { ("+" | "-") Term }
     /// Term       := Factor { ( "*" | "/" ) Factor }
-    /// Factor     := RealNumber | "(" Expression ")"
+    /// Factor     := RealNumber | "(" Expression ") | Variable | Function "
+    /// Function   := Identifier "(" Expression { "," Expression } ")"
+    /// Variable   := Identifier
+    /// Identifier := Nondigit character { Any non whitespace }
     /// RealNumber := Digit{Digit} | [Digit] "." {Digit}
     /// Digit      := "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" 
     /// </summary>
@@ -82,12 +85,25 @@ namespace FormelParser
             return result;
         }
 
-        // Factor     := RealNumber | "(" Expression ")"
+        // Factor     := RealNumber | "(" Expression ") | Variable | Function "
         private IParseNode ParseFactor()
         {
             if (NextIsDigit())
             {
                 return new NumberNode(GetNumber());
+            }
+
+            if (NextIsIdentifier())
+            {
+                IdentifierToken identifier = (IdentifierToken)_walker.Pop();
+                if (NextIsOpeningBracket())
+                {
+                    return ParseFunction(identifier);
+                }
+                else
+                {
+                    return ParseVariable(identifier);
+                }
             }
 
             ExpectOpeningParenthesis();
@@ -96,6 +112,31 @@ namespace FormelParser
 
             return result;
         }
+
+        // Function   := Identifier "(" Expression { "," Expression } ")"
+        private IParseNode ParseFunction(IdentifierToken identifier)
+        {
+            FunctionNode function = new FunctionNode(identifier.Name);
+
+            // Pop opening parenthisis
+            Consume(typeof(OpenParenthesisToken));
+
+            function.Parameters.Add(ParseExpression());
+            while (NextIsComma())
+            {
+                Consume(typeof(CommaToken));
+                function.Parameters.Add(ParseExpression());
+            }
+            Consume(typeof(ClosedParenthesisToken));
+            return function;
+        }
+
+        // Variable   := Identifier
+        private IParseNode ParseVariable(IdentifierToken identifier)
+        {
+            return new VariableNode(identifier.Name);
+        }
+
 
         private void ExpectClosingParenthesis()
         {
@@ -142,11 +183,28 @@ namespace FormelParser
             return nr.Value;
         }
 
+        private void Consume(Type type)
+        {
+            var token = _walker.Pop();
+            if (token.GetType() != type)
+            {
+                throw new Exception($"Expecting {type} but got {token.ToString()} ");
+            }
+        }
+
         private bool NextIsDigit()
         {
-            if (!_walker.ThereAreMoreTokens)
-                return false;
-            return _walker.Peek() is NumberToken;
+            return NextIs(typeof(NumberToken));
+        }
+
+        private bool NextIsIdentifier()
+        {
+            return NextIs(typeof(IdentifierToken));
+        }
+
+        private bool NextIsComma()
+        {
+            return NextIs(typeof(CommaToken));
         }
 
         private bool NextIs(Type type)

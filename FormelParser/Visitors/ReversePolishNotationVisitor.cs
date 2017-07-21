@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace FormelParser.Visitors
 {
@@ -60,6 +61,22 @@ namespace FormelParser.Visitors
             op.RightOperand.Accept(this);
             _resultBuilder.Append("/");
 
+        }
+
+        public void Visit(VariableNode op)
+        {
+            _resultBuilder.Append(op.Name);
+        }
+
+        public void Visit(FunctionNode op)
+        {
+            foreach (IParseNode parameter in op.Parameters)
+            {
+                parameter.Accept(this);
+                _resultBuilder.Append(" ");
+
+            }
+            _resultBuilder.Append(op.Name);
         }
 
         public string Result => _resultBuilder.ToString();

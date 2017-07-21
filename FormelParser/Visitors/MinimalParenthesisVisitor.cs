@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -78,9 +79,32 @@ namespace FormelParser.Visitors
             operators.Pop();
         }
 
+        public void Visit(VariableNode op)
+        {
+            _resultBuilder.Append(op.Name);
+        }
+
+        public void Visit(FunctionNode op)
+        {
+            operators.Push(op);
+            _resultBuilder.Append(op.Name);
+            _resultBuilder.Append("(");
+            foreach (IParseNode parameter in op.Parameters)
+            {
+                parameter.Accept(this);
+
+                if (parameter != op.Parameters.Last())
+                {
+                    _resultBuilder.Append(",");
+                }
+            }
+            _resultBuilder.Append(")");
+            operators.Pop();
+        }
+
         public string Result => _resultBuilder.ToString();
         private StringBuilder _resultBuilder = new StringBuilder();
-        private Stack<BinaryOperator> operators = new Stack<BinaryOperator>();
+        private Stack<IParseNode> operators = new Stack<IParseNode>();
 
     }
 }

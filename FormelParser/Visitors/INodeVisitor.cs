@@ -10,5 +10,7 @@
         void Visit(MinusOperator op);
         void Visit(MultiplicationOperator op);
         void Visit(DivisionOperator op);
+        void Visit(VariableNode op);
+        void Visit(FunctionNode op);
     }
 }

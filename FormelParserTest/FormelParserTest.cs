@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FormelParser;
+using System.Linq;
 
 namespace FormelParserTest
 {
@@ -39,6 +40,27 @@ namespace FormelParserTest
             parseTree.Accept(parenthizer);
 
             Assert.AreEqual("22", parenthizer.Result);
+        }
+
+        [TestMethod]
+        public void SingleFloat()
+        {
+            Parser parser = new Parser("3.14159265");
+            var parseTree = parser.Parse();
+
+            var number = parseTree as NumberNode;
+            Assert.IsNotNull(number);
+            Assert.AreEqual(number.Number, 3.14159265);
+
+            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            parseTree.Accept(calculator);
+
+            Assert.AreEqual(calculator.Result, 3.14159265);
+
+            var parenthizer = new FormelParser.Visitors.FullParenthesisVisitor();
+            parseTree.Accept(parenthizer);
+
+            Assert.AreEqual("3.14159265", parenthizer.Result);
         }
 
         [TestMethod]
@@ -152,7 +174,7 @@ namespace FormelParserTest
             var parenthizer = new FormelParser.Visitors.MinimalParenthesisVisitor();
             parseTree.Accept(parenthizer);
 
-            Assert.AreEqual("6*(1+2+3)", parenthizer.Result);
+            Assert.AreEqual("(24/1)/(2/3)", parenthizer.Result);
         }
 
         [TestMethod]
@@ -167,6 +189,86 @@ namespace FormelParserTest
             Assert.AreEqual("7*8+5*6+10/5", parenthizer.Result);
         }
 
+        [TestMethod]
+        public void MinimizeParanthesisFunctionsAndVariablesTest()
+        {
+            Parser parser = new Parser("(((7*a)+(5*cos(Pi)))+(10/sqrt(c+(d*5))))");
+            var parseTree = parser.Parse();
 
+            var parenthizer = new FormelParser.Visitors.MinimalParenthesisVisitor();
+            parseTree.Accept(parenthizer);
+
+            Assert.AreEqual("7*a+5*cos(Pi)+10/sqrt(c+d*5)", parenthizer.Result);
+        }
+
+        [TestMethod]
+        public void ConstantTest()
+        {
+            Parser parser = new Parser("2 * Pi * Pi");
+            var parseTree = parser.Parse();
+
+            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            parseTree.Accept(calculator);
+
+
+            Assert.AreEqual(2 * Math.PI * Math.PI, calculator.Result);
+        }
+
+        [TestMethod]
+        public void FunctionTest()
+        {
+            Parser parser = new Parser("2 * cos(Pi)");
+            var parseTree = parser.Parse();
+
+            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            parseTree.Accept(calculator);
+
+
+            Assert.AreEqual(2 * Math.Cos(Math.PI), calculator.Result);
+        }
+
+        [TestMethod]
+        public void FunctionParameterTest()
+        {
+            Parser parser = new Parser("pow(sqrt(2), 2)");
+            var parseTree = parser.Parse();
+
+            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            parseTree.Accept(calculator);
+
+
+            Assert.AreEqual(2, calculator.Result, 0.00001);
+        }
+
+        [TestMethod]
+        public void FunctionParameter2Test()
+        {
+            Parser parser = new Parser("pow(pow(2,2), sqrt(2) * sqrt(2)) * e");
+            var parseTree = parser.Parse();
+
+            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            parseTree.Accept(calculator);
+
+
+            Assert.AreEqual(Math.E * 16, calculator.Result, 0.00001);
+        }
+
+        [TestMethod]
+        public void AssignVariablesTest()
+        {
+
+            Parser parser = new Parser("100 * x");
+            var parseTree = parser.Parse();
+
+            var calculator = new FormelParser.Visitors.CalculateVisitor();
+
+            foreach (int x in Enumerable.Range(0, 100))
+            {
+                calculator.Variables["x"] = x;
+                parseTree.Accept(calculator);
+                Assert.AreEqual(100 * x, calculator.Result, 0.00001);
+            }
+
+        }
     }
 }

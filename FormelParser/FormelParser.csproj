@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Nodes\BinaryOperator.cs" />
+    <Compile Include="Nodes\FunctionNode.cs" />
+    <Compile Include="Nodes\VariableNode.cs" />
     <Compile Include="Visitors\CalculateVisitor.cs" />
     <Compile Include="Nodes\DivisionOperator.cs" />
     <Compile Include="Nodes\MinusOperator.cs" />

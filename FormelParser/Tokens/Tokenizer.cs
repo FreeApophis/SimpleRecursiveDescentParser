@@ -57,8 +57,18 @@ namespace FormelParser
                     yield return new ClosedParenthesisToken();
                     _reader.Read();
                 }
-                else
-                    throw new Exception("Unknown character in expression: " + c);
+                else if (c == ',')
+                {
+                    yield return new CommaToken();
+                    _reader.Read();
+                }
+                else if (char.IsLetter(c))
+                {
+                    var name = ParseIdentifier();
+                    yield return new IdentifierToken(name);
+
+                }
+
             }
         }
 
@@ -85,5 +95,17 @@ namespace FormelParser
 
             return res;
         }
+
+        private string ParseIdentifier()
+        {
+            var sb = new StringBuilder();
+            while (_reader.Peek() != -1 && char.IsLetterOrDigit((char)_reader.Peek()))
+            {
+                sb.Append((char)_reader.Read());
+            }
+
+            return sb.ToString();
+        }
+
     }
 }
