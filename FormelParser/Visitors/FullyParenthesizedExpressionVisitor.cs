@@ -15,7 +15,7 @@ namespace FormelParser.Visitors
             throw new NotImplementedException();
         }
 
-        public void Visit(UnaryMinus op)
+        public void Visit(UnaryMinusOperator op)
         {
             _resultBuilder.AppendFormat("(-");
             op.Operand.Accept(this);

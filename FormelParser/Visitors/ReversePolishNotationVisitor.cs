@@ -16,7 +16,7 @@ namespace FormelParser.Visitors
             _resultBuilder.Append("unary");
         }
 
-        public void Visit(UnaryMinus op)
+        public void Visit(UnaryMinusOperator op)
         {
             _resultBuilder.Append("-");
             op.Operand.Accept(this);

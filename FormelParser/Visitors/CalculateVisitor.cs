@@ -32,7 +32,7 @@ namespace FormelParser.Visitors
             throw new NotImplementedException();
         }
 
-        public void Visit(UnaryMinus op)
+        public void Visit(UnaryMinusOperator op)
         {
             op.Operand.Accept(this);
 

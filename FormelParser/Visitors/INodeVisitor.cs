@@ -4,7 +4,7 @@
     {
         void Visit(NumberNode number);
         void Visit(UnaryOperator op);
-        void Visit(UnaryMinus op);
+        void Visit(UnaryMinusOperator op);
         void Visit(BinaryOperator op);
         void Visit(PlusOperator op);
         void Visit(MinusOperator op);

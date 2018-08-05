@@ -41,10 +41,10 @@ namespace FormelParser
         public IParseNode ParseExpression()
         {
             IParseNode result;
-            if (NextIsMinus())
+            if (NextIs<MinusToken>())
             {
                 _walker.Pop();
-                result = new UnaryMinus(ParseTerm());
+                result = new UnaryMinusOperator(ParseTerm());
             }
             else
             {
@@ -88,15 +88,15 @@ namespace FormelParser
         // Factor     := RealNumber | "(" Expression ") | Variable | Function "
         private IParseNode ParseFactor()
         {
-            if (NextIsDigit())
+            if (NextIs<NumberToken>())
             {
                 return new NumberNode(GetNumber());
             }
 
-            if (NextIsIdentifier())
+            if (NextIs<IdentifierToken>())
             {
                 IdentifierToken identifier = (IdentifierToken)_walker.Pop();
-                if (NextIsOpeningBracket())
+                if (NextIs<OpenParenthesisToken>())
                 {
                     return ParseFunction(identifier);
                 }
@@ -122,7 +122,7 @@ namespace FormelParser
             Consume(typeof(OpenParenthesisToken));
 
             function.Parameters.Add(ParseExpression());
-            while (NextIsComma())
+            while (NextIs<CommaToken>())
             {
                 Consume(typeof(CommaToken));
                 function.Parameters.Add(ParseExpression());
@@ -140,7 +140,7 @@ namespace FormelParser
 
         private void ExpectClosingParenthesis()
         {
-            if (!(NextIs(typeof(ClosedParenthesisToken))))
+            if (!(NextIs<ClosedParenthesisToken>()))
             {
                 throw new Exception("Expecting ')' in expression, instead got: " + (PeekNext() != null ? PeekNext().ToString() : "End of expression"));
             }
@@ -149,23 +149,12 @@ namespace FormelParser
 
         private void ExpectOpeningParenthesis()
         {
-            if (!NextIsOpeningBracket())
+            if (!NextIs<OpenParenthesisToken>())
             {
                 throw new Exception("Expecting Real number or '(' in expression, instead got : " + (PeekNext() != null ? PeekNext().ToString() : "End of expression"));
             }
             _walker.Pop();
         }
-
-        private bool NextIsMinus()
-        {
-            return _walker.ThereAreMoreTokens && _walker.Peek().GetType() == (typeof(MinusToken));
-        }
-
-        private bool NextIsOpeningBracket()
-        {
-            return NextIs(typeof(OpenParenthesisToken));
-        }
-
 
         private Token PeekNext()
         {
@@ -192,34 +181,19 @@ namespace FormelParser
             }
         }
 
-        private bool NextIsDigit()
+        private bool NextIs<Type>()
         {
-            return NextIs(typeof(NumberToken));
-        }
-
-        private bool NextIsIdentifier()
-        {
-            return NextIs(typeof(IdentifierToken));
-        }
-
-        private bool NextIsComma()
-        {
-            return NextIs(typeof(CommaToken));
-        }
-
-        private bool NextIs(Type type)
-        {
-            return _walker.ThereAreMoreTokens && _walker.Peek().GetType() == type;
+            return _walker.ThereAreMoreTokens && _walker.Peek() is Type;
         }
 
         private bool NextIsMinusOrPlus()
         {
-            return _walker.ThereAreMoreTokens && (NextIs(typeof(MinusToken)) || NextIs(typeof(PlusToken)));
+            return _walker.ThereAreMoreTokens && (NextIs<MinusToken>() || NextIs<PlusToken>());
         }
 
         private bool NextIsMultiplicationOrDivision()
         {
-            return _walker.ThereAreMoreTokens && (NextIs(typeof(MultiplicationToken)) || NextIs(typeof(DivideToken)));
+            return _walker.ThereAreMoreTokens && (NextIs<MultiplicationToken>()) || NextIs<DivideToken>();
         }
     }
 }

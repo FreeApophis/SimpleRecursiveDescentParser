@@ -2,9 +2,9 @@
 
 namespace FormelParser
 {
-    public class UnaryMinus : UnaryOperator
+    public class UnaryMinusOperator : UnaryOperator
     {
-        internal UnaryMinus(IParseNode operand) : base(operand)
+        internal UnaryMinusOperator(IParseNode operand) : base(operand)
         {
         }
 
