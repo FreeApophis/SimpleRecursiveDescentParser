@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArithmeticParser", "ArithmeticParser\ArithmeticParser.csproj", "{AEE04BDB-97AC-44DD-B6F4-7AC8214615FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArithmeticParser.Test", "ArithmeticParser.Test\ArithmeticParser.Test.csproj", "{31BA1B18-E2DC-432D-9D75-2744C11E937E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEE04BDB-97AC-44DD-B6F4-7AC8214615FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEE04BDB-97AC-44DD-B6F4-7AC8214615FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEE04BDB-97AC-44DD-B6F4-7AC8214615FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEE04BDB-97AC-44DD-B6F4-7AC8214615FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31BA1B18-E2DC-432D-9D75-2744C11E937E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31BA1B18-E2DC-432D-9D75-2744C11E937E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31BA1B18-E2DC-432D-9D75-2744C11E937E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31BA1B18-E2DC-432D-9D75-2744C11E937E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F3EA397-360A-4288-89EA-EE2347E2B1B1}
+	EndGlobalSection
+EndGlobal
