@@ -4,5 +4,5 @@ mono: none
 dotnet: latest
 script:
  - dotnet restore
- install:
-  - nuget restore ArithmeticParser.sln
+install:
+ - nuget restore ArithmeticParser.sln
