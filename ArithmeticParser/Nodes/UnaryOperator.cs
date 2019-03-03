@@ -1,6 +1,6 @@
-﻿using FormelParser.Visitors;
+﻿using ArithmeticParser.Visitors;
 
-namespace FormelParser
+namespace ArithmeticParser.Nodes
 {
     public class UnaryOperator : IParseNode
     {

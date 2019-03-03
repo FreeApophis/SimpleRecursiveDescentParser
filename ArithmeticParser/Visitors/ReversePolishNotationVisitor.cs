@@ -1,13 +1,13 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
+using ArithmeticParser.Nodes;
 
-namespace FormelParser.Visitors
+namespace ArithmeticParser.Visitors
 {
     public class ReversePolishNotationVisitor : INodeVisitor
     {
         public void Visit(NumberNode number)
         {
-            _resultBuilder.Append(number.ToString());
+            _resultBuilder.Append(number);
         }
 
         public void Visit(UnaryOperator op)
@@ -80,6 +80,6 @@ namespace FormelParser.Visitors
         }
 
         public string Result => _resultBuilder.ToString();
-        private StringBuilder _resultBuilder = new StringBuilder();
+        private readonly StringBuilder _resultBuilder = new StringBuilder();
     }
 }

@@ -1,6 +1,7 @@
-﻿using FormelParser.Visitors;
+﻿using System.Globalization;
+using ArithmeticParser.Visitors;
 
-namespace FormelParser
+namespace ArithmeticParser.Nodes
 {
     public class NumberNode : IParseNode
     {
@@ -13,11 +14,11 @@ namespace FormelParser
             visitor.Visit(this);
         }
 
-        public double Number { get; private set; }
+        public double Number { get; }
 
         public override string ToString()
         {
-            return Number.ToString();
+            return Number.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

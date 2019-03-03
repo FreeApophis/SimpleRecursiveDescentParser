@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
+using ArithmeticParser.Nodes;
+using ArithmeticParser.Tokens;
 
-namespace FormelParser
+namespace ArithmeticParser
 {
     /// <summary>
-    /// This is a Recursive Descent Parser for arithmetic expressions with real numbers with the following Grammer in EBNF
-    /// 
+    /// This is a Recursive Descent Parser for arithmetic expressions with real numbers with the following grammar in EBNF
+    ///
     /// Expression := [ "-" ] Term { ("+" | "-") Term }
     /// Term       := Factor { ( "*" | "/" ) Factor }
     /// Factor     := RealNumber | "(" Expression ") | Variable | Function "
     /// Function   := Identifier "(" Expression { "," Expression } ")"
     /// Variable   := Identifier
-    /// Identifier := Nondigit character { Any non whitespace }
+    /// Identifier := Non-digit character { Any non whitespace }
     /// RealNumber := Digit{Digit} | [Digit] "." {Digit}
-    /// Digit      := "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" 
+    /// Digit      := "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
     /// </summary>
     public class Parser
     {
@@ -53,13 +54,14 @@ namespace FormelParser
             while (NextIsMinusOrPlus())
             {
                 var op = _walker.Pop();
-                if (op is MinusToken)
+                switch (op)
                 {
-                    result = new MinusOperator(result, ParseTerm());
-                }
-                if (op is PlusToken)
-                {
-                    result = new PlusOperator(result, ParseTerm());
+                    case MinusToken _:
+                        result = new MinusOperator(result, ParseTerm());
+                        break;
+                    case PlusToken _:
+                        result = new PlusOperator(result, ParseTerm());
+                        break;
                 }
             }
             return result;
@@ -72,13 +74,14 @@ namespace FormelParser
             while (NextIsMultiplicationOrDivision())
             {
                 var op = _walker.Pop();
-                if (op is DivideToken)
+                switch (op)
                 {
-                    result = new DivisionOperator(result, ParseFactor());
-                }
-                if (op is MultiplicationToken)
-                {
-                    result = new MultiplicationOperator(result, ParseFactor());
+                    case DivideToken _:
+                        result = new DivisionOperator(result, ParseFactor());
+                        break;
+                    case MultiplicationToken _:
+                        result = new MultiplicationOperator(result, ParseFactor());
+                        break;
                 }
             }
 
@@ -95,7 +98,7 @@ namespace FormelParser
 
             if (NextIs<IdentifierToken>())
             {
-                IdentifierToken identifier = (IdentifierToken)_walker.Pop();
+                var identifier = (IdentifierToken)_walker.Pop();
                 if (NextIs<OpenParenthesisToken>())
                 {
                     return ParseFunction(identifier);
@@ -118,7 +121,7 @@ namespace FormelParser
         {
             FunctionNode function = new FunctionNode(identifier.Name);
 
-            // Pop opening parenthisis
+            // Pop opening parenthesis
             Consume(typeof(OpenParenthesisToken));
 
             function.Parameters.Add(ParseExpression());
@@ -165,11 +168,13 @@ namespace FormelParser
         {
             var next = _walker.Pop();
 
-            var nr = next as NumberToken;
-            if (nr == null)
-                throw new Exception("Expecting Real number but got " + next);
+            if (next is NumberToken nr)
+            {
+                return nr.Value;
 
-            return nr.Value;
+            }
+
+            throw new Exception("Expecting Real number but got " + next);
         }
 
         private void Consume(Type type)
@@ -177,13 +182,13 @@ namespace FormelParser
             var token = _walker.Pop();
             if (token.GetType() != type)
             {
-                throw new Exception($"Expecting {type} but got {token.ToString()} ");
+                throw new Exception($"Expecting {type} but got {token} ");
             }
         }
 
-        private bool NextIs<Type>()
+        private bool NextIs<TType>()
         {
-            return _walker.ThereAreMoreTokens && _walker.Peek() is Type;
+            return _walker.ThereAreMoreTokens && _walker.Peek() is TType;
         }
 
         private bool NextIsMinusOrPlus()

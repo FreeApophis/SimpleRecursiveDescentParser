@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using FormelParser;
+using ArithmeticParser.Nodes;
+using ArithmeticParser.Visitors;
 using Xunit;
 
 namespace ArithmeticParser.Test
@@ -14,7 +15,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("5+17*22");
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
             Assert.Equal(379.0, calculator.Result);
@@ -30,12 +31,12 @@ namespace ArithmeticParser.Test
             Assert.NotNull(number);
             Assert.Equal(22.0, number.Number);
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
             Assert.Equal(22.0, calculator.Result);
 
-            var parenthesisVisitor = new FormelParser.Visitors.FullParenthesisVisitor();
+            var parenthesisVisitor = new FullParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
 
             Assert.Equal("22", parenthesisVisitor.Result);
@@ -51,12 +52,12 @@ namespace ArithmeticParser.Test
             Assert.NotNull(number);
             Assert.Equal(3.14159265, number.Number);
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
             Assert.Equal(3.14159265, calculator.Result);
 
-            var parenthesisVisitor = new FormelParser.Visitors.FullParenthesisVisitor();
+            var parenthesisVisitor = new FullParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
 
             Assert.Equal("3.14159265", parenthesisVisitor.Result);
@@ -68,7 +69,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20");
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
             Assert.Equal(210.0, calculator.Result);
@@ -80,7 +81,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("100-1-2-3-4-5-6-7-8-9)");
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
             Assert.Equal(55.0, calculator.Result);
@@ -94,7 +95,7 @@ namespace ArithmeticParser.Test
 
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
             Assert.Equal(5040.0, calculator.Result);
@@ -107,7 +108,7 @@ namespace ArithmeticParser.Test
 
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
             Assert.Equal(2.5, calculator.Result);
@@ -120,12 +121,12 @@ namespace ArithmeticParser.Test
 
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
             Assert.Equal(75.4, calculator.Result);
 
-            var parenthesisVisitor = new FormelParser.Visitors.FullParenthesisVisitor();
+            var parenthesisVisitor = new FullParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
 
             Assert.Equal("(((((145.2/3)+7)-((8*45)+(22*(2-19))))-(88/8))+17)", parenthesisVisitor.Result);
@@ -137,7 +138,7 @@ namespace ArithmeticParser.Test
             Parser plusParser = new Parser("(1+(2+(3+4)))");
             var plusParseTree = plusParser.Parse();
 
-            var parenthesisVisitor = new FormelParser.Visitors.MinimalParenthesisVisitor();
+            var parenthesisVisitor = new MinimalParenthesisVisitor();
             plusParseTree.Accept(parenthesisVisitor);
 
             Assert.Equal("1+2+3+4", parenthesisVisitor.Result);
@@ -145,7 +146,7 @@ namespace ArithmeticParser.Test
             Parser minusParser = new Parser("(-1-(2-(3-4)))");
             var minusParseTree = minusParser.Parse();
 
-            var minimalParenthesisVisitor = new FormelParser.Visitors.MinimalParenthesisVisitor();
+            var minimalParenthesisVisitor = new MinimalParenthesisVisitor();
             minusParseTree.Accept(minimalParenthesisVisitor);
 
             Assert.Equal("-1-(2-(3-4))", minimalParenthesisVisitor.Result);
@@ -157,7 +158,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("6*(1+2+3)");
             var parseTree = parser.Parse();
 
-            var parenthesisVisitor = new FormelParser.Visitors.MinimalParenthesisVisitor();
+            var parenthesisVisitor = new MinimalParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
 
             Assert.Equal("6*(1+2+3)", parenthesisVisitor.Result);
@@ -169,7 +170,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("((24/1)/(2/3))");
             var parseTree = parser.Parse();
 
-            var parenthesisVisitor = new FormelParser.Visitors.MinimalParenthesisVisitor();
+            var parenthesisVisitor = new MinimalParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
 
             Assert.Equal("(24/1)/(2/3)", parenthesisVisitor.Result);
@@ -181,7 +182,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("(((7*8)+(5*6))+(10/5))");
             var parseTree = parser.Parse();
 
-            var parenthesisVisitor = new FormelParser.Visitors.MinimalParenthesisVisitor();
+            var parenthesisVisitor = new MinimalParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
 
             Assert.Equal("7*8+5*6+10/5", parenthesisVisitor.Result);
@@ -193,7 +194,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("(((7*a)+(5*cos(Pi)))+(10/sqrt(c+(d*5))))");
             var parseTree = parser.Parse();
 
-            var parenthesisVisitor = new FormelParser.Visitors.MinimalParenthesisVisitor();
+            var parenthesisVisitor = new MinimalParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
 
             Assert.Equal("7*a+5*cos(Pi)+10/sqrt(c+d*5)", parenthesisVisitor.Result);
@@ -205,7 +206,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("2 * Pi * Pi");
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
 
@@ -218,7 +219,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("2 * cos(Pi)");
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
 
@@ -231,7 +232,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("pow(sqrt(2), 2)");
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
 
@@ -244,7 +245,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("pow(pow(2,2), sqrt(2) * sqrt(2)) * e");
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
 
 
@@ -258,7 +259,7 @@ namespace ArithmeticParser.Test
             Parser parser = new Parser("100 * x");
             var parseTree = parser.Parse();
 
-            var calculator = new FormelParser.Visitors.CalculateVisitor();
+            var calculator = new CalculateVisitor();
 
             foreach (int x in Enumerable.Range(0, 100))
             {

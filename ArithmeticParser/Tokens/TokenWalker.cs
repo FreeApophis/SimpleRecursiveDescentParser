@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace FormelParser
+namespace ArithmeticParser.Tokens
 {
     public class TokenWalker
     {
-        private readonly List<Token> _tokens = new List<Token>();
-        private int _currentIndex = 0;
+        private readonly List<Token> _tokens;
+        private int _currentIndex;
 
-        public bool ThereAreMoreTokens
-        {
-            get { return _currentIndex < _tokens.Count; }
-        }
+        public bool ThereAreMoreTokens => _currentIndex < _tokens.Count;
 
         public TokenWalker(IEnumerable<Token> tokens)
         {

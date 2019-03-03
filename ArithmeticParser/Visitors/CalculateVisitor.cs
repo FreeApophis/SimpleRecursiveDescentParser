@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using ArithmeticParser.Nodes;
 
-namespace FormelParser.Visitors
+namespace ArithmeticParser.Visitors
 {
     public class CalculateVisitor : INodeVisitor
     {
-        Dictionary<string, double> _variables = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase) {
+        public Dictionary<string, double> Variables { get; } = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase) {
             { "e",  Math.E },
             { "pi",  Math.PI }
         };
 
-        public Dictionary<string, double> Variables => _variables;
-
-        Dictionary<string, MethodInfo> _functions = new Dictionary<string, MethodInfo>(StringComparer.OrdinalIgnoreCase) {
+        readonly Dictionary<string, MethodInfo> _functions = new Dictionary<string, MethodInfo>(StringComparer.OrdinalIgnoreCase) {
             { "sin",  typeof(Math).GetMethod("Sin") },
             { "cos",  typeof(Math).GetMethod("Cos") },
             { "tan",  typeof(Math).GetMethod("Tan") },
@@ -82,9 +81,9 @@ namespace FormelParser.Visitors
 
         public void Visit(VariableNode variable)
         {
-            if (_variables.ContainsKey(variable.Name))
+            if (Variables.ContainsKey(variable.Name))
             {
-                _stack.Push(_variables[variable.Name]);
+                _stack.Push(Variables[variable.Name]);
             }
             else
             {
@@ -104,8 +103,10 @@ namespace FormelParser.Visitors
                     parameters.Add(_stack.Pop());
                 }
 
-                double? result = _functions[function.Name].Invoke(null, parameters.ToArray()) as double?;
-                _stack.Push(result.Value);
+                if (_functions[function.Name].Invoke(null, parameters.ToArray()) is double result)
+                {
+                    _stack.Push(result);
+                }
             }
             else
             {
@@ -115,6 +116,6 @@ namespace FormelParser.Visitors
         }
 
         public double Result => _stack.Peek();
-        private Stack<double> _stack = new Stack<double>();
+        private readonly Stack<double> _stack = new Stack<double>();
     }
 }

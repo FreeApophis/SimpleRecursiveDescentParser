@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace FormelParser
+namespace ArithmeticParser.Tokens
 {
     public class Tokenizer
     {
@@ -74,7 +74,7 @@ namespace FormelParser
 
         private double ParseNumber()
         {
-            var sb = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             var decimalExists = false;
             while (char.IsDigit((char)_reader.Peek()) || ((char)_reader.Peek() == '.'))
             {
@@ -84,13 +84,12 @@ namespace FormelParser
                     if (decimalExists) throw new Exception("Multiple dots in decimal number");
                     decimalExists = true;
                 }
-                sb.Append(digit);
+                stringBuilder.Append(digit);
             }
 
-            double res;
-            if (!double.TryParse(sb.ToString(), out res))
+            if (!double.TryParse(stringBuilder.ToString(), out var res))
             {
-                throw new Exception("Could not parse number: " + sb);
+                throw new Exception("Could not parse number: " + stringBuilder);
             }
 
             return res;
@@ -98,13 +97,13 @@ namespace FormelParser
 
         private string ParseIdentifier()
         {
-            var sb = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             while (_reader.Peek() != -1 && char.IsLetterOrDigit((char)_reader.Peek()))
             {
-                sb.Append((char)_reader.Read());
+                stringBuilder.Append((char)_reader.Read());
             }
 
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
 
     }

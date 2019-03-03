@@ -1,4 +1,6 @@
-﻿namespace FormelParser.Visitors
+﻿using ArithmeticParser.Nodes;
+
+namespace ArithmeticParser.Visitors
 {
     public interface INodeVisitor
     {

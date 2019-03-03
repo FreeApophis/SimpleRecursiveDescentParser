@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using ArithmeticParser.Nodes;
 
-namespace FormelParser.Visitors
+namespace ArithmeticParser.Visitors
 {
     public class FullParenthesisVisitor : INodeVisitor
     {
@@ -86,6 +87,6 @@ namespace FormelParser.Visitors
         }
 
         public string Result => _resultBuilder.ToString();
-        private StringBuilder _resultBuilder = new StringBuilder();
+        private readonly StringBuilder _resultBuilder = new StringBuilder();
     }
 }

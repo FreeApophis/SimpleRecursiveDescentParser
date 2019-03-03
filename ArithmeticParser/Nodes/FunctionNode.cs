@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using FormelParser.Visitors;
+using ArithmeticParser.Visitors;
 
-namespace FormelParser
+namespace ArithmeticParser.Nodes
 {
     public class FunctionNode : IParseNode
     {
