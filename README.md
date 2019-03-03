@@ -2,7 +2,7 @@
 
 Very Simple Proof of Concept Parser for Simple Arithmetic Expressions.
 
-[![Build Status](https://travis-ci.org/FreeApophis/ArithmeticParser.svg?branch=master)](https://travis-ci.org/FreeApophis/ArithmeticParser)
+[![Build Status](https://travis-ci.org/FreeApophis/ArithmeticParser.svg?branch=master)](https://travis-ci.org/FreeApophis/ArithmeticParser) [![NuGet package](https://buildstats.info/nuget/SimpleArithmeticParser)](https://www.nuget.org/packages/SimpleArithmeticParser)
 
 This is an example of Recursive Descent Parser which builds an Abstract Syntax Tree.
 

@@ -3,6 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>SimpleArithmeticParser</PackageId>
+    <Authors>Thomas Bruderer</Authors>
+    <Company>apophis.ch</Company>
+    <Description>Very Simple Proof of Concept Parser for Simple Arithmetic Expressions which supports Addition, Subtraction, Multiplication, Division, Function Calls and Variables</Description>
+    <PackageLicenseExpression>BSD-3-Clause-Clear</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/FreeApophis/ArithmeticParser</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/FreeApophis/ArithmeticParser</PackageProjectUrl>
+    <Copyright>apophis@apophis.ch</Copyright>
+    <PackageTags>parser</PackageTags>
   </PropertyGroup>
 
 </Project>
