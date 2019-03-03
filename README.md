@@ -2,9 +2,22 @@
 
 Very Simple Proof of Concept Parser for Simple Arithmetic Expressions.
 
+[![Build Status](https://travis-ci.org/FreeApophis/ArithmeticParser.svg?branch=master)](https://travis-ci.org/FreeApophis/ArithmeticParser)
+
 This is an example of Recursive Descent Parser which builds an Abstract Syntax Tree.
 
 It also illustrates the usage of the Visitor Pattern to traverse the Syntax Tree.
+
+Supported Operations:
+
+* Binary Operations
+** Addition
+** Subtraction
+** Multiplication
+** Division
+* Function Calls
+* Variables
+** Constants
 
 Sample Vistors include:
 
