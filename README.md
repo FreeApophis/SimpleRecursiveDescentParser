@@ -11,13 +11,13 @@ It also illustrates the usage of the Visitor Pattern to traverse the Syntax Tree
 Supported Operations:
 
 * Binary Operations
-** Addition
-** Subtraction
-** Multiplication
-** Division
+  * Addition
+  * Subtraction
+  * Multiplication
+  * Division
 * Function Calls
 * Variables
-** Constants
+  * Constants
 
 Sample Vistors include:
 
