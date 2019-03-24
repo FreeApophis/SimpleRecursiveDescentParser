@@ -7,13 +7,13 @@ namespace ArithmeticParser.Parsing
     /// Parsing the following Production:
     /// Expression := [ "-" ] Term { ("+" | "-") Term }
     /// </summary>
-    class ExpressionParser : IParser
+    public class ExpressionParser : IParser
     {
         private readonly TermParser _termParser;
 
         public ExpressionParser()
         {
-            _termParser = new TermParser();
+            _termParser = new TermParser(this);
 
         }
 

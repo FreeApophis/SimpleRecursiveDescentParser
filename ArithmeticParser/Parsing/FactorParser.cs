@@ -8,18 +8,18 @@ namespace ArithmeticParser.Parsing
     /// Parsing the following Production:
     /// Factor     := RealNumber | "(" Expression ") | Variable | Function "
     /// </summary>
-    class FactorParser : IParser
+    public class FactorParser : IParser
     {
         private readonly VariableParser _variableParser;
         private readonly FunctionParser _functionParser;
         private readonly ExpressionParser _expressionParser;
 
 
-        public FactorParser()
+        public FactorParser(ExpressionParser expressionParser)
         {
             _variableParser = new VariableParser();
-            _functionParser = new FunctionParser();
-            _expressionParser = new ExpressionParser();
+            _functionParser = new FunctionParser(expressionParser);
+            _expressionParser = expressionParser;
         }
 
         /// <summary>

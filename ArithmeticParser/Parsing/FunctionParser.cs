@@ -12,9 +12,9 @@ namespace ArithmeticParser.Parsing
     {
         private readonly ExpressionParser _expressionParser;
 
-        public FunctionParser()
+        public FunctionParser(ExpressionParser expressionParser)
         {
-            _expressionParser = new ExpressionParser();
+            _expressionParser = expressionParser;
         }
 
         /// <summary>

@@ -8,13 +8,13 @@ namespace ArithmeticParser.Parsing
     /// Parsing the following Production:
     /// Term       := Factor { ( "*" | "/" ) Factor }
     /// </summary>
-    class TermParser : IParser
+    public class TermParser : IParser
     {
         private readonly FactorParser _factorParser;
 
-        public TermParser()
+        public TermParser(ExpressionParser parser)
         {
-            _factorParser = new FactorParser();
+            _factorParser = new FactorParser(parser);
         }
 
         /// <summary>
