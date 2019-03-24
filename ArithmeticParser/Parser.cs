@@ -19,14 +19,10 @@ namespace ArithmeticParser
     /// </summary>
     public class Parser : IParser
     {
-        private readonly string _expression;
         private readonly ExpressionParser _expressionParser;
 
-
-
-        public Parser(string expression)
+        public Parser()
         {
-            _expression = expression;
             _expressionParser = new ExpressionParser();
         }
 
@@ -36,9 +32,9 @@ namespace ArithmeticParser
 
         }
 
-        public IParseNode Parse()
+        public IParseNode Parse(string expression)
         {
-            var tokens = new Tokenizer().Scan(_expression);
+            var tokens = new Tokenizer().Scan(expression);
             var walker = new TokenWalker(tokens);
 
             return Parse(walker);
