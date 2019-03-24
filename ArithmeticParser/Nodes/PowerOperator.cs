@@ -2,10 +2,10 @@
 
 namespace ArithmeticParser.Nodes
 {
-    public class DivisionOperator : BinaryOperator
+    public class PowerOperator : BinaryOperator
     {
-        internal DivisionOperator(IParseNode leftOperand, IParseNode rightOperand) :
-            base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Line)
+        internal PowerOperator(IParseNode leftOperand, IParseNode rightOperand) :
+            base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Power)
         {
         }
 
@@ -16,7 +16,7 @@ namespace ArithmeticParser.Nodes
 
         public override string ToString()
         {
-            return "/";
+            return "^";
         }
     }
 }
