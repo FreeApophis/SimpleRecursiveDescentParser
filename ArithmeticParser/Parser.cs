@@ -20,59 +20,28 @@ namespace ArithmeticParser
     public class Parser : IParser
     {
         private readonly string _expression;
-        private TokenWalker _walker;
-        private IParseNode _parseTree;
+        private readonly ExpressionParser _expressionParser;
 
-        private readonly TermParser _termParser;
 
 
         public Parser(string expression)
         {
             _expression = expression;
-            _termParser = new TermParser(this);
+            _expressionParser = new ExpressionParser();
         }
 
         public IParseNode Parse(TokenWalker walker)
         {
-            throw new NotImplementedException();
+            return _expressionParser.Parse(walker);
+
         }
 
         public IParseNode Parse()
         {
             var tokens = new Tokenizer().Scan(_expression);
-            _walker = new TokenWalker(tokens);
+            var walker = new TokenWalker(tokens);
 
-            _parseTree = ParseExpression();
-            return _parseTree;
-        }
-
-        // Expression := [ "-" ] Term { ("+" | "-") Term }
-        public IParseNode ParseExpression()
-        {
-            IParseNode result;
-            if (_walker.NextIs<MinusToken>())
-            {
-                _walker.Pop();
-                result = new UnaryMinusOperator(_termParser.Parse(_walker));
-            }
-            else
-            {
-                result = _termParser.Parse(_walker);
-            }
-            while (_walker.NextIsMinusOrPlus())
-            {
-                var op = _walker.Pop();
-                switch (op)
-                {
-                    case MinusToken _:
-                        result = new MinusOperator(result, _termParser.Parse(_walker));
-                        break;
-                    case PlusToken _:
-                        result = new PlusOperator(result, _termParser.Parse(_walker));
-                        break;
-                }
-            }
-            return result;
+            return Parse(walker);
         }
     }
 }

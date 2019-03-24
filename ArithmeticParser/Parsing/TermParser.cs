@@ -12,9 +12,9 @@ namespace ArithmeticParser.Parsing
     {
         private readonly FactorParser _factorParser;
 
-        public TermParser(Parser parser)
+        public TermParser()
         {
-            _factorParser = new FactorParser(parser);
+            _factorParser = new FactorParser();
         }
 
         /// <summary>

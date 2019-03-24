@@ -10,11 +10,11 @@ namespace ArithmeticParser.Parsing
     /// </summary>
     public class FunctionParser : IParser
     {
-        private readonly Parser _parser;
+        private readonly ExpressionParser _expressionParser;
 
-        public FunctionParser(Parser parser)
+        public FunctionParser()
         {
-            _parser = parser;
+            _expressionParser = new ExpressionParser();
         }
 
         /// <summary>
@@ -32,11 +32,11 @@ namespace ArithmeticParser.Parsing
                 // Pop opening parenthesis
                 walker.Consume<OpenParenthesisToken>();
 
-                function.Parameters.Add(_parser.ParseExpression());
+                function.Parameters.Add(_expressionParser.Parse(walker));
                 while (walker.NextIs<CommaToken>())
                 {
                     walker.Consume<CommaToken>();
-                    function.Parameters.Add(_parser.ParseExpression());
+                    function.Parameters.Add(_expressionParser.Parse(walker));
                 }
 
                 walker.Consume<ClosedParenthesisToken>();

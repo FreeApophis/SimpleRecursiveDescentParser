@@ -10,16 +10,16 @@ namespace ArithmeticParser.Parsing
     /// </summary>
     class FactorParser : IParser
     {
-        private readonly Parser _parser;
         private readonly VariableParser _variableParser;
         private readonly FunctionParser _functionParser;
+        private readonly ExpressionParser _expressionParser;
 
 
-        public FactorParser(Parser parser)
+        public FactorParser()
         {
-            _parser = parser;
             _variableParser = new VariableParser();
-            _functionParser = new FunctionParser(_parser);
+            _functionParser = new FunctionParser();
+            _expressionParser = new ExpressionParser();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace ArithmeticParser.Parsing
             }
 
             walker.ExpectOpeningParenthesis();
-            var result = _parser.ParseExpression();
+            var result = _expressionParser.Parse(walker);
             walker.ExpectClosingParenthesis();
 
             return result;
