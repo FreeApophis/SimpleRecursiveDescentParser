@@ -23,9 +23,19 @@ namespace ArithmeticParser
         private TokenWalker _walker;
         private IParseNode _parseTree;
 
+        private readonly VariableParser _variableParser;
+        private readonly FunctionParser _functionParser;
+
         public Parser(string expression)
         {
             _expression = expression;
+            _variableParser = new VariableParser();
+            _functionParser = new FunctionParser(this);
+        }
+
+        public IParseNode Parse(TokenWalker walker)
+        {
+            throw new NotImplementedException();
         }
 
         public IParseNode Parse()
@@ -41,7 +51,7 @@ namespace ArithmeticParser
         public IParseNode ParseExpression()
         {
             IParseNode result;
-            if (NextIs<MinusToken>())
+            if (_walker.NextIs<MinusToken>())
             {
                 _walker.Pop();
                 result = new UnaryMinusOperator(ParseTerm());
@@ -50,7 +60,7 @@ namespace ArithmeticParser
             {
                 result = ParseTerm();
             }
-            while (NextIsMinusOrPlus())
+            while (_walker.NextIsMinusOrPlus())
             {
                 var op = _walker.Pop();
                 switch (op)
@@ -70,7 +80,7 @@ namespace ArithmeticParser
         private IParseNode ParseTerm()
         {
             var result = ParseFactor();
-            while (NextIsMultiplicationOrDivision())
+            while (_walker.NextIsMultiplicationOrDivision())
             {
                 var op = _walker.Pop();
                 switch (op)
@@ -90,21 +100,16 @@ namespace ArithmeticParser
         // Factor     := RealNumber | "(" Expression ") | Variable | Function "
         private IParseNode ParseFactor()
         {
-            if (NextIs<NumberToken>())
+            if (_walker.NextIs<NumberToken>())
             {
                 return new NumberNode(GetNumber());
             }
 
-            if (NextIs<IdentifierToken>())
+            if (_walker.NextIs<IdentifierToken>())
             {
-                if (NextIs<OpenParenthesisToken>(1))
-                {
-                    return ParseFunction();
-                }
-                else
-                {
-                    return ParseVariable();
-                }
+                return _walker.NextIs<OpenParenthesisToken>(1) 
+                    ? _functionParser.Parse(_walker) 
+                    : _variableParser.Parse(_walker);
             }
 
             ExpectOpeningParenthesis();
@@ -114,46 +119,10 @@ namespace ArithmeticParser
             return result;
         }
 
-        // Function   := Identifier "(" Expression { "," Expression } ")"
-        private IParseNode ParseFunction()
-        {
-            if (_walker.Pop() is IdentifierToken identifier)
-            {
-
-                FunctionNode function = new FunctionNode(identifier.Name);
-
-                // Pop opening parenthesis
-                Consume(typeof(OpenParenthesisToken));
-
-                function.Parameters.Add(ParseExpression());
-                while (NextIs<CommaToken>())
-                {
-                    Consume(typeof(CommaToken));
-                    function.Parameters.Add(ParseExpression());
-                }
-
-                Consume(typeof(ClosedParenthesisToken));
-                return function;
-            }
-
-            throw new ArgumentNullException();
-        }
-
-        // Variable   := Identifier
-        private IParseNode ParseVariable()
-        {
-            if (_walker.Pop() is IdentifierToken identifier)
-            {
-                return new VariableNode(identifier.Name);
-            }
-
-            throw new ArgumentNullException();
-        }
-
 
         private void ExpectClosingParenthesis()
         {
-            if (!(NextIs<ClosedParenthesisToken>()))
+            if (!(_walker.NextIs<ClosedParenthesisToken>()))
             {
                 throw new Exception("Expecting ')' in expression, instead got: " + (PeekNext() != null ? PeekNext().ToString() : "End of expression"));
             }
@@ -162,7 +131,7 @@ namespace ArithmeticParser
 
         private void ExpectOpeningParenthesis()
         {
-            if (!NextIs<OpenParenthesisToken>())
+            if (!_walker.NextIs<OpenParenthesisToken>())
             {
                 throw new Exception("Expecting Real number or '(' in expression, instead got : " + (PeekNext() != null ? PeekNext().ToString() : "End of expression"));
             }
@@ -187,28 +156,5 @@ namespace ArithmeticParser
             throw new Exception("Expecting Real number but got " + next);
         }
 
-        private void Consume(Type type)
-        {
-            var token = _walker.Pop();
-            if (token.GetType() != type)
-            {
-                throw new Exception($"Expecting {type} but got {token} ");
-            }
-        }
-
-        private bool NextIs<TType>(int lookAhead = 0)
-        {
-            return _walker.Peek(lookAhead) is TType;
-        }
-
-        private bool NextIsMinusOrPlus(int lookAhead = 0)
-        {
-            return NextIs<MinusToken>(lookAhead) || NextIs<PlusToken>(lookAhead);
-        }
-
-        private bool NextIsMultiplicationOrDivision(int lookAhead = 0)
-        {
-            return NextIs<MultiplicationToken>(lookAhead) || NextIs<DivideToken>(lookAhead);
-        }
     }
 }

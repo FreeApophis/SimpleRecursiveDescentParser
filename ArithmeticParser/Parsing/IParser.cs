@@ -1,9 +1,10 @@
 ﻿using ArithmeticParser.Nodes;
+using ArithmeticParser.Tokens;
 
 namespace ArithmeticParser.Parsing
 {
     public interface IParser
     {
-        IParseNode Parse();
+        IParseNode Parse(TokenWalker walker);
     }
 }
