@@ -23,13 +23,13 @@ namespace ArithmeticParser
         private TokenWalker _walker;
         private IParseNode _parseTree;
 
-        private readonly FactorParser _factorParser;
+        private readonly TermParser _termParser;
 
 
         public Parser(string expression)
         {
             _expression = expression;
-            _factorParser = new FactorParser(this);
+            _termParser = new TermParser(this);
         }
 
         public IParseNode Parse(TokenWalker walker)
@@ -53,11 +53,11 @@ namespace ArithmeticParser
             if (_walker.NextIs<MinusToken>())
             {
                 _walker.Pop();
-                result = new UnaryMinusOperator(ParseTerm());
+                result = new UnaryMinusOperator(_termParser.Parse(_walker));
             }
             else
             {
-                result = ParseTerm();
+                result = _termParser.Parse(_walker);
             }
             while (_walker.NextIsMinusOrPlus())
             {
@@ -65,34 +65,13 @@ namespace ArithmeticParser
                 switch (op)
                 {
                     case MinusToken _:
-                        result = new MinusOperator(result, ParseTerm());
+                        result = new MinusOperator(result, _termParser.Parse(_walker));
                         break;
                     case PlusToken _:
-                        result = new PlusOperator(result, ParseTerm());
+                        result = new PlusOperator(result, _termParser.Parse(_walker));
                         break;
                 }
             }
-            return result;
-        }
-
-        // Term       := Factor { ( "*" | "/" ) Factor }
-        private IParseNode ParseTerm()
-        {
-            var result = _factorParser.Parse(_walker);
-            while (_walker.NextIsMultiplicationOrDivision())
-            {
-                var op = _walker.Pop();
-                switch (op)
-                {
-                    case DivideToken _:
-                        result = new DivisionOperator(result, _factorParser.Parse(_walker));
-                        break;
-                    case MultiplicationToken _:
-                        result = new MultiplicationOperator(result, _factorParser.Parse(_walker));
-                        break;
-                }
-            }
-
             return result;
         }
     }
