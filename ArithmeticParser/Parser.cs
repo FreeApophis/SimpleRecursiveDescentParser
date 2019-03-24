@@ -1,5 +1,6 @@
 ﻿using System;
 using ArithmeticParser.Nodes;
+using ArithmeticParser.Parsing;
 using ArithmeticParser.Tokens;
 
 namespace ArithmeticParser
@@ -16,7 +17,7 @@ namespace ArithmeticParser
     /// RealNumber := Digit{Digit} | [Digit] "." {Digit}
     /// Digit      := "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
     /// </summary>
-    public class Parser
+    public class Parser : IParser
     {
         private readonly string _expression;
         private TokenWalker _walker;
@@ -27,9 +28,6 @@ namespace ArithmeticParser
             _expression = expression;
         }
 
-
-        // Expression := [ "-" ] Term { ("+" | "-") Term }
-
         public IParseNode Parse()
         {
             var tokens = new Tokenizer().Scan(_expression);
@@ -39,6 +37,7 @@ namespace ArithmeticParser
             return _parseTree;
         }
 
+        // Expression := [ "-" ] Term { ("+" | "-") Term }
         public IParseNode ParseExpression()
         {
             IParseNode result;
