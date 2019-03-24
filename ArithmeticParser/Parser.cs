@@ -1,5 +1,4 @@
-﻿using System;
-using ArithmeticParser.Nodes;
+﻿using ArithmeticParser.Nodes;
 using ArithmeticParser.Parsing;
 using ArithmeticParser.Tokens;
 
@@ -21,15 +20,27 @@ namespace ArithmeticParser
     {
         private readonly ExpressionParser _expressionParser;
 
-        public Parser()
+        public Parser(ExpressionParser expressionParser)
         {
-            _expressionParser = new ExpressionParser();
+            _expressionParser = expressionParser;
         }
 
         public IParseNode Parse(TokenWalker walker)
         {
             return _expressionParser.Parse(walker);
+        }
 
+        public static Parser Create()
+        {
+            // Create the object tree without DI Framework
+            var expressionParser = new ExpressionParser();
+            var variableParser = new VariableParser();
+            var functionParser = new FunctionParser(expressionParser);
+            var factorParser = new FactorParser(expressionParser, variableParser, functionParser);
+            var termParser =new  TermParser(factorParser);
+            expressionParser.TermParser = termParser;
+
+            return new Parser(expressionParser);
         }
 
         public IParseNode Parse(string expression)

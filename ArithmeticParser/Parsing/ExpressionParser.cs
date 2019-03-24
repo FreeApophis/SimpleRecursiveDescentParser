@@ -9,13 +9,8 @@ namespace ArithmeticParser.Parsing
     /// </summary>
     public class ExpressionParser : IParser
     {
-        private readonly TermParser _termParser;
-
-        public ExpressionParser()
-        {
-            _termParser = new TermParser(this);
-
-        }
+        // Break the dependency cycle
+        public TermParser TermParser { get; set; }
 
         public IParseNode Parse(TokenWalker walker)
         {
@@ -23,11 +18,11 @@ namespace ArithmeticParser.Parsing
             if (walker.NextIs<MinusToken>())
             {
                 walker.Pop();
-                result = new UnaryMinusOperator(_termParser.Parse(walker));
+                result = new UnaryMinusOperator(TermParser.Parse(walker));
             }
             else
             {
-                result = _termParser.Parse(walker);
+                result = TermParser.Parse(walker);
             }
             while (walker.NextIsMinusOrPlus())
             {
@@ -35,14 +30,14 @@ namespace ArithmeticParser.Parsing
                 switch (op)
                 {
                     case MinusToken _:
-                        result = new MinusOperator(result, _termParser.Parse(walker));
+                        result = new MinusOperator(result, TermParser.Parse(walker));
                         break;
                     case PlusToken _:
-                        result = new PlusOperator(result, _termParser.Parse(walker));
+                        result = new PlusOperator(result, TermParser.Parse(walker));
                         break;
                 }
             }
             return result;
-        } 
+        }
     }
 }

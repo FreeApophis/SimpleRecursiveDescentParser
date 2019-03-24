@@ -7,13 +7,13 @@ namespace ArithmeticParser
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<Parser>().AsSelf();
-            builder.RegisterType<ExpressionParser>().AsSelf().PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
-            builder.RegisterType<TermParser>().AsSelf();
-            builder.RegisterType<FactorParser>().AsSelf();
-            builder.RegisterType<FunctionParser>().AsSelf();
-            builder.RegisterType<VariableParser>().AsSelf();
-            builder.RegisterType<FactorParser>().AsSelf();
+            builder.RegisterType<Parser>().AsSelf().SingleInstance();
+            builder.RegisterType<ExpressionParser>().AsSelf().SingleInstance().PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
+            builder.RegisterType<TermParser>().AsSelf().SingleInstance();
+            builder.RegisterType<FactorParser>().AsSelf().SingleInstance();
+            builder.RegisterType<FunctionParser>().AsSelf().SingleInstance();
+            builder.RegisterType<VariableParser>().AsSelf().SingleInstance();
+            builder.RegisterType<FactorParser>().AsSelf().SingleInstance();
         }
     }
 }

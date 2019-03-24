@@ -256,5 +256,21 @@ namespace ArithmeticParser.Test
                 Assert.Equal(100 * x, calculator.Result, new MagnitudeDoubleComparer(0.00001));
             }
         }
+
+        [Fact]
+        public void TheParserFactoryFunctionBuildsTheObjectTreeCorrectly()
+        {
+            var parser = Parser.Create();
+
+            var parseTree = parser.Parse("145.2/ 3+7 -(8*45+22*(2-19))-88/8 + 17");
+            var referenceParseTree = _parser.Parse("145.2/ 3+7 -(8*45+22*(2-19))-88/8 + 17");
+            var calculator = new CalculateVisitor();
+
+            referenceParseTree.Accept(calculator);
+            var reference = calculator.Result;
+
+            parseTree.Accept(calculator);
+            Assert.Equal(reference, calculator.Result);
+        }
     }
 }

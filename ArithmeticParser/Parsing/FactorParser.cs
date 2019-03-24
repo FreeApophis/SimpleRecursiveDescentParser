@@ -10,16 +10,16 @@ namespace ArithmeticParser.Parsing
     /// </summary>
     public class FactorParser : IParser
     {
+        private readonly ExpressionParser _expressionParser;
         private readonly VariableParser _variableParser;
         private readonly FunctionParser _functionParser;
-        private readonly ExpressionParser _expressionParser;
 
 
-        public FactorParser(ExpressionParser expressionParser)
+        public FactorParser(ExpressionParser expressionParser, VariableParser variableParser, FunctionParser functionParser)
         {
-            _variableParser = new VariableParser();
-            _functionParser = new FunctionParser(expressionParser);
             _expressionParser = expressionParser;
+            _variableParser = variableParser;
+            _functionParser = functionParser;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace ArithmeticParser.Parsing
             return result;
         }
 
-        private double GetNumber(TokenWalker walker)
+        private static double GetNumber(TokenWalker walker)
         {
             if (walker.Pop() is NumberToken number)
             {
