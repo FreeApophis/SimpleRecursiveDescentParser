@@ -18,10 +18,12 @@ namespace ArithmeticParser
     /// </summary>
     public class Parser : IParser
     {
+        private readonly TokenWalker _tokenWalker;
         private readonly ExpressionParser _expressionParser;
 
-        public Parser(ExpressionParser expressionParser)
+        public Parser(TokenWalker tokenWalker, ExpressionParser expressionParser)
         {
+            _tokenWalker = tokenWalker;
             _expressionParser = expressionParser;
         }
 
@@ -37,18 +39,18 @@ namespace ArithmeticParser
             var variableParser = new VariableParser();
             var functionParser = new FunctionParser(expressionParser);
             var factorParser = new FactorParser(expressionParser, variableParser, functionParser);
-            var termParser =new  TermParser(factorParser);
+            var termParser = new TermParser(factorParser);
             expressionParser.TermParser = termParser;
-
-            return new Parser(expressionParser);
+            var tokenizer = new Tokenizer();
+            var tokenWalker = new TokenWalker(tokenizer);
+            return new Parser(tokenWalker, expressionParser);
         }
 
         public IParseNode Parse(string expression)
         {
-            var tokens = new Tokenizer().Scan(expression);
-            var walker = new TokenWalker(tokens);
+            _tokenWalker.Scan(expression);
 
-            return Parse(walker);
+            return Parse(_tokenWalker);
         }
     }
 }

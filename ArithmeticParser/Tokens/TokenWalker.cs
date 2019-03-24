@@ -6,14 +6,26 @@ namespace ArithmeticParser.Tokens
 {
     public class TokenWalker
     {
-        private readonly List<IToken> _tokens;
+        private readonly Tokenizer _tokenizer;
+        private List<IToken> _tokens;
         private int _currentIndex;
 
         private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _tokens.Count;
 
-        public TokenWalker(IEnumerable<IToken> tokens)
+        public TokenWalker(Tokenizer tokenizer)
         {
-            _tokens = tokens.ToList();
+            _tokenizer = tokenizer;
+        }
+
+        public void Scan(string expression)
+        {
+            _tokens = _tokenizer.Scan(expression).ToList();
+            Reset();
+        }
+
+        private void Reset()
+        {
+            _currentIndex = 0;
         }
 
         public IToken Pop()
