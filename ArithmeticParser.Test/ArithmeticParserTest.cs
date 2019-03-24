@@ -347,5 +347,15 @@ namespace ArithmeticParser.Test
             _parser.Parse("1/2/3").Accept(visitor);
             Assert.Equal("1/2/3", visitor.Result);
         }
+
+        [Fact]
+        public void TheReversePolishNotationVisitorCreatesExpressionsInRpn()
+        {
+            var visitor = new ReversePolishNotationVisitor();
+
+            _parser.Parse("1+3*Pi-4").Accept(visitor);
+
+            Assert.Equal("1 3 Pi * + 4 -", visitor.Result);
+        }
     }
 }

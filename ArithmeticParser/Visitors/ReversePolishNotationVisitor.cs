@@ -13,13 +13,12 @@ namespace ArithmeticParser.Visitors
         public void Visit(UnaryOperator op)
         {
             op.Operand.Accept(this);
-            _resultBuilder.Append("unary");
+            _resultBuilder.Append(op);
         }
 
         public void Visit(UnaryMinusOperator op)
         {
-            _resultBuilder.Append("-");
-            op.Operand.Accept(this);
+            Visit((UnaryOperator)op);
         }
 
         public void Visit(BinaryOperator op)
@@ -27,48 +26,32 @@ namespace ArithmeticParser.Visitors
             op.LeftOperand.Accept(this);
             _resultBuilder.Append(" ");
             op.RightOperand.Accept(this);
-            _resultBuilder.Append("binary");
+            _resultBuilder.Append($" {op}");
         }
 
         public void Visit(PlusOperator op)
         {
-            op.LeftOperand.Accept(this);
-            _resultBuilder.Append(" ");
-            op.RightOperand.Accept(this);
-            _resultBuilder.Append("+");
+            Visit((BinaryOperator)op);
         }
 
         public void Visit(MinusOperator op)
         {
-            op.LeftOperand.Accept(this);
-            _resultBuilder.Append(" ");
-            op.RightOperand.Accept(this);
-            _resultBuilder.Append("-");
+            Visit((BinaryOperator)op);
         }
 
         public void Visit(MultiplicationOperator op)
         {
-            op.LeftOperand.Accept(this);
-            _resultBuilder.Append(" ");
-            op.RightOperand.Accept(this);
-            _resultBuilder.Append("*");
+            Visit((BinaryOperator)op);
         }
 
         public void Visit(DivisionOperator op)
         {
-            op.LeftOperand.Accept(this);
-            _resultBuilder.Append(" ");
-            op.RightOperand.Accept(this);
-            _resultBuilder.Append("/");
-
+            Visit((BinaryOperator)op);
         }
 
         public void Visit(PowerOperator op)
         {
-            op.LeftOperand.Accept(this);
-            _resultBuilder.Append(" ");
-            op.RightOperand.Accept(this);
-            _resultBuilder.Append("^");
+            Visit((BinaryOperator)op);
         }
 
         public void Visit(VariableNode op)
