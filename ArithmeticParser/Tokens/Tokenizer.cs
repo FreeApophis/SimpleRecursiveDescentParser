@@ -26,6 +26,7 @@ namespace ArithmeticParser.Tokens
             yield return new LexerRule(c => c == '+', reader => { reader.Read(); return new PlusToken(); });
             yield return new LexerRule(c => c == '*', reader => { reader.Read(); return new MultiplicationToken(); });
             yield return new LexerRule(c => c == '/', reader => { reader.Read(); return new DivideToken(); });
+            yield return new LexerRule(c => c == '^', reader => { reader.Read(); return new PowerToken(); });
             yield return new LexerRule(c => c == '(', reader => { reader.Read(); return new OpenParenthesisToken(); });
             yield return new LexerRule(c => c == ')', reader => { reader.Read(); return new ClosedParenthesisToken(); });
             yield return new LexerRule(c => c == ',', reader => { reader.Read(); return new CommaToken(); });
@@ -56,7 +57,7 @@ namespace ArithmeticParser.Tokens
             }
         }
 
-        private double ScanNumber(TextReader reader)
+        private static double ScanNumber(TextReader reader)
         {
             var stringBuilder = new StringBuilder();
             var decimalExists = false;
@@ -79,7 +80,7 @@ namespace ArithmeticParser.Tokens
             return res;
         }
 
-        private string ScanIdentifier(TextReader reader)
+        private static string ScanIdentifier(TextReader reader)
         {
             var stringBuilder = new StringBuilder();
             while (reader.Peek() != -1 && char.IsLetterOrDigit((char)reader.Peek()))

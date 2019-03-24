@@ -63,6 +63,14 @@ namespace ArithmeticParser.Visitors
 
         }
 
+        public void Visit(PowerOperator op)
+        {
+            op.LeftOperand.Accept(this);
+            _resultBuilder.Append(" ");
+            op.RightOperand.Accept(this);
+            _resultBuilder.Append("^");
+        }
+
         public void Visit(VariableNode op)
         {
             _resultBuilder.Append(op.Name);

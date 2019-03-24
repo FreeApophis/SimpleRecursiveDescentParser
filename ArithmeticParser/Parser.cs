@@ -8,7 +8,8 @@ namespace ArithmeticParser
     /// This is a Recursive Descent Parser for arithmetic expressions with real numbers with the following grammar in EBNF
     ///
     /// Expression := [ "-" ] Term { ("+" | "-") Term }
-    /// Term       := Factor { ( "*" | "/" ) Factor }
+    /// Term       := PowerTerm { ( "*" | "/" ) PowerTerm }
+    /// PowerTerm  := Factor { "^" Factor }
     /// Factor     := RealNumber | "(" Expression ") | Variable | Function "
     /// Function   := Identifier "(" Expression { "," Expression } ")"
     /// Variable   := Identifier
@@ -39,7 +40,8 @@ namespace ArithmeticParser
             var variableParser = new VariableParser();
             var functionParser = new FunctionParser(expressionParser);
             var factorParser = new FactorParser(expressionParser, variableParser, functionParser);
-            var termParser = new TermParser(factorParser);
+            var powerTermParser = new PowerTermParser(factorParser);
+            var termParser = new TermParser(powerTermParser);
             expressionParser.TermParser = termParser;
             var tokenizer = new Tokenizer();
             var tokenWalker = new TokenWalker(tokenizer);

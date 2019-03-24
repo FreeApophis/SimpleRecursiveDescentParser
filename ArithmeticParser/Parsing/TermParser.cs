@@ -10,11 +10,11 @@ namespace ArithmeticParser.Parsing
     /// </summary>
     public class TermParser : IParser
     {
-        private readonly FactorParser _factorParser;
+        private readonly PowerTermParser _powerTermParser;
 
-        public TermParser(FactorParser factorParser)
+        public TermParser(PowerTermParser powerTermParser)
         {
-            _factorParser = factorParser;
+            _powerTermParser = powerTermParser;
         }
 
         /// <summary>
@@ -24,17 +24,17 @@ namespace ArithmeticParser.Parsing
         /// <returns></returns>
         public IParseNode Parse(TokenWalker walker)
         {
-            var result = _factorParser.Parse(walker);
+            var result = _powerTermParser.Parse(walker);
             while (walker.NextIsMultiplicationOrDivision())
             {
                 var op = walker.Pop();
                 switch (op)
                 {
                     case DivideToken _:
-                        result = new DivisionOperator(result, _factorParser.Parse(walker));
+                        result = new DivisionOperator(result, _powerTermParser.Parse(walker));
                         break;
                     case MultiplicationToken _:
-                        result = new MultiplicationOperator(result, _factorParser.Parse(walker));
+                        result = new MultiplicationOperator(result, _powerTermParser.Parse(walker));
                         break;
                 }
             }

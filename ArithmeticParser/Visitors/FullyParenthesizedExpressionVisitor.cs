@@ -64,6 +64,15 @@ namespace ArithmeticParser.Visitors
             _resultBuilder.AppendFormat(")");
         }
 
+        public void Visit(PowerOperator op)
+        {
+            _resultBuilder.AppendFormat("(");
+            op.LeftOperand.Accept(this);
+            _resultBuilder.AppendFormat("^");
+            op.RightOperand.Accept(this);
+            _resultBuilder.AppendFormat(")");
+        }
+
         public void Visit(VariableNode op)
         {
             _resultBuilder.AppendFormat(op.Name);

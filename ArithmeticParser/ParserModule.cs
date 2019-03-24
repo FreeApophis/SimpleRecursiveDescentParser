@@ -11,6 +11,7 @@ namespace ArithmeticParser
             builder.RegisterType<Parser>().AsSelf().SingleInstance();
             builder.RegisterType<ExpressionParser>().AsSelf().SingleInstance().PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies);
             builder.RegisterType<TermParser>().AsSelf().SingleInstance();
+            builder.RegisterType<PowerTermParser>().AsSelf().SingleInstance();
             builder.RegisterType<FactorParser>().AsSelf().SingleInstance();
             builder.RegisterType<FunctionParser>().AsSelf().SingleInstance();
             builder.RegisterType<VariableParser>().AsSelf().SingleInstance();

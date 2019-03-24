@@ -168,7 +168,7 @@ namespace ArithmeticParser.Test
             var parenthesisVisitor = new MinimalParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
 
-            Assert.Equal("(24/1)/(2/3)", parenthesisVisitor.Result);
+            Assert.Equal("24/1/(2/3)", parenthesisVisitor.Result);
         }
 
         [Fact]
@@ -271,6 +271,81 @@ namespace ArithmeticParser.Test
 
             parseTree.Accept(calculator);
             Assert.Equal(reference, calculator.Result);
+        }
+
+        [Fact]
+        public void TheParserSupportsPowerOperator()
+        {
+            var parseTree = _parser.Parse("2^10/2-12");
+            var calculator = new CalculateVisitor();
+            parseTree.Accept(calculator);
+
+            Assert.Equal(500, calculator.Result);
+        }
+
+        [Fact]
+        public void ThePowerOperatorIsLeftAssociative()
+        {
+            // There is no unique standard:
+            // https://codeplea.com/exponentiation-associativity-options
+            var parseTree = _parser.Parse("2^2^3");
+            var calculator = new CalculateVisitor();
+            parseTree.Accept(calculator);
+
+            // Left Associative
+            Assert.Equal(64, calculator.Result);
+
+            // Right Associative
+            Assert.NotEqual(256, calculator.Result);
+
+            var fullParenthesisVisitor = new FullParenthesisVisitor();
+            parseTree.Accept(fullParenthesisVisitor);
+
+            Assert.Equal("((2^2)^3)", fullParenthesisVisitor.Result);
+
+            var minimalParenthesisVisitor = new MinimalParenthesisVisitor();
+            parseTree.Accept(minimalParenthesisVisitor);
+
+            Assert.Equal("2^2^3", minimalParenthesisVisitor.Result);
+        }
+
+        [Fact]
+        public void TheMinimalParenthesisVisitorWorksCorrectlyWithPower()
+        {
+            var parseTree = _parser.Parse("1-2*2^3*3-2");
+
+            var minimalParenthesisVisitor = new MinimalParenthesisVisitor();
+            parseTree.Accept(minimalParenthesisVisitor);
+
+            Assert.Equal("1-2*2^3*3-2", minimalParenthesisVisitor.Result);
+        }
+
+        [Fact]
+        public void TheMinimalParenthesisVisitorWorksWithMinusCorrectly()
+        {
+            var visitor = new MinimalParenthesisVisitor();
+
+            _parser.Parse("1-(2-3)").Accept(visitor);
+            Assert.Equal("1-(2-3)", visitor.Result);
+
+            visitor.Clear();
+
+            _parser.Parse("1-2-3").Accept(visitor);
+            Assert.Equal("1-2-3", visitor.Result);
+        }
+
+        [Fact]
+        public void TheMinimalParenthesisVisitorWorksWithDivideCorrectly()
+        {
+            var visitor = new MinimalParenthesisVisitor();
+
+            _parser.Parse("1/(2/3)").Accept(visitor);
+            Assert.Equal("1/(2/3)", visitor.Result);
+
+            visitor.Clear();
+
+            _parser.Parse("1/2/3").Accept(visitor);
+            Assert.Equal("1/2/3", visitor.Result);
         }
     }
 }
