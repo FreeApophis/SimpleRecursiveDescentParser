@@ -23,14 +23,13 @@ namespace ArithmeticParser
         private TokenWalker _walker;
         private IParseNode _parseTree;
 
-        private readonly VariableParser _variableParser;
-        private readonly FunctionParser _functionParser;
+        private readonly FactorParser _factorParser;
+
 
         public Parser(string expression)
         {
             _expression = expression;
-            _variableParser = new VariableParser();
-            _functionParser = new FunctionParser(this);
+            _factorParser = new FactorParser(this);
         }
 
         public IParseNode Parse(TokenWalker walker)
@@ -79,82 +78,22 @@ namespace ArithmeticParser
         // Term       := Factor { ( "*" | "/" ) Factor }
         private IParseNode ParseTerm()
         {
-            var result = ParseFactor();
+            var result = _factorParser.Parse(_walker);
             while (_walker.NextIsMultiplicationOrDivision())
             {
                 var op = _walker.Pop();
                 switch (op)
                 {
                     case DivideToken _:
-                        result = new DivisionOperator(result, ParseFactor());
+                        result = new DivisionOperator(result, _factorParser.Parse(_walker));
                         break;
                     case MultiplicationToken _:
-                        result = new MultiplicationOperator(result, ParseFactor());
+                        result = new MultiplicationOperator(result, _factorParser.Parse(_walker));
                         break;
                 }
             }
 
             return result;
         }
-
-        // Factor     := RealNumber | "(" Expression ") | Variable | Function "
-        private IParseNode ParseFactor()
-        {
-            if (_walker.NextIs<NumberToken>())
-            {
-                return new NumberNode(GetNumber());
-            }
-
-            if (_walker.NextIs<IdentifierToken>())
-            {
-                return _walker.NextIs<OpenParenthesisToken>(1) 
-                    ? _functionParser.Parse(_walker) 
-                    : _variableParser.Parse(_walker);
-            }
-
-            ExpectOpeningParenthesis();
-            var result = ParseExpression();
-            ExpectClosingParenthesis();
-
-            return result;
-        }
-
-
-        private void ExpectClosingParenthesis()
-        {
-            if (!(_walker.NextIs<ClosedParenthesisToken>()))
-            {
-                throw new Exception("Expecting ')' in expression, instead got: " + (PeekNext() != null ? PeekNext().ToString() : "End of expression"));
-            }
-            _walker.Pop();
-        }
-
-        private void ExpectOpeningParenthesis()
-        {
-            if (!_walker.NextIs<OpenParenthesisToken>())
-            {
-                throw new Exception("Expecting Real number or '(' in expression, instead got : " + (PeekNext() != null ? PeekNext().ToString() : "End of expression"));
-            }
-            _walker.Pop();
-        }
-
-        private IToken PeekNext()
-        {
-            return _walker.Peek();
-        }
-
-        private double GetNumber()
-        {
-            var next = _walker.Pop();
-
-            if (next is NumberToken nr)
-            {
-                return nr.Value;
-
-            }
-
-            throw new Exception("Expecting Real number but got " + next);
-        }
-
     }
 }
