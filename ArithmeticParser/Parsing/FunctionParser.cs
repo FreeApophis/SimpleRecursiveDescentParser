@@ -30,16 +30,16 @@ namespace ArithmeticParser.Parsing
                 FunctionNode function = new FunctionNode(identifier.Name);
 
                 // Pop opening parenthesis
-                walker.Consume(typeof(OpenParenthesisToken));
+                walker.Consume<OpenParenthesisToken>();
 
                 function.Parameters.Add(_parser.ParseExpression());
                 while (walker.NextIs<CommaToken>())
                 {
-                    walker.Consume(typeof(CommaToken));
+                    walker.Consume<CommaToken>();
                     function.Parameters.Add(_parser.ParseExpression());
                 }
 
-                walker.Consume(typeof(ClosedParenthesisToken));
+                walker.Consume<ClosedParenthesisToken>();
                 return function;
             }
 

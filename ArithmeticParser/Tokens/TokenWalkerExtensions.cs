@@ -4,12 +4,12 @@ namespace ArithmeticParser.Tokens
 {
     public static class TokenWalkerExtensions
     {
-        public static void Consume(this TokenWalker walker, Type type)
+        public static void Consume<TToken>(this TokenWalker walker)
         {
             var token = walker.Pop();
-            if (token.GetType() != type)
+            if (token.GetType() is TToken)
             {
-                throw new Exception($"Expecting {type} but got {token} ");
+                throw new Exception($"Expecting {typeof(TToken).FullName} but got {token} ");
             }
         }
 
