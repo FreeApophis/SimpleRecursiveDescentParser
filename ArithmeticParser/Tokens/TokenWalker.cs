@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Funcky.Monads;
 
 namespace ArithmeticParser.Tokens
 {
@@ -10,7 +9,7 @@ namespace ArithmeticParser.Tokens
         private readonly List<IToken> _tokens;
         private int _currentIndex;
 
-        public bool ThereAreMoreTokens => _currentIndex < _tokens.Count;
+        private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _tokens.Count;
 
         public TokenWalker(IEnumerable<IToken> tokens)
         {
@@ -19,12 +18,9 @@ namespace ArithmeticParser.Tokens
 
         public IToken Pop()
         {
-            if (_currentIndex < _tokens.Count)
-            {
-                return _tokens[_currentIndex++];
-            }
-
-            return new EpsilonToken();
+            return ValidToken()
+                ? _tokens[_currentIndex++]
+                : new EpsilonToken();
         }
 
 
@@ -32,12 +28,9 @@ namespace ArithmeticParser.Tokens
         {
             Debug.Assert(lookAhead >= 0);
 
-            if (_currentIndex + lookAhead < _tokens.Count)
-            {
-                return _tokens[_currentIndex + lookAhead];
-            }
-
-            return new EpsilonToken();
+            return ValidToken(lookAhead)
+                ? _tokens[_currentIndex + lookAhead]
+                : new EpsilonToken();
         }
     }
 }

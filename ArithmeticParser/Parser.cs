@@ -97,14 +97,13 @@ namespace ArithmeticParser
 
             if (NextIs<IdentifierToken>())
             {
-                var identifier = (IdentifierToken)_walker.Pop();
-                if (NextIs<OpenParenthesisToken>())
+                if (NextIs<OpenParenthesisToken>(1))
                 {
-                    return ParseFunction(identifier);
+                    return ParseFunction();
                 }
                 else
                 {
-                    return ParseVariable(identifier);
+                    return ParseVariable();
                 }
             }
 
@@ -116,27 +115,39 @@ namespace ArithmeticParser
         }
 
         // Function   := Identifier "(" Expression { "," Expression } ")"
-        private IParseNode ParseFunction(IdentifierToken identifier)
+        private IParseNode ParseFunction()
         {
-            FunctionNode function = new FunctionNode(identifier.Name);
-
-            // Pop opening parenthesis
-            Consume(typeof(OpenParenthesisToken));
-
-            function.Parameters.Add(ParseExpression());
-            while (NextIs<CommaToken>())
+            if (_walker.Pop() is IdentifierToken identifier)
             {
-                Consume(typeof(CommaToken));
+
+                FunctionNode function = new FunctionNode(identifier.Name);
+
+                // Pop opening parenthesis
+                Consume(typeof(OpenParenthesisToken));
+
                 function.Parameters.Add(ParseExpression());
+                while (NextIs<CommaToken>())
+                {
+                    Consume(typeof(CommaToken));
+                    function.Parameters.Add(ParseExpression());
+                }
+
+                Consume(typeof(ClosedParenthesisToken));
+                return function;
             }
-            Consume(typeof(ClosedParenthesisToken));
-            return function;
+
+            throw new ArgumentNullException();
         }
 
         // Variable   := Identifier
-        private IParseNode ParseVariable(IdentifierToken identifier)
+        private IParseNode ParseVariable()
         {
-            return new VariableNode(identifier.Name);
+            if (_walker.Pop() is IdentifierToken identifier)
+            {
+                return new VariableNode(identifier.Name);
+            }
+
+            throw new ArgumentNullException();
         }
 
 
@@ -160,7 +171,7 @@ namespace ArithmeticParser
 
         private IToken PeekNext()
         {
-            return _walker.ThereAreMoreTokens ? _walker.Peek() : null;
+            return _walker.Peek();
         }
 
         private double GetNumber()
@@ -185,19 +196,19 @@ namespace ArithmeticParser
             }
         }
 
-        private bool NextIs<TType>()
+        private bool NextIs<TType>(int lookAhead = 0)
         {
-            return _walker.ThereAreMoreTokens && _walker.Peek() is TType;
+            return _walker.Peek(lookAhead) is TType;
         }
 
-        private bool NextIsMinusOrPlus()
+        private bool NextIsMinusOrPlus(int lookAhead = 0)
         {
-            return _walker.ThereAreMoreTokens && (NextIs<MinusToken>() || NextIs<PlusToken>());
+            return NextIs<MinusToken>(lookAhead) || NextIs<PlusToken>(lookAhead);
         }
 
-        private bool NextIsMultiplicationOrDivision()
+        private bool NextIsMultiplicationOrDivision(int lookAhead = 0)
         {
-            return _walker.ThereAreMoreTokens && (NextIs<MultiplicationToken>()) || NextIs<DivideToken>();
+            return NextIs<MultiplicationToken>(lookAhead) || NextIs<DivideToken>(lookAhead);
         }
     }
 }
