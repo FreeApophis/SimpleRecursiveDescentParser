@@ -35,7 +35,7 @@ namespace ArithmeticParser.Visitors
         {
             op.Operand.Accept(this);
 
-            _stack.Push(-(_stack.Pop()));
+            _stack.Push(-_stack.Pop());
         }
 
         public void Visit(BinaryOperator op)
@@ -104,8 +104,8 @@ namespace ArithmeticParser.Visitors
         {
             if (_functions.ContainsKey(function.Name))
             {
-                List<object> parameters = new List<object>();
-                foreach (IParseNode parameter in function.Parameters)
+                var parameters = new List<object>();
+                foreach (var parameter in function.Parameters)
                 {
                     parameter.Accept(this);
                     parameters.Add(_stack.Pop());
@@ -120,7 +120,6 @@ namespace ArithmeticParser.Visitors
             {
                 throw new Exception("Unknown function with name: " + function.Name);
             }
-
         }
 
         public double Result => _stack.Peek();
