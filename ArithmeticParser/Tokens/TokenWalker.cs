@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Funcky.Monads;
 
 namespace ArithmeticParser.Tokens
 {
@@ -17,12 +19,25 @@ namespace ArithmeticParser.Tokens
 
         public IToken Pop()
         {
-            return _tokens[_currentIndex++];
+            if (_currentIndex < _tokens.Count)
+            {
+                return _tokens[_currentIndex++];
+            }
+
+            return new EpsilonToken();
         }
 
-        public IToken Peek()
+
+        public IToken Peek(int lookAhead = 0)
         {
-            return _tokens[_currentIndex];
+            Debug.Assert(lookAhead >= 0);
+
+            if (_currentIndex + lookAhead < _tokens.Count)
+            {
+                return _tokens[_currentIndex + lookAhead];
+            }
+
+            return new EpsilonToken();
         }
     }
 }
