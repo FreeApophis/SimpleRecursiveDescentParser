@@ -158,7 +158,7 @@ namespace ArithmeticParser
             _walker.Pop();
         }
 
-        private Token PeekNext()
+        private IToken PeekNext()
         {
             return _walker.ThereAreMoreTokens ? _walker.Peek() : null;
         }

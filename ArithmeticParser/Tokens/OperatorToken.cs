@@ -1,6 +1,6 @@
 ﻿namespace ArithmeticParser.Tokens
 {
-    public abstract class OperatorToken : Token
+    public abstract class OperatorToken : IToken
     {
     }
 }

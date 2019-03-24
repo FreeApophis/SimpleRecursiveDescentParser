@@ -9,7 +9,7 @@ namespace ArithmeticParser.Tokens
     {
         private StringReader _reader;
 
-        public IEnumerable<Token> Scan(string expression)
+        public IEnumerable<IToken> Scan(string expression)
         {
             _reader = new StringReader(expression);
 

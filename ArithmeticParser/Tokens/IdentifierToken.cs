@@ -1,6 +1,6 @@
 ﻿namespace ArithmeticParser.Tokens
 {
-    public class IdentifierToken : Token
+    public class IdentifierToken : IToken
     {
         public IdentifierToken(string name)
         {
