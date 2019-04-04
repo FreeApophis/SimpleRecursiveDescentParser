@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/FreeApophis/ArithmeticParser</PackageProjectUrl>
     <Copyright>apophis@apophis.ch</Copyright>
     <PackageTags>parser</PackageTags>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
     <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
 
