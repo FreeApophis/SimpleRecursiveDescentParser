@@ -5,80 +5,66 @@ using System.Text;
 
 namespace ArithmeticParser.Tokens
 {
+    public class LexerRule
+    {
+        public Predicate<char> Predicate { get; }
+        public Func<TextReader, IToken> CreateToken { get; }
+
+        public LexerRule(Predicate<char> predicate, Func<TextReader, IToken> createToken)
+        {
+            Predicate = predicate;
+            CreateToken = createToken;
+        }
+    }
     public class Tokenizer
     {
-        private StringReader _reader;
-
-        public IEnumerable<Token> Scan(string expression)
+        private IEnumerable<LexerRule> LexerRules()
         {
-            _reader = new StringReader(expression);
+            yield return new LexerRule(c => char.IsDigit(c) || c == '.', reader => new NumberToken(ScanNumber(reader)));
+            yield return new LexerRule(char.IsLetter, reader => new IdentifierToken(ScanIdentifier(reader)));
+            yield return new LexerRule(c => c == '-', reader => { reader.Read(); return new MinusToken(); });
+            yield return new LexerRule(c => c == '+', reader => { reader.Read(); return new PlusToken(); });
+            yield return new LexerRule(c => c == '*', reader => { reader.Read(); return new MultiplicationToken(); });
+            yield return new LexerRule(c => c == '/', reader => { reader.Read(); return new DivideToken(); });
+            yield return new LexerRule(c => c == '%', reader => { reader.Read(); return new ModuloToken(); });
+            yield return new LexerRule(c => c == '^', reader => { reader.Read(); return new PowerToken(); });
+            yield return new LexerRule(c => c == '(', reader => { reader.Read(); return new OpenParenthesisToken(); });
+            yield return new LexerRule(c => c == ')', reader => { reader.Read(); return new ClosedParenthesisToken(); });
+            yield return new LexerRule(c => c == ',', reader => { reader.Read(); return new CommaToken(); });
+        }
 
-            while (_reader.Peek() != -1)
+        public IEnumerable<IToken> Scan(string expression)
+        {
+            var reader = new StringReader(expression);
+
+            while (reader.Peek() != -1)
             {
-                var c = (char)_reader.Peek();
+                var c = (char)reader.Peek();
+
                 if (char.IsWhiteSpace(c))
                 {
-                    _reader.Read();
+                    reader.Read();
                     continue;
-                }
-
-                if (char.IsDigit(c) || c == '.')
-                {
-                    var value = ParseNumber();
-                    yield return new NumberToken(value);
-                }
-                else if (c == '-')
-                {
-                    yield return new MinusToken();
-                    _reader.Read();
-                }
-                else if (c == '+')
-                {
-                    yield return new PlusToken();
-                    _reader.Read();
-                }
-                else if (c == '*')
-                {
-                    yield return new MultiplicationToken();
-                    _reader.Read();
-                }
-                else if (c == '/')
-                {
-                    yield return new DivideToken();
-                    _reader.Read();
-                }
-                else if (c == '(')
-                {
-                    yield return new OpenParenthesisToken();
-                    _reader.Read();
-                }
-                else if (c == ')')
-                {
-                    yield return new ClosedParenthesisToken();
-                    _reader.Read();
-                }
-                else if (c == ',')
-                {
-                    yield return new CommaToken();
-                    _reader.Read();
-                }
-                else if (char.IsLetter(c))
-                {
-                    var name = ParseIdentifier();
-                    yield return new IdentifierToken(name);
 
                 }
 
+                foreach (var lexerRule in LexerRules())
+                {
+                    if (lexerRule.Predicate(c))
+                    {
+                        yield return lexerRule.CreateToken(reader);
+                    }
+                }
             }
         }
 
-        private double ParseNumber()
+        private static double ScanNumber(TextReader reader)
         {
             var stringBuilder = new StringBuilder();
             var decimalExists = false;
-            while (char.IsDigit((char)_reader.Peek()) || ((char)_reader.Peek() == '.'))
+            while (char.IsDigit((char)reader.Peek()) || ((char)reader.Peek() == '.'))
             {
-                var digit = (char)_reader.Read();
+                var digit = (char)reader.Read();
                 if (digit == '.')
                 {
                     if (decimalExists) throw new Exception("Multiple dots in decimal number");
@@ -95,12 +81,12 @@ namespace ArithmeticParser.Tokens
             return res;
         }
 
-        private string ParseIdentifier()
+        private static string ScanIdentifier(TextReader reader)
         {
             var stringBuilder = new StringBuilder();
-            while (_reader.Peek() != -1 && char.IsLetterOrDigit((char)_reader.Peek()))
+            while (reader.Peek() != -1 && char.IsLetterOrDigit((char)reader.Peek()))
             {
-                stringBuilder.Append((char)_reader.Read());
+                stringBuilder.Append((char)reader.Read());
             }
 
             return stringBuilder.ToString();

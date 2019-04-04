@@ -1,6 +1,6 @@
 ﻿namespace ArithmeticParser.Tokens
 {
-    public class NumberToken : Token
+    public class NumberToken : IToken
     {
         public NumberToken(double value)
         {

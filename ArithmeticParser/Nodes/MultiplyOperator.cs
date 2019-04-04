@@ -5,7 +5,7 @@ namespace ArithmeticParser.Nodes
     public class MultiplicationOperator : BinaryOperator
     {
         internal MultiplicationOperator(IParseNode leftOperand, IParseNode rightOperand) :
-            base(leftOperand, rightOperand)
+            base(leftOperand, rightOperand, Associativity.Left, true, Precedence.Point)
         {
         }
 

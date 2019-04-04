@@ -2,18 +2,27 @@
 using System.Linq;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Visitors;
+using Autofac;
 using Xunit;
 
 namespace ArithmeticParser.Test
 {
     public class ArithmeticParserTest
     {
+        private readonly Parser _parser;
+
+        public ArithmeticParserTest()
+        {
+            _parser = new CompositionRoot()
+                .Build()
+                .Resolve<Parser>();
+        }
+
 
         [Fact]
         public void ParseSimpleArithmeticExpressionCorrectly()
         {
-            Parser parser = new Parser("5+17*22");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("5+17*22");
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -24,8 +33,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void ParseSingleNumberCorrectly()
         {
-            Parser parser = new Parser("22");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("22");
 
             var number = parseTree as NumberNode;
             Assert.NotNull(number);
@@ -45,8 +53,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void ParseSimpleFloatCorrectly()
         {
-            Parser parser = new Parser("3.14159265");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("3.14159265");
 
             var number = parseTree as NumberNode;
             Assert.NotNull(number);
@@ -66,8 +73,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void ParseSimpleAdditionCorrectly()
         {
-            Parser parser = new Parser("1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20");
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -78,8 +84,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void ParseSimpleSubtractionCorrectly()
         {
-            Parser parser = new Parser("100-1-2-3-4-5-6-7-8-9)");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("100-1-2-3-4-5-6-7-8-9)");
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -91,9 +96,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void ParseSimpleMultiplicationCorrectly()
         {
-            Parser parser = new Parser("1*2*3*4*5*6*7");
-
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("1*2*3*4*5*6*7");
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -104,9 +107,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void ParseSimpleDivisionCorrectly()
         {
-            Parser parser = new Parser("(1/2)/(1/10)/2");
-
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("(1/2)/(1/10)/2");
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -117,9 +118,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void ParseComplexArithmeticExampleCorrectly()
         {
-            Parser parser = new Parser("145.2/3+7-(8*45+22*(2-19))-88/8 + 17");
-
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("145.2/3+7-(8*45+22*(2-19))-88/8 + 17");
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -135,16 +134,14 @@ namespace ArithmeticParser.Test
         [Fact]
         public void CreatesArithmeticExpressionWithMinimalAmountOfParenthesis()
         {
-            Parser plusParser = new Parser("(1+(2+(3+4)))");
-            var plusParseTree = plusParser.Parse();
+            var plusParseTree = _parser.Parse("(1+(2+(3+4)))");
 
             var parenthesisVisitor = new MinimalParenthesisVisitor();
             plusParseTree.Accept(parenthesisVisitor);
 
             Assert.Equal("1+2+3+4", parenthesisVisitor.Result);
 
-            Parser minusParser = new Parser("(-1-(2-(3-4)))");
-            var minusParseTree = minusParser.Parse();
+            var minusParseTree = _parser.Parse("(-1-(2-(3-4)))");
 
             var minimalParenthesisVisitor = new MinimalParenthesisVisitor();
             minusParseTree.Accept(minimalParenthesisVisitor);
@@ -155,8 +152,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void ShouldCreateMultiplicationWithMinimalAmountOfParenthesis()
         {
-            Parser parser = new Parser("6*(1+2+3)");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("6*(1+2+3)");
 
             var parenthesisVisitor = new MinimalParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
@@ -167,20 +163,18 @@ namespace ArithmeticParser.Test
         [Fact]
         public void ShouldCreatesDivisionWithMinimalAmountOfParenthesis()
         {
-            Parser parser = new Parser("((24/1)/(2/3))");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("((24/1)/(2/3))");
 
             var parenthesisVisitor = new MinimalParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
 
-            Assert.Equal("(24/1)/(2/3)", parenthesisVisitor.Result);
+            Assert.Equal("24/1/(2/3)", parenthesisVisitor.Result);
         }
 
         [Fact]
         public void ShouldSimplifyToExpressionWithoutParenthesis()
         {
-            Parser parser = new Parser("(((7*8)+(5*6))+(10/5))");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("(((7*8)+(5*6))+(10/5))");
 
             var parenthesisVisitor = new MinimalParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
@@ -191,8 +185,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void ShouldCreateExpressionWithMinimalParenthesisGivenExpressionWithVariablesAndFunctions()
         {
-            Parser parser = new Parser("(((7*a)+(5*cos(Pi)))+(10/sqrt(c+(d*5))))");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("(((7*a)+(5*cos(Pi)))+(10/sqrt(c+(d*5))))");
 
             var parenthesisVisitor = new MinimalParenthesisVisitor();
             parseTree.Accept(parenthesisVisitor);
@@ -203,8 +196,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void CalculateExpressionWithConstantsCorrectly()
         {
-            Parser parser = new Parser("2 * Pi * Pi");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("2 * Pi * Pi");
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -216,8 +208,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void CalculatesAFunctionCallCorrectly()
         {
-            Parser parser = new Parser("2 * cos(Pi)");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("2 * cos(Pi)");
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -229,8 +220,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void CalculatesFunctionCallsWithMultipleParametersCorrectly()
         {
-            Parser parser = new Parser("pow(sqrt(2), 2)");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("pow(sqrt(2), 2)");
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -242,8 +232,7 @@ namespace ArithmeticParser.Test
         [Fact]
         public void CalculatesComplexFunctionCallsWithMultipleParametersCorrectly()
         {
-            Parser parser = new Parser("pow(pow(2,2), sqrt(2) * sqrt(2)) * e");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("pow(pow(2,2), sqrt(2) * sqrt(2)) * e");
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -256,8 +245,7 @@ namespace ArithmeticParser.Test
         public void ShouldParseVariableXAndCalculateWithDifferentValuesOfXCorrectly()
         {
 
-            Parser parser = new Parser("100 * x");
-            var parseTree = parser.Parse();
+            var parseTree = _parser.Parse("100 * x");
 
             var calculator = new CalculateVisitor();
 
@@ -267,6 +255,140 @@ namespace ArithmeticParser.Test
                 parseTree.Accept(calculator);
                 Assert.Equal(100 * x, calculator.Result, new MagnitudeDoubleComparer(0.00001));
             }
+        }
+
+        [Fact]
+        public void TheParserFactoryFunctionBuildsTheObjectTreeCorrectly()
+        {
+            var parser = Parser.Create();
+
+            var parseTree = parser.Parse("145.2/ 3+7 -(8*45+22*(2-19))-88/8 + 17");
+            var referenceParseTree = _parser.Parse("145.2/ 3+7 -(8*45+22*(2-19))-88/8 + 17");
+            var calculator = new CalculateVisitor();
+
+            referenceParseTree.Accept(calculator);
+            var reference = calculator.Result;
+
+            parseTree.Accept(calculator);
+            Assert.Equal(reference, calculator.Result);
+        }
+
+        [Fact]
+        public void TheParserSupportsPowerOperator()
+        {
+            var parseTree = _parser.Parse("2^10/2-12");
+            var calculator = new CalculateVisitor();
+            parseTree.Accept(calculator);
+
+            Assert.Equal(500, calculator.Result);
+        }
+
+        [Fact]
+        public void ThePowerOperatorIsLeftAssociative()
+        {
+            // There is no unique standard:
+            // https://codeplea.com/exponentiation-associativity-options
+            var parseTree = _parser.Parse("2^2^3");
+            var calculator = new CalculateVisitor();
+            parseTree.Accept(calculator);
+
+            // Left Associative
+            Assert.Equal(64, calculator.Result);
+
+            // Right Associative
+            Assert.NotEqual(256, calculator.Result);
+
+            var fullParenthesisVisitor = new FullParenthesisVisitor();
+            parseTree.Accept(fullParenthesisVisitor);
+
+            Assert.Equal("((2^2)^3)", fullParenthesisVisitor.Result);
+
+            var minimalParenthesisVisitor = new MinimalParenthesisVisitor();
+            parseTree.Accept(minimalParenthesisVisitor);
+
+            Assert.Equal("2^2^3", minimalParenthesisVisitor.Result);
+        }
+
+        [Fact]
+        public void TheMinimalParenthesisVisitorWorksCorrectlyWithPower()
+        {
+            var parseTree = _parser.Parse("1-2*2^3*3-2");
+
+            var minimalParenthesisVisitor = new MinimalParenthesisVisitor();
+            parseTree.Accept(minimalParenthesisVisitor);
+
+            Assert.Equal("1-2*2^3*3-2", minimalParenthesisVisitor.Result);
+        }
+
+        [Fact]
+        public void TheMinimalParenthesisVisitorWorksWithMinusCorrectly()
+        {
+            var visitor = new MinimalParenthesisVisitor();
+
+            _parser.Parse("1-(2-3)").Accept(visitor);
+            Assert.Equal("1-(2-3)", visitor.Result);
+
+            visitor.Clear();
+
+            _parser.Parse("1-2-3").Accept(visitor);
+            Assert.Equal("1-2-3", visitor.Result);
+        }
+
+        [Fact]
+        public void TheMinimalParenthesisVisitorWorksWithDivideCorrectly()
+        {
+            var visitor = new MinimalParenthesisVisitor();
+
+            _parser.Parse("1/(2/3)").Accept(visitor);
+            Assert.Equal("1/(2/3)", visitor.Result);
+
+            visitor.Clear();
+
+            _parser.Parse("1/2/3").Accept(visitor);
+            Assert.Equal("1/2/3", visitor.Result);
+        }
+
+        [Fact]
+        public void TheReversePolishNotationVisitorCreatesExpressionsInRpn()
+        {
+            var visitor = new ReversePolishNotationVisitor();
+
+            _parser.Parse("1+3*Pi-4").Accept(visitor);
+
+            Assert.Equal("1 3 Pi * + 4 -", visitor.Result);
+        }
+
+        [Fact]
+        public void TheLogarithmFunctionsAreWorkingAsExpected()
+        {
+            var visitor = new CalculateVisitor();
+
+            _parser.Parse("lb(1024)").Accept(visitor);
+            Assert.Equal(10, visitor.Result);
+
+            _parser.Parse("ln(e^3)").Accept(visitor);
+            Assert.Equal(3, visitor.Result);
+
+            _parser.Parse("lg(100000)").Accept(visitor);
+            Assert.Equal(5, visitor.Result);
+
+            _parser.Parse("log(625,5)").Accept(visitor);
+            Assert.Equal(4, visitor.Result);
+        }
+
+        [Fact]
+        public void TheParserHandlesModuloOperatorCorrectly()
+        {
+            var visitor = new CalculateVisitor();
+
+            _parser.Parse("119 % 100").Accept(visitor);
+            Assert.Equal(19, visitor.Result);
+
+            _parser.Parse("100 + 5 % 5").Accept(visitor);
+            Assert.Equal(100, visitor.Result);
+
+            _parser.Parse("5 * 5 % 7").Accept(visitor);
+            Assert.Equal(4, visitor.Result);
         }
     }
 }

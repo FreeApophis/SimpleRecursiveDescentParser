@@ -16,9 +16,25 @@ namespace ArithmeticParser.Visitors
             { "sin",  typeof(Math).GetMethod("Sin") },
             { "cos",  typeof(Math).GetMethod("Cos") },
             { "tan",  typeof(Math).GetMethod("Tan") },
+            { "sinh",  typeof(Math).GetMethod("Sinh") },
+            { "cosh",  typeof(Math).GetMethod("Cosh") },
+            { "tanh",  typeof(Math).GetMethod("Tanh") },
+            { "asin",  typeof(Math).GetMethod("Asin") },
+            { "acos",  typeof(Math).GetMethod("Acos") },
+            { "atan",  typeof(Math).GetMethod("Atan") },
+            { "atan2",  typeof(Math).GetMethod("Atan2") },
             { "sqrt",  typeof(Math).GetMethod("Sqrt") },
             { "pow",  typeof(Math).GetMethod("Pow") },
+            { "lb",  new Func<double, double>(LogarithmBinaris).Method },
+            { "ln",  new Func<double, double>(Math.Log).Method },
+            { "lg",  typeof(Math).GetMethod("Log10") },
+            { "log",  new Func<double, double, double>(Math.Log).Method },
         };
+
+        private static double LogarithmBinaris(double value)
+        {
+            return Math.Log(value, 2.0);
+        }
 
         public void Visit(NumberNode number)
         {
@@ -35,7 +51,7 @@ namespace ArithmeticParser.Visitors
         {
             op.Operand.Accept(this);
 
-            _stack.Push(-(_stack.Pop()));
+            _stack.Push(-_stack.Pop());
         }
 
         public void Visit(BinaryOperator op)
@@ -77,6 +93,23 @@ namespace ArithmeticParser.Visitors
             _stack.Push(_stack.Pop() / temp);
         }
 
+        public void Visit(ModuloOperator op)
+        {
+            op.LeftOperand.Accept(this);
+            op.RightOperand.Accept(this);
+
+            var temp = _stack.Pop();
+            _stack.Push(_stack.Pop() % temp);
+        }
+
+        public void Visit(PowerOperator op)
+        {
+            op.LeftOperand.Accept(this);
+            op.RightOperand.Accept(this);
+
+            var temp = _stack.Pop();
+            _stack.Push(Math.Pow(_stack.Pop(), temp));
+        }
 
 
         public void Visit(VariableNode variable)
@@ -96,8 +129,8 @@ namespace ArithmeticParser.Visitors
         {
             if (_functions.ContainsKey(function.Name))
             {
-                List<object> parameters = new List<object>();
-                foreach (IParseNode parameter in function.Parameters)
+                var parameters = new List<object>();
+                foreach (var parameter in function.Parameters)
                 {
                     parameter.Accept(this);
                     parameters.Add(_stack.Pop());
@@ -112,7 +145,6 @@ namespace ArithmeticParser.Visitors
             {
                 throw new Exception("Unknown function with name: " + function.Name);
             }
-
         }
 
         public double Result => _stack.Peek();

@@ -1,28 +1,48 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ArithmeticParser.Tokens
 {
     public class TokenWalker
     {
-        private readonly List<Token> _tokens;
+        private readonly Tokenizer _tokenizer;
+        private List<IToken> _tokens;
         private int _currentIndex;
 
-        public bool ThereAreMoreTokens => _currentIndex < _tokens.Count;
+        private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _tokens.Count;
 
-        public TokenWalker(IEnumerable<Token> tokens)
+        public TokenWalker(Tokenizer tokenizer)
         {
-            _tokens = tokens.ToList();
+            _tokenizer = tokenizer;
         }
 
-        public Token Pop()
+        public void Scan(string expression)
         {
-            return _tokens[_currentIndex++];
+            _tokens = _tokenizer.Scan(expression).ToList();
+            Reset();
         }
 
-        public Token Peek()
+        private void Reset()
         {
-            return _tokens[_currentIndex];
+            _currentIndex = 0;
+        }
+
+        public IToken Pop()
+        {
+            return ValidToken()
+                ? _tokens[_currentIndex++]
+                : new EpsilonToken();
+        }
+
+
+        public IToken Peek(int lookAhead = 0)
+        {
+            Debug.Assert(lookAhead >= 0);
+
+            return ValidToken(lookAhead)
+                ? _tokens[_currentIndex + lookAhead]
+                : new EpsilonToken();
         }
     }
 }
