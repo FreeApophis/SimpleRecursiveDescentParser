@@ -63,8 +63,4 @@ namespace ArithmeticParser.Lexing
             return stringBuilder.ToString();
         }
     }
-
-    public class WhiteSpaceToken : IToken
-    {
-    }
 }
