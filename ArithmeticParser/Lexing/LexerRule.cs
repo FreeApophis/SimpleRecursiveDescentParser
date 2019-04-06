@@ -16,6 +16,8 @@ namespace ArithmeticParser.Lexing
             CreateToken = createToken;
         }
 
+        public int Weight { get; } = 0;
+
         public Option<IToken> Match(TextReader reader)
         {
             var c = (char)reader.Peek();
