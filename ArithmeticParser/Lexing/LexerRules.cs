@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using ArithmeticParser.Tokens;
 using Funcky.Extensions;
 
 namespace ArithmeticParser.Lexing
 {
-    public class LexerRules
+    public class LexerRules : ILexerRules
     {
         public IEnumerable<ILexerRule> GetRules()
         {
             yield return new LexerRule(char.IsWhiteSpace, reader => { reader.Read(); return new WhiteSpaceToken(); });
             yield return new LexerRule(c => char.IsDigit(c) || c == '.', reader => new NumberToken(ScanNumber(reader)));
             yield return new LexerRule(char.IsLetter, reader => new IdentifierToken(ScanIdentifier(reader)));
-            yield return new LexerRule(c => c == '-', reader => { reader.Read(); return new MinusToken(); });
-            yield return new LexerRule(c => c == '+', reader => { reader.Read(); return new PlusToken(); });
-            yield return new LexerRule(c => c == '*', reader => { reader.Read(); return new MultiplicationToken(); });
-            yield return new LexerRule(c => c == '/', reader => { reader.Read(); return new DivideToken(); });
-            yield return new LexerRule(c => c == '%', reader => { reader.Read(); return new ModuloToken(); });
-            yield return new LexerRule(c => c == '^', reader => { reader.Read(); return new PowerToken(); });
-            yield return new LexerRule(c => c == '(', reader => { reader.Read(); return new OpenParenthesisToken(); });
-            yield return new LexerRule(c => c == ')', reader => { reader.Read(); return new ClosedParenthesisToken(); });
-            yield return new LexerRule(c => c == ',', reader => { reader.Read(); return new CommaToken(); });
+            yield return new SimpleLexerRule<MinusToken>("-");
+            yield return new SimpleLexerRule<PlusToken>("+");
+            yield return new SimpleLexerRule<MultiplicationToken>("*");
+            yield return new SimpleLexerRule<DivideToken>("/");
+            yield return new SimpleLexerRule<ModuloToken>("%");
+            yield return new SimpleLexerRule<PowerToken>("^");
+            yield return new SimpleLexerRule<OpenParenthesisToken>("(");
+            yield return new SimpleLexerRule<ClosedParenthesisToken>(")");
+            yield return new SimpleLexerRule<CommaToken>(",");
         }
 
         private static double ScanNumber(ILexerReader reader)

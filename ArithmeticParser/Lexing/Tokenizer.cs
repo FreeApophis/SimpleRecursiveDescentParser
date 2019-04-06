@@ -7,10 +7,10 @@ namespace ArithmeticParser.Lexing
 {
     public class Tokenizer
     {
-        private readonly LexerRules _lexerRules;
+        private readonly ILexerRules _lexerRules;
         private readonly Func<string, ILexerReader> _newLexerReader;
 
-        public Tokenizer(LexerRules lexerRules, Func<string, ILexerReader> newLexerReader)
+        public Tokenizer(ILexerRules lexerRules, Func<string, ILexerReader> newLexerReader)
         {
             _lexerRules = lexerRules;
             _newLexerReader = newLexerReader;
