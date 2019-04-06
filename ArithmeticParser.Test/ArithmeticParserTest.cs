@@ -390,5 +390,14 @@ namespace ArithmeticParser.Test
             _parser.Parse("5 * 5 % 7").Accept(visitor);
             Assert.Equal(4, visitor.Result);
         }
+
+        [Fact]
+        public void ANewLineIsTreatedAsWhiteSpace()
+        {
+            var visitor = new CalculateVisitor();
+
+            _parser.Parse("119\n%\n100").Accept(visitor);
+            Assert.Equal(19, visitor.Result);
+        }
     }
 }
