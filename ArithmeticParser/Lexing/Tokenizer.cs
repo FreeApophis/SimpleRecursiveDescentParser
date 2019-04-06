@@ -31,6 +31,7 @@ namespace ArithmeticParser.Lexing
                     if (token != null && token.GetType() != typeof(WhiteSpaceToken))
                     {
                         yield return token;
+                        break;
                     }
                 }
             }
