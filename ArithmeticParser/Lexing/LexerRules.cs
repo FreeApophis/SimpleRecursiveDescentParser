@@ -21,6 +21,7 @@ namespace ArithmeticParser.Lexing
             yield return new SimpleLexerRule<PowerToken>("^");
             yield return new SimpleLexerRule<OpenParenthesisToken>("(");
             yield return new SimpleLexerRule<ClosedParenthesisToken>(")");
+            yield return new SimpleLexerRule<CommaToken>(",");
         }
 
         private static double ScanNumber(ILexerReader reader)

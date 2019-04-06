@@ -20,7 +20,7 @@ namespace ArithmeticParser.Lexing
 
         public void Scan(string expression)
         {
-            _tokens = _tokenizer.Scan(expression).ToList();
+            _tokens = _tokenizer.Scan(expression).Where(t => t.GetType() != typeof(WhiteSpaceToken)).ToList();
             Reset();
         }
 

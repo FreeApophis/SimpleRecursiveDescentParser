@@ -22,19 +22,29 @@ namespace ArithmeticParser.Lexing
 
             while (reader.Peek().Match(false, c => true))
             {
-                foreach (var lexerRule in _lexerRules.GetRules().OrderByDescending(rule => rule.Weight))
-                {
-                    var token = lexerRule
-                        .Match(reader)
-                        .Match(() => null as IToken, t => t);
-
-                    if (token != null && token.GetType() != typeof(WhiteSpaceToken))
-                    {
-                        yield return token;
-                        break;
-                    }
-                }
+                yield return SelectLexerRule(reader);
             }
         }
+
+        private IToken SelectLexerRule(ILexerReader reader)
+        {
+            foreach (var lexerRule in _lexerRules.GetRules().OrderByDescending(rule => rule.Weight))
+            {
+                var token = lexerRule
+                    .Match(reader)
+                    .Match(() => null as IToken, t => t);
+
+                if (token != null)
+                {
+                    return token;
+                }
+            }
+
+            throw new UnknownTokenException();
+        }
+    }
+
+    internal class UnknownTokenException : Exception
+    {
     }
 }
