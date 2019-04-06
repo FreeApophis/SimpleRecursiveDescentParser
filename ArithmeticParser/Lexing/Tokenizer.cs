@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ArithmeticParser.Tokens;
+using Funcky.Monads;
 
 namespace ArithmeticParser.Lexing
 {
@@ -22,29 +23,21 @@ namespace ArithmeticParser.Lexing
 
             while (reader.Peek().Match(false, c => true))
             {
-                yield return SelectLexerRule(reader);
+                yield return SelectLexerRule(reader)
+                    .Match(
+                        none: () => throw new UnknownTokenException(),
+                        some: t => t
+                        );
             }
         }
 
-        private IToken SelectLexerRule(ILexerReader reader)
+        private Option<IToken> SelectLexerRule(ILexerReader reader)
         {
-            foreach (var lexerRule in _lexerRules.GetRules().OrderByDescending(rule => rule.Weight))
-            {
-                var token = lexerRule
-                    .Match(reader)
-                    .Match(() => null as IToken, t => t);
-
-                if (token != null)
-                {
-                    return token;
-                }
-            }
-
-            throw new UnknownTokenException();
+            return _lexerRules
+                .GetRules()
+                .OrderByDescending(rule => rule.Weight)
+                .Select(rule => rule.Match(reader))
+                .First(mt => mt.Match(none: false, some: t => true));
         }
-    }
-
-    internal class UnknownTokenException : Exception
-    {
     }
 }

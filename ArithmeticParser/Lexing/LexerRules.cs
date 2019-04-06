@@ -37,7 +37,10 @@ namespace ArithmeticParser.Lexing
 
                 if (isDot.Match(false, p => p))
                 {
-                    if (decimalExists) throw new Exception("Multiple dots in decimal number");
+                    if (decimalExists)
+                    {
+                        throw new Exception("Multiple dots in decimal number");
+                    }
                     decimalExists = true;
                 }
 

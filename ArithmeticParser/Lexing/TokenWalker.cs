@@ -20,14 +20,13 @@ namespace ArithmeticParser.Lexing
 
         public void Scan(string expression)
         {
-            _tokens = _tokenizer.Scan(expression).Where(t => t.GetType() != typeof(WhiteSpaceToken)).ToList();
-            Reset();
+            _currentIndex = 0;
+            _tokens = _tokenizer
+                .Scan(expression)
+                .Where(t => t.GetType() != typeof(WhiteSpaceToken))
+                .ToList();
         }
 
-        private void Reset()
-        {
-            _currentIndex = 0;
-        }
 
         public IToken Pop()
         {

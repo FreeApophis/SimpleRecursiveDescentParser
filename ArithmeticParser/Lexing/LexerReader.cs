@@ -1,5 +1,4 @@
-﻿using System;
-using Funcky.Monads;
+﻿using Funcky.Monads;
 
 namespace ArithmeticParser.Lexing
 {
