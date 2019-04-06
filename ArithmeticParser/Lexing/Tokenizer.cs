@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ArithmeticParser.Tokens;
 
 namespace ArithmeticParser.Lexing
@@ -19,7 +20,7 @@ namespace ArithmeticParser.Lexing
 
             while (reader.Peek() != -1)
             {
-                foreach (var lexerRule in _lexerRules.GetRules())
+                foreach (var lexerRule in _lexerRules.GetRules().OrderByDescending(rule => rule.Weight))
                 {
                     var token = lexerRule
                         .Match(reader)
