@@ -19,6 +19,7 @@ namespace ArithmeticParser
             builder.RegisterType<TokenWalker>().AsSelf().InstancePerDependency();
             builder.RegisterType<LexerRules>().AsSelf().InstancePerDependency();
             builder.RegisterType<Tokenizer>().AsSelf().InstancePerDependency();
+            builder.RegisterType<LexerReader>().As<ILexerReader>().InstancePerDependency();
         }
     }
 }

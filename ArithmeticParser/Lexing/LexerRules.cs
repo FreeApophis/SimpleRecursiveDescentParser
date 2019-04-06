@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using ArithmeticParser.Tokens;
+using Funcky.Extensions;
 
 namespace ArithmeticParser.Lexing
 {
@@ -24,35 +25,41 @@ namespace ArithmeticParser.Lexing
             yield return new LexerRule(c => c == ',', reader => { reader.Read(); return new CommaToken(); });
         }
 
-        private static double ScanNumber(TextReader reader)
+        private static double ScanNumber(ILexerReader reader)
         {
             var stringBuilder = new StringBuilder();
             var decimalExists = false;
-            while (char.IsDigit((char)reader.Peek()) || ((char)reader.Peek() == '.'))
+            while (reader.Peek().Match(false, char.IsDigit) || reader.Peek().Match(false, c => c == '.'))
             {
-                var digit = (char)reader.Read();
-                if (digit == '.')
+                var digit = reader.Read();
+                var isDot =
+                    from d in digit
+                    select d == '.';
+
+                if (isDot.Match(false, p => p))
                 {
                     if (decimalExists) throw new Exception("Multiple dots in decimal number");
                     decimalExists = true;
                 }
-                stringBuilder.Append(digit);
+
+                stringBuilder.Append(digit.Match(' ', d => d));
             }
 
-            if (!double.TryParse(stringBuilder.ToString(), out var res))
-            {
-                throw new Exception("Could not parse number: " + stringBuilder);
-            }
 
-            return res;
+            var maybeDouble = stringBuilder.ToString().TryParseDouble();
+
+            return maybeDouble.Match(
+                none: () => throw new Exception("Could not parse number: " + stringBuilder),
+                some: d => d
+                );
         }
 
-        private static string ScanIdentifier(TextReader reader)
+        private static string ScanIdentifier(ILexerReader reader)
         {
             var stringBuilder = new StringBuilder();
-            while (reader.Peek() != -1 && char.IsLetterOrDigit((char)reader.Peek()))
+            while (reader.Peek().Match(false, char.IsLetterOrDigit))
             {
-                stringBuilder.Append((char)reader.Read());
+                stringBuilder.Append(reader.Read().Match(' ', c => c));
             }
 
             return stringBuilder.ToString();

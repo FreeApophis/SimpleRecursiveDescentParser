@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using ArithmeticParser.Tokens;
 using Funcky.Monads;
 
@@ -8,9 +7,9 @@ namespace ArithmeticParser.Lexing
     public class LexerRule : ILexerRule
     {
         public Predicate<char> Predicate { get; }
-        public Func<TextReader, IToken> CreateToken { get; }
+        public Func<ILexerReader, IToken> CreateToken { get; }
 
-        public LexerRule(Predicate<char> predicate, Func<TextReader, IToken> createToken)
+        public LexerRule(Predicate<char> predicate, Func<ILexerReader, IToken> createToken)
         {
             Predicate = predicate;
             CreateToken = createToken;
@@ -18,11 +17,13 @@ namespace ArithmeticParser.Lexing
 
         public int Weight { get; } = 0;
 
-        public Option<IToken> Match(StreamReader reader)
+        public Option<IToken> Match(ILexerReader reader)
         {
-            var c = (char)reader.Peek();
+            var predicate =
+                from nextCharacter in reader.Peek()
+                select Predicate(nextCharacter);
 
-            return Predicate(c)
+            return predicate.Match(false, p => p)
                 ? Option.Some(CreateToken(reader))
                 : Option<IToken>.None();
         }
