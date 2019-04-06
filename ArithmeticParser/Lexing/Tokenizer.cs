@@ -21,18 +21,15 @@ namespace ArithmeticParser.Lexing
             {
                 var c = (char)reader.Peek();
 
-                if (char.IsWhiteSpace(c))
-                {
-                    reader.Read();
-                    continue;
-
-                }
-
                 foreach (var lexerRule in _lexerRules.GetRules())
                 {
                     if (lexerRule.Predicate(c))
                     {
-                        yield return lexerRule.CreateToken(reader);
+                        var token = lexerRule.CreateToken(reader);
+                        if (token.GetType() != typeof(WhiteSpaceToken))
+                        {
+                            yield return token;
+                        }
                     }
                 }
             }

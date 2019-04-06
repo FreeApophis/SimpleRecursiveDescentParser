@@ -10,6 +10,7 @@ namespace ArithmeticParser.Lexing
     {
         public IEnumerable<LexerRule> GetRules()
         {
+            yield return new LexerRule(char.IsWhiteSpace, reader => { reader.Read(); return new WhiteSpaceToken(); });
             yield return new LexerRule(c => char.IsDigit(c) || c == '.', reader => new NumberToken(ScanNumber(reader)));
             yield return new LexerRule(char.IsLetter, reader => new IdentifierToken(ScanIdentifier(reader)));
             yield return new LexerRule(c => c == '-', reader => { reader.Read(); return new MinusToken(); });
@@ -56,5 +57,9 @@ namespace ArithmeticParser.Lexing
 
             return stringBuilder.ToString();
         }
+    }
+
+    public class WhiteSpaceToken : IToken
+    {
     }
 }
