@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using ArithmeticParser.Tokens;
 
 namespace ArithmeticParser.Lexing
@@ -16,8 +17,16 @@ namespace ArithmeticParser.Lexing
 
         public IEnumerable<IToken> Scan(string expression)
         {
-            var reader = new StringReader(expression);
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(expression)))
+            using (var reader = new StreamReader(stream))
+            {
+                // enumerate here, otherwise the streams are disposed before we enumerated the tokens
+                return ScanLoop(reader).ToList();
+            }
+        }
 
+        private IEnumerable<IToken> ScanLoop(StreamReader reader)
+        {
             while (reader.Peek() != -1)
             {
                 foreach (var lexerRule in _lexerRules.GetRules().OrderByDescending(rule => rule.Weight))
