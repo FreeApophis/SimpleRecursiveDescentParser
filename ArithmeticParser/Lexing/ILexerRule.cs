@@ -7,6 +7,6 @@ namespace ArithmeticParser.Lexing
     public interface ILexerRule
     {
         int Weight { get; }
-        Option<IToken> Match(TextReader reader);
+        Option<IToken> Match(StreamReader reader);
     }
 }

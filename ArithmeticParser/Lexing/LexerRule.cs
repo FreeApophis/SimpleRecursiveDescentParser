@@ -18,7 +18,7 @@ namespace ArithmeticParser.Lexing
 
         public int Weight { get; } = 0;
 
-        public Option<IToken> Match(TextReader reader)
+        public Option<IToken> Match(StreamReader reader)
         {
             var c = (char)reader.Peek();
 
