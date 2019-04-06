@@ -19,17 +19,15 @@ namespace ArithmeticParser.Lexing
 
             while (reader.Peek() != -1)
             {
-                var c = (char)reader.Peek();
-
                 foreach (var lexerRule in _lexerRules.GetRules())
                 {
-                    if (lexerRule.Predicate(c))
+                    var token = lexerRule
+                        .Match(reader)
+                        .Match(() => null as IToken, t => t);
+
+                    if (token != null && token.GetType() != typeof(WhiteSpaceToken))
                     {
-                        var token = lexerRule.CreateToken(reader);
-                        if (token.GetType() != typeof(WhiteSpaceToken))
-                        {
-                            yield return token;
-                        }
+                        yield return token;
                     }
                 }
             }

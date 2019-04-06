@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using ArithmeticParser.Tokens;
+using Funcky.Monads;
 
 namespace ArithmeticParser.Lexing
 {
-    public class LexerRule
+    public class LexerRule : ILexerRule
     {
         public Predicate<char> Predicate { get; }
         public Func<TextReader, IToken> CreateToken { get; }
@@ -13,6 +14,15 @@ namespace ArithmeticParser.Lexing
         {
             Predicate = predicate;
             CreateToken = createToken;
+        }
+
+        public Option<IToken> Match(TextReader reader)
+        {
+            var c = (char)reader.Peek();
+
+            return Predicate(c)
+                ? Option.Some(CreateToken(reader))
+                : Option<IToken>.None();
         }
     }
 }

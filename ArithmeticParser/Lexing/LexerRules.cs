@@ -8,7 +8,7 @@ namespace ArithmeticParser.Lexing
 {
     public class LexerRules
     {
-        public IEnumerable<LexerRule> GetRules()
+        public IEnumerable<ILexerRule> GetRules()
         {
             yield return new LexerRule(char.IsWhiteSpace, reader => { reader.Read(); return new WhiteSpaceToken(); });
             yield return new LexerRule(c => char.IsDigit(c) || c == '.', reader => new NumberToken(ScanNumber(reader)));

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.2" />
+    <PackageReference Include="Funcky" Version="1.1.0" />
   </ItemGroup>
 
 </Project>
