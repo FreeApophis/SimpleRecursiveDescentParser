@@ -1,4 +1,5 @@
-﻿using ArithmeticParser.Nodes;
+﻿using ArithmeticParser.Lexing;
+using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
 
 namespace ArithmeticParser.Parsing

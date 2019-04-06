@@ -1,4 +1,5 @@
 ﻿using System;
+using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
 

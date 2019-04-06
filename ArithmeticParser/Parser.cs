@@ -1,6 +1,6 @@
-﻿using ArithmeticParser.Nodes;
+﻿using ArithmeticParser.Lexing;
+using ArithmeticParser.Nodes;
 using ArithmeticParser.Parsing;
-using ArithmeticParser.Tokens;
 
 namespace ArithmeticParser
 {

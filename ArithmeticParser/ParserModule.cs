@@ -1,5 +1,5 @@
-﻿using ArithmeticParser.Parsing;
-using ArithmeticParser.Tokens;
+﻿using ArithmeticParser.Lexing;
+using ArithmeticParser.Parsing;
 using Autofac;
 
 namespace ArithmeticParser

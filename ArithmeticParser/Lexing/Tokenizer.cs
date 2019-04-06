@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using ArithmeticParser.Tokens;
 
-namespace ArithmeticParser.Tokens
+namespace ArithmeticParser.Lexing
 {
     public class LexerRule
     {

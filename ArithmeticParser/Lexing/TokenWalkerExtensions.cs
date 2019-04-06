@@ -1,6 +1,7 @@
 ﻿using System;
+using ArithmeticParser.Tokens;
 
-namespace ArithmeticParser.Tokens
+namespace ArithmeticParser.Lexing
 {
     public static class TokenWalkerExtensions
     {

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ArithmeticParser.Tokens;
 
-namespace ArithmeticParser.Tokens
+namespace ArithmeticParser.Lexing
 {
     public class TokenWalker
     {
