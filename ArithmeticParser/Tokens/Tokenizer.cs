@@ -26,6 +26,7 @@ namespace ArithmeticParser.Tokens
             yield return new LexerRule(c => c == '+', reader => { reader.Read(); return new PlusToken(); });
             yield return new LexerRule(c => c == '*', reader => { reader.Read(); return new MultiplicationToken(); });
             yield return new LexerRule(c => c == '/', reader => { reader.Read(); return new DivideToken(); });
+            yield return new LexerRule(c => c == '%', reader => { reader.Read(); return new ModuloToken(); });
             yield return new LexerRule(c => c == '^', reader => { reader.Read(); return new PowerToken(); });
             yield return new LexerRule(c => c == '(', reader => { reader.Read(); return new OpenParenthesisToken(); });
             yield return new LexerRule(c => c == ')', reader => { reader.Read(); return new ClosedParenthesisToken(); });

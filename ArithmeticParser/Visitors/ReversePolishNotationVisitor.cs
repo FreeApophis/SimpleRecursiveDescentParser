@@ -49,6 +49,11 @@ namespace ArithmeticParser.Visitors
             Visit((BinaryOperator)op);
         }
 
+        public void Visit(ModuloOperator op)
+        {
+            Visit((BinaryOperator)op);
+        }
+
         public void Visit(PowerOperator op)
         {
             Visit((BinaryOperator)op);

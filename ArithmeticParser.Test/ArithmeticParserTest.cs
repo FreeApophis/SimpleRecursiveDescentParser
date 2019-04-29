@@ -375,5 +375,20 @@ namespace ArithmeticParser.Test
             _parser.Parse("log(625,5)").Accept(visitor);
             Assert.Equal(4, visitor.Result);
         }
+
+        [Fact]
+        public void TheParserHandlesModuloOperatorCorrectly()
+        {
+            var visitor = new CalculateVisitor();
+
+            _parser.Parse("119 % 100").Accept(visitor);
+            Assert.Equal(19, visitor.Result);
+
+            _parser.Parse("100 + 5 % 5").Accept(visitor);
+            Assert.Equal(100, visitor.Result);
+
+            _parser.Parse("5 * 5 % 7").Accept(visitor);
+            Assert.Equal(4, visitor.Result);
+        }
     }
 }

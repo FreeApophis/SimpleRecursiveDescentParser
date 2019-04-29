@@ -93,6 +93,15 @@ namespace ArithmeticParser.Visitors
             _stack.Push(_stack.Pop() / temp);
         }
 
+        public void Visit(ModuloOperator op)
+        {
+            op.LeftOperand.Accept(this);
+            op.RightOperand.Accept(this);
+
+            var temp = _stack.Pop();
+            _stack.Push(_stack.Pop() % temp);
+        }
+
         public void Visit(PowerOperator op)
         {
             op.LeftOperand.Accept(this);

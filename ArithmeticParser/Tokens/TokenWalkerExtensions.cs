@@ -25,7 +25,7 @@ namespace ArithmeticParser.Tokens
 
         public static bool NextIsDotOperator(this TokenWalker walker, int lookAhead = 0)
         {
-            return walker.NextIs<MultiplicationToken>(lookAhead) || walker.NextIs<DivideToken>(lookAhead);
+            return walker.NextIs<MultiplicationToken>(lookAhead) || walker.NextIs<DivideToken>(lookAhead) || walker.NextIs<ModuloToken>(lookAhead);
         }
 
         public static void ExpectClosingParenthesis(this TokenWalker walker)

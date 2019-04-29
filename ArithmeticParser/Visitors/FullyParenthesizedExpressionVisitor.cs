@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using ArithmeticParser.Nodes;
 
@@ -49,6 +48,11 @@ namespace ArithmeticParser.Visitors
         }
 
         public void Visit(DivisionOperator op)
+        {
+            Visit((BinaryOperator)op);
+        }
+
+        public void Visit(ModuloOperator op)
         {
             Visit((BinaryOperator)op);
         }

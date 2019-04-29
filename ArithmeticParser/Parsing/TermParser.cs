@@ -36,6 +36,9 @@ namespace ArithmeticParser.Parsing
                     case MultiplicationToken _:
                         result = new MultiplicationOperator(result, _powerTermParser.Parse(walker));
                         break;
+                    case ModuloToken _:
+                        result = new ModuloOperator(result, _powerTermParser.Parse(walker));
+                        break;
                 }
             }
 
