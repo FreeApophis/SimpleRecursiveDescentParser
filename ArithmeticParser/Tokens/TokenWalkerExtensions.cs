@@ -18,12 +18,12 @@ namespace ArithmeticParser.Tokens
             return walker.Peek(lookAhead) is TType;
         }
 
-        public static bool NextIsMinusOrPlus(this TokenWalker walker, int lookAhead = 0)
+        public static bool NextIsLineOperator(this TokenWalker walker, int lookAhead = 0)
         {
             return walker.NextIs<MinusToken>(lookAhead) || walker.NextIs<PlusToken>(lookAhead);
         }
 
-        public static bool NextIsMultiplicationOrDivision(this TokenWalker walker, int lookAhead = 0)
+        public static bool NextIsDotOperator(this TokenWalker walker, int lookAhead = 0)
         {
             return walker.NextIs<MultiplicationToken>(lookAhead) || walker.NextIs<DivideToken>(lookAhead);
         }

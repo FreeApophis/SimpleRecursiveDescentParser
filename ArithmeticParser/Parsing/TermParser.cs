@@ -25,7 +25,7 @@ namespace ArithmeticParser.Parsing
         public IParseNode Parse(TokenWalker walker)
         {
             var result = _powerTermParser.Parse(walker);
-            while (walker.NextIsMultiplicationOrDivision())
+            while (walker.NextIsDotOperator())
             {
                 var op = walker.Pop();
                 switch (op)

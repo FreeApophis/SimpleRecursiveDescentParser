@@ -24,7 +24,7 @@ namespace ArithmeticParser.Parsing
             {
                 result = TermParser.Parse(walker);
             }
-            while (walker.NextIsMinusOrPlus())
+            while (walker.NextIsLineOperator())
             {
                 var op = walker.Pop();
                 switch (op)
