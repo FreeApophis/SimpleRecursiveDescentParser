@@ -13,64 +13,49 @@ namespace ArithmeticParser.Visitors
         }
         public void Visit(UnaryOperator op)
         {
-            throw new NotImplementedException();
+            _resultBuilder.Append("(");
+            _resultBuilder.Append(op);
+            op.Operand.Accept(this);
+            _resultBuilder.Append(")");
         }
 
         public void Visit(UnaryMinusOperator op)
         {
-            _resultBuilder.AppendFormat("(-");
-            op.Operand.Accept(this);
-            _resultBuilder.AppendFormat(")");
+            Visit((UnaryOperator)op);
         }
 
         public void Visit(BinaryOperator op)
         {
-            throw new NotImplementedException();
+            _resultBuilder.Append("(");
+            op.LeftOperand.Accept(this);
+            _resultBuilder.Append(op);
+            op.RightOperand.Accept(this);
+            _resultBuilder.Append(")");
         }
 
         public void Visit(PlusOperator op)
         {
-            _resultBuilder.AppendFormat("(");
-            op.LeftOperand.Accept(this);
-            _resultBuilder.AppendFormat("+");
-            op.RightOperand.Accept(this);
-            _resultBuilder.AppendFormat(")");
+            Visit((BinaryOperator)op);
         }
 
         public void Visit(MinusOperator op)
         {
-            _resultBuilder.AppendFormat("(");
-            op.LeftOperand.Accept(this);
-            _resultBuilder.AppendFormat("-");
-            op.RightOperand.Accept(this);
-            _resultBuilder.AppendFormat(")");
+            Visit((BinaryOperator)op);
         }
 
         public void Visit(MultiplicationOperator op)
         {
-            _resultBuilder.AppendFormat("(");
-            op.LeftOperand.Accept(this);
-            _resultBuilder.AppendFormat("*");
-            op.RightOperand.Accept(this);
-            _resultBuilder.AppendFormat(")");
+            Visit((BinaryOperator)op);
         }
 
         public void Visit(DivisionOperator op)
         {
-            _resultBuilder.AppendFormat("(");
-            op.LeftOperand.Accept(this);
-            _resultBuilder.AppendFormat("/");
-            op.RightOperand.Accept(this);
-            _resultBuilder.AppendFormat(")");
+            Visit((BinaryOperator)op);
         }
 
         public void Visit(PowerOperator op)
         {
-            _resultBuilder.AppendFormat("(");
-            op.LeftOperand.Accept(this);
-            _resultBuilder.AppendFormat("^");
-            op.RightOperand.Accept(this);
-            _resultBuilder.AppendFormat(")");
+            Visit((BinaryOperator)op);
         }
 
         public void Visit(VariableNode op)
