@@ -16,9 +16,25 @@ namespace ArithmeticParser.Visitors
             { "sin",  typeof(Math).GetMethod("Sin") },
             { "cos",  typeof(Math).GetMethod("Cos") },
             { "tan",  typeof(Math).GetMethod("Tan") },
+            { "sinh",  typeof(Math).GetMethod("Sinh") },
+            { "cosh",  typeof(Math).GetMethod("Cosh") },
+            { "tanh",  typeof(Math).GetMethod("Tanh") },
+            { "asin",  typeof(Math).GetMethod("Asin") },
+            { "acos",  typeof(Math).GetMethod("Acos") },
+            { "atan",  typeof(Math).GetMethod("Atan") },
+            { "atan2",  typeof(Math).GetMethod("Atan2") },
             { "sqrt",  typeof(Math).GetMethod("Sqrt") },
             { "pow",  typeof(Math).GetMethod("Pow") },
+            { "lb",  new Func<double, double>(LogarithmBinaris).Method },
+            { "ln",  new Func<double, double>(Math.Log).Method },
+            { "lg",  typeof(Math).GetMethod("Log10") },
+            { "log",  new Func<double, double, double>(Math.Log).Method },
         };
+
+        private static double LogarithmBinaris(double value)
+        {
+            return Math.Log(value, 2.0);
+        }
 
         public void Visit(NumberNode number)
         {

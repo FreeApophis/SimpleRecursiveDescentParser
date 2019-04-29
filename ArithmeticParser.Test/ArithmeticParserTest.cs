@@ -357,5 +357,23 @@ namespace ArithmeticParser.Test
 
             Assert.Equal("1 3 Pi * + 4 -", visitor.Result);
         }
+
+        [Fact]
+        public void TheLogarithmFunctionsAreWorkingAsExpected()
+        {
+            var visitor = new CalculateVisitor();
+
+            _parser.Parse("lb(1024)").Accept(visitor);
+            Assert.Equal(10, visitor.Result);
+
+            _parser.Parse("ln(e^3)").Accept(visitor);
+            Assert.Equal(3, visitor.Result);
+
+            _parser.Parse("lg(100000)").Accept(visitor);
+            Assert.Equal(5, visitor.Result);
+
+            _parser.Parse("log(625,5)").Accept(visitor);
+            Assert.Equal(4, visitor.Result);
+        }
     }
 }
