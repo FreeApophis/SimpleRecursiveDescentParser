@@ -1,4 +1,5 @@
-﻿using ArithmeticParser.Tokens;
+﻿using apophis.Lexer.Tokens;
+using ArithmeticParser.Tokens;
 
 namespace ArithmeticParser.Test
 {

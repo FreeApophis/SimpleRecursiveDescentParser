@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using ArithmeticParser.Tokens;
+using apophis.Lexer.Tokens;
 using Funcky.Monads;
 
-namespace ArithmeticParser.Lexing
+namespace apophis.Lexer
 {
     public class SimpleLexerRule<TToken> : ILexerRule
         where TToken : IToken, new()
@@ -20,13 +20,12 @@ namespace ArithmeticParser.Lexing
         public int Weight => _textSymbol.Length;
         public Option<IToken> Match(ILexerReader reader)
         {
-            if (_textSymbol.Select((character, index) => new { character, index }).All(t => reader.Peek(t.index).Match(false, c => c == t.character)))
+            if (_textSymbol.Select((character, index) => new { character, index })
+                    .All(t => reader.Peek(t.index).Match(false, c => c == t.character))
+                && (!_isTextSymbol || reader.Peek(_textSymbol.Length).Match(true, char.IsWhiteSpace)))
             {
-                if (!_isTextSymbol || reader.Peek(_textSymbol.Length).Match(true, char.IsWhiteSpace))
-                {
-                    Debug.Assert(_textSymbol.Select(c => reader.Read()).All(c => true));
-                    return Option.Some(CreateToken());
-                }
+                Debug.Assert(_textSymbol.Select(c => reader.Read()).All(c => true));
+                return Option.Some(CreateToken());
             }
 
             return Option<IToken>.None();

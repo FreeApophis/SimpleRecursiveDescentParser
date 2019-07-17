@@ -1,21 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using ArithmeticParser.Tokens;
+using apophis.Lexer.Tokens;
 
-namespace ArithmeticParser.Lexing
+namespace apophis.Lexer
 {
     public class TokenWalker
     {
         private readonly Tokenizer _tokenizer;
+        private readonly Func<IToken> _newEpsilonToken;
+        private readonly Predicate<IToken> _filterTokens;
         private List<IToken> _tokens;
         private int _currentIndex;
 
         private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _tokens.Count;
 
-        public TokenWalker(Tokenizer tokenizer)
+        public TokenWalker(Tokenizer tokenizer, Func<IToken> newEpsilonToken, Predicate<IToken> filterTokens)
         {
             _tokenizer = tokenizer;
+            _newEpsilonToken = newEpsilonToken;
+            _filterTokens = filterTokens;
         }
 
         public void Scan(string expression)
@@ -23,7 +28,7 @@ namespace ArithmeticParser.Lexing
             _currentIndex = 0;
             _tokens = _tokenizer
                 .Scan(expression)
-                .Where(t => t.GetType() != typeof(WhiteSpaceToken))
+                .Where(t => _filterTokens(t))
                 .ToList();
         }
 
@@ -32,7 +37,7 @@ namespace ArithmeticParser.Lexing
         {
             return ValidToken()
                 ? _tokens[_currentIndex++]
-                : new EpsilonToken();
+                : _newEpsilonToken();
         }
 
 
@@ -42,7 +47,7 @@ namespace ArithmeticParser.Lexing
 
             return ValidToken(lookAhead)
                 ? _tokens[_currentIndex + lookAhead]
-                : new EpsilonToken();
+                : _newEpsilonToken();
         }
     }
 }

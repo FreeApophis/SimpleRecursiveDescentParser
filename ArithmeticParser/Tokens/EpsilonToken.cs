@@ -1,4 +1,6 @@
-﻿namespace ArithmeticParser.Tokens
+﻿using apophis.Lexer.Tokens;
+
+namespace ArithmeticParser.Tokens
 {
     /// <summary>
     /// The epsilon token signifies the end of the input

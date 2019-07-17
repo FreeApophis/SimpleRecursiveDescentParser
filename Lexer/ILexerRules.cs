@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArithmeticParser.Lexing
+namespace apophis.Lexer
 {
     public interface ILexerRules
     {

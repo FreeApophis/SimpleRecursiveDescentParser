@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ArithmeticParser.Tokens;
+using apophis.Lexer.Tokens;
 using Funcky.Monads;
 
-namespace ArithmeticParser.Lexing
+namespace apophis.Lexer
 {
     public class Tokenizer
     {

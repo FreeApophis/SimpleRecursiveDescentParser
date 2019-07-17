@@ -1,5 +1,9 @@
-﻿using ArithmeticParser.Lexing;
+﻿using System;
+using apophis.Lexer;
+using apophis.Lexer.Tokens;
+using ArithmeticParser.Lexing;
 using ArithmeticParser.Parsing;
+using ArithmeticParser.Tokens;
 using Autofac;
 
 namespace ArithmeticParser
@@ -16,7 +20,8 @@ namespace ArithmeticParser
             builder.RegisterType<FunctionParser>().AsSelf().SingleInstance();
             builder.RegisterType<VariableParser>().AsSelf().SingleInstance();
             builder.RegisterType<FactorParser>().AsSelf().SingleInstance();
-            builder.RegisterType<TokenWalker>().AsSelf().InstancePerDependency();
+            builder.RegisterType<FactorParser>().AsSelf().SingleInstance();
+            builder.Register(context => new TokenWalker(context.Resolve<Tokenizer>(), () => new EpsilonToken(), t => t.GetType() != typeof(WhiteSpaceToken)));
             builder.RegisterType<LexerRules>().As<ILexerRules>().InstancePerDependency();
             builder.RegisterType<Tokenizer>().AsSelf().InstancePerDependency();
             builder.RegisterType<LexerReader>().As<ILexerReader>().InstancePerDependency();

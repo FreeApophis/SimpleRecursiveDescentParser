@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ArithmeticParser.Lexing
+namespace apophis.Lexer
 {
     internal class UnknownTokenException : Exception
     {

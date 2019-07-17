@@ -1,4 +1,5 @@
 ﻿using System;
+using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
@@ -29,7 +30,7 @@ namespace ArithmeticParser.Parsing
         /// <param name="walker">Lexer input</param>
         /// <returns></returns>
         public IParseNode Parse(TokenWalker walker)
-        {
+        { 
             if (walker.NextIs<NumberToken>())
             {
                 return new NumberNode(GetNumber(walker));

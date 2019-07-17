@@ -1,6 +1,8 @@
-﻿using ArithmeticParser.Lexing;
+﻿using apophis.Lexer;
+using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Parsing;
+using ArithmeticParser.Tokens;
 
 namespace ArithmeticParser
 {
@@ -45,7 +47,7 @@ namespace ArithmeticParser
             expressionParser.TermParser = termParser;
             var lexerRules = new LexerRules();
             var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s));
-            var tokenWalker = new TokenWalker(tokenizer);
+            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken(), t => t.GetType() != typeof(WhiteSpaceToken)) ;
             return new Parser(tokenWalker, expressionParser);
         }
 

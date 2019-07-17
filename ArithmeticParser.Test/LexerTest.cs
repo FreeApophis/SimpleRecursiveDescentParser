@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Tokens;
 using Xunit;

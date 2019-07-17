@@ -1,4 +1,6 @@
-﻿namespace ArithmeticParser.Tokens
+﻿using apophis.Lexer.Tokens;
+
+namespace ArithmeticParser.Tokens
 {
     public class NumberToken : IToken
     {

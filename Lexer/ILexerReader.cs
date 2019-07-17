@@ -1,6 +1,6 @@
 ﻿using Funcky.Monads;
 
-namespace ArithmeticParser.Lexing
+namespace apophis.Lexer
 {
     public interface ILexerReader
     {

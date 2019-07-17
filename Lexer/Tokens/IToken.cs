@@ -1,4 +1,4 @@
-﻿namespace ArithmeticParser.Tokens
+﻿namespace apophis.Lexer.Tokens
 {
     public interface IToken
     {
