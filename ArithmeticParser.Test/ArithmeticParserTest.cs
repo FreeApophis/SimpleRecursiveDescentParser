@@ -18,7 +18,6 @@ namespace ArithmeticParser.Test
                 .Resolve<Parser>();
         }
 
-
         [Fact]
         public void ParseSimpleArithmeticExpressionCorrectly()
         {

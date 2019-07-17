@@ -2,10 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Very Simple Proof of Concept Parser for Simple Arithmetic Expressions.</Description>
     <RepositoryUrl>https://github.com/FreeApophis/ArithmeticParser</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
 

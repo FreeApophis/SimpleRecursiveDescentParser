@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>SimpleArithmeticParser</PackageId>
     <Authors>Thomas Bruderer</Authors>
@@ -15,7 +17,8 @@
     <PackageTags>parser</PackageTags>
     <Version>1.1.0</Version>
     <FileVersion>1.0.1.0</FileVersion>
-  </PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+      <GenerateDocumentationFile>true</GenerateDocumentationFile>  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.2" />

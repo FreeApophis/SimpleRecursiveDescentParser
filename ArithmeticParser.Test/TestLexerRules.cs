@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using apophis.Lexer;
-using ArithmeticParser.Lexing;
 using ArithmeticParser.Tokens;
 
 namespace ArithmeticParser.Test

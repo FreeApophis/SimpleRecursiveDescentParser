@@ -3,6 +3,7 @@ using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Parsing;
 using ArithmeticParser.Tokens;
+using System.Linq;
 
 namespace ArithmeticParser
 {
@@ -47,13 +48,15 @@ namespace ArithmeticParser
             expressionParser.TermParser = termParser;
             var lexerRules = new LexerRules();
             var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s));
-            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken(), t => t.GetType() != typeof(WhiteSpaceToken)) ;
+            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken());
             return new Parser(tokenWalker, expressionParser);
         }
 
+
+
         public IParseNode Parse(string expression)
         {
-            _tokenWalker.Scan(expression);
+            _tokenWalker.Scan(expression, tokens => tokens.Where(t => t.GetType() != typeof(WhiteSpaceToken)));
 
             return Parse(_tokenWalker);
         }

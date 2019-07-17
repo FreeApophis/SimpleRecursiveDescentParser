@@ -1,4 +1,5 @@
-﻿using apophis.Lexer;
+﻿using System.Diagnostics;
+using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
@@ -12,33 +13,31 @@ namespace ArithmeticParser.Parsing
     public class ExpressionParser : IParser
     {
         // Break the dependency cycle
-        public TermParser TermParser { get; set; }
+        public TermParser? TermParser { get; set; }
 
         public IParseNode Parse(TokenWalker walker)
         {
+            Debug.Assert(TermParser != null);
+
             IParseNode result;
             if (walker.NextIs<MinusToken>())
             {
                 walker.Pop();
                 result = new UnaryMinusOperator(TermParser.Parse(walker));
-            }
-            else
+            } else
             {
                 result = TermParser.Parse(walker);
             }
             while (walker.NextIsLineOperator())
             {
-                var op = walker.Pop();
-                switch (op)
+                result = walker.Pop() switch
                 {
-                    case MinusToken _:
-                        result = new MinusOperator(result, TermParser.Parse(walker));
-                        break;
-                    case PlusToken _:
-                        result = new PlusOperator(result, TermParser.Parse(walker));
-                        break;
-                }
+                    MinusToken _ => new MinusOperator(result, TermParser.Parse(walker)),
+                    PlusToken _ => new PlusOperator(result, TermParser.Parse(walker)),
+                    _ => result
+                };
             }
+
             return result;
         }
     }
