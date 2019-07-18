@@ -1,8 +1,15 @@
+dist: xenial
+addons:
+  snaps:
+  - name: dotnet-sdk
+    classic: true
+    channel: latest/beta
+sudo: required
 language: csharp
-solution: ArithmeticParser.sln
 mono: none
-dotnet: 2.1.502
 script:
- - dotnet restore
- - dotnet build
- - dotnet test
+  - sudo snap alias dotnet-sdk.dotnet dotnet
+  - dotnet --version
+  - dotnet restore
+  - dotnet build
+  - dotnet test
