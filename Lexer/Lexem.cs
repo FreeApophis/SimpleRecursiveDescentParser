@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using apophis.Lexer.Tokens;
+﻿using apophis.Lexer.Tokens;
 
 namespace apophis.Lexer
 {

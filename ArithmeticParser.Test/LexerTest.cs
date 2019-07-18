@@ -42,26 +42,26 @@ namespace ArithmeticParser.Test
         {
             var tokenizer = CreateTestTokenizer();
 
-            var tokens = tokenizer.Scan("love and sand and testing").ToList();
-            Assert.Equal(9, tokens.Count);
+            var lexems = tokenizer.Scan("love and sand and testing").ToList();
+            Assert.Equal(9, lexems.Count);
 
-            Assert.IsType<IdentifierToken>(tokens[0].Token);
+            Assert.IsType<IdentifierToken>(lexems[0].Token);
 
-            Assert.Equal(0, tokens[0].Position.StartPosition);
-            Assert.Equal(4, tokens[0].Position.Length);
-            Assert.Equal(4, tokens[0].Position.EndPosition);
+            Assert.Equal(0, lexems[0].Position.StartPosition);
+            Assert.Equal(4, lexems[0].Position.Length);
+            Assert.Equal(4, lexems[0].Position.EndPosition);
 
-            Assert.IsType<SpaceToken>(tokens[3].Token);
+            Assert.IsType<SpaceToken>(lexems[3].Token);
 
-            Assert.Equal(8, tokens[3].Position.StartPosition);
-            Assert.Equal(1, tokens[3].Position.Length);
-            Assert.Equal(9, tokens[3].Position.EndPosition);
+            Assert.Equal(8, lexems[3].Position.StartPosition);
+            Assert.Equal(1, lexems[3].Position.Length);
+            Assert.Equal(9, lexems[3].Position.EndPosition);
 
-            Assert.IsType<AndToken>(tokens[6].Token);
+            Assert.IsType<AndToken>(lexems[6].Token);
 
-            Assert.Equal(14, tokens[6].Position.StartPosition);
-            Assert.Equal(3, tokens[6].Position.Length);
-            Assert.Equal(17, tokens[6].Position.EndPosition);
+            Assert.Equal(14, lexems[6].Position.StartPosition);
+            Assert.Equal(3, lexems[6].Position.Length);
+            Assert.Equal(17, lexems[6].Position.EndPosition);
 
         }
     }

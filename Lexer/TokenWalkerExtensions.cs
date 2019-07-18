@@ -6,16 +6,16 @@ namespace apophis.Lexer
     {
         public static void Consume<TToken>(this TokenWalker walker)
         {
-            var token = walker.Pop();
-            if (token.GetType() is TToken)
+            var lexem = walker.Pop();
+            if (lexem.Token.GetType() is TToken)
             {
-                throw new Exception($"Expecting {typeof(TToken).FullName} but got {token} ");
+                throw new Exception($"Expecting {typeof(TToken).FullName} but got {lexem.Token} ");
             }
         }
 
         public static bool NextIs<TType>(this TokenWalker walker, int lookAhead = 0)
         {
-            return walker.Peek(lookAhead) is TType;
+            return walker.Peek(lookAhead).Token is TType;
         }
     }
 }
