@@ -1,17 +1,25 @@
-﻿using ArithmeticParser.Visitors;
+﻿using apophis.Lexer;
+using ArithmeticParser.Visitors;
 
 namespace ArithmeticParser.Nodes
 {
+    /// <summary>
+    /// Represents a generic binary operator parse node of the abstract syntax tree (AST)
+    /// </summary>
     public class BinaryOperator : IParseNode
     {
-        internal BinaryOperator(IParseNode leftOperand, IParseNode rightOperand, Associativity associativity, bool commutative, Precedence precedence)
+        internal BinaryOperator(IParseNode leftOperand, IParseNode rightOperand, Associativity associativity, bool commutative, Precedence precedence, Position position)
         {
             LeftOperand = leftOperand;
             RightOperand = rightOperand;
             Associativity = associativity;
             Commutative = commutative;
             Precedence = precedence;
+            Position = position;
         }
+
+        /// <inheritdoc />
+        public Position Position { get; }
         public IParseNode LeftOperand { get; set; }
         public IParseNode RightOperand { get; set; }
         public Associativity Associativity { get; }
@@ -22,5 +30,6 @@ namespace ArithmeticParser.Nodes
         {
             visitor.Visit(this);
         }
+
     }
 }

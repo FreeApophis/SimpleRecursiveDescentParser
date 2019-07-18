@@ -22,18 +22,19 @@ namespace ArithmeticParser.Parsing
             IParseNode result;
             if (walker.NextIs<MinusToken>())
             {
-                walker.Pop();
-                result = new UnaryMinusOperator(TermParser.Parse(walker));
+                var lexem  = walker.Pop();
+                result = new UnaryMinusOperator(TermParser.Parse(walker), lexem.Position);
             } else
             {
                 result = TermParser.Parse(walker);
             }
             while (walker.NextIsLineOperator())
             {
-                result = walker.Pop().Token switch
+                var lexem = walker.Pop();
+                result = lexem.Token switch
                 {
-                    MinusToken _ => new MinusOperator(result, TermParser.Parse(walker)),
-                    PlusToken _ => new PlusOperator(result, TermParser.Parse(walker)),
+                    MinusToken _ => new MinusOperator(result, TermParser.Parse(walker), lexem.Position),
+                    PlusToken _ => new PlusOperator(result, TermParser.Parse(walker), lexem.Position),
                     _ => result
                 };
             }

@@ -19,9 +19,10 @@ namespace ArithmeticParser.Parsing
         /// <returns></returns>
         public IParseNode Parse(TokenWalker walker)
         {
-            if (walker.Pop().Token is IdentifierToken identifier)
+            var lexem = walker.Pop();
+            if (lexem.Token is IdentifierToken)
             {
-                return new VariableNode(identifier.Name);
+                return new VariableNode(lexem);
             }
 
             throw new ArgumentNullException();

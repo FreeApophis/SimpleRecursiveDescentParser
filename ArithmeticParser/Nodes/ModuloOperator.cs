@@ -1,11 +1,12 @@
-﻿using ArithmeticParser.Visitors;
+﻿using apophis.Lexer;
+using ArithmeticParser.Visitors;
 
 namespace ArithmeticParser.Nodes
 {
     public class ModuloOperator : BinaryOperator
     {
-        internal ModuloOperator(IParseNode leftOperand, IParseNode rightOperand) :
-            base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Point)
+        internal ModuloOperator(IParseNode leftOperand, IParseNode rightOperand, Position position) :
+            base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Point, position)
         {
         }
 

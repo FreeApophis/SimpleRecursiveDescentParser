@@ -1,15 +1,27 @@
-﻿using ArithmeticParser.Visitors;
+﻿using apophis.Lexer;
+using ArithmeticParser.Tokens;
+using ArithmeticParser.Visitors;
 
 namespace ArithmeticParser.Nodes
 {
+    /// <summary>
+    /// Represents a variable parse node of the abstract syntax tree (AST)
+    /// </summary>
     public class VariableNode : IParseNode
     {
-        public string Name { get; }
-
-        public VariableNode(string name)
+        public VariableNode(Lexem lexem)
         {
-            Name = name;
+            if (lexem.Token is IdentifierToken identifier)
+            {
+                Name = identifier.Name;
+                Position = lexem.Position;
+            }
         }
+
+        /// <inheritdoc />
+        public Position Position { get; }
+
+        public string Name { get; }
 
         public void Accept(INodeVisitor visitor)
         {

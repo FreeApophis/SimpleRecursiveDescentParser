@@ -26,13 +26,13 @@ namespace ArithmeticParser.Parsing
         /// <returns></returns>
         public IParseNode Parse(TokenWalker walker)
         {
-            if (walker.Pop().Token is IdentifierToken identifier)
+            var lexem = walker.Pop();
+            if (lexem.Token is IdentifierToken)
             {
-
-                FunctionNode function = new FunctionNode(identifier.Name);
+                FunctionNode function = new FunctionNode(lexem);
 
                 // Pop opening parenthesis
-                walker.Consume<OpenParenthesisToken>();
+                function.OpenParenthesis = walker.Consume<OpenParenthesisToken>();
 
                 function.Parameters.Add(_expressionParser.Parse(walker));
                 while (walker.NextIs<CommaToken>())
@@ -41,7 +41,7 @@ namespace ArithmeticParser.Parsing
                     function.Parameters.Add(_expressionParser.Parse(walker));
                 }
 
-                walker.Consume<ClosedParenthesisToken>();
+                function.ClosedParenthesis = walker.Consume<ClosedParenthesisToken>();
                 return function;
             }
 

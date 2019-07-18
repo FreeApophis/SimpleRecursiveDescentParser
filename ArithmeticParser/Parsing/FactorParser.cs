@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Schema;
 using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
@@ -30,10 +31,10 @@ namespace ArithmeticParser.Parsing
         /// <param name="walker">Lexer input</param>
         /// <returns></returns>
         public IParseNode Parse(TokenWalker walker)
-        { 
+        {
             if (walker.NextIs<NumberToken>())
             {
-                return new NumberNode(GetNumber(walker));
+                return (CreateNumberNode(walker));
             }
 
             if (walker.NextIs<IdentifierToken>())
@@ -50,12 +51,12 @@ namespace ArithmeticParser.Parsing
             return result;
         }
 
-        private static double GetNumber(TokenWalker walker)
+        private static NumberNode CreateNumberNode(TokenWalker walker)
         {
-            if (walker.Pop().Token is NumberToken number)
+            var lexem = walker.Pop();
+            if (lexem.Token is NumberToken)
             {
-                return number.Value;
-
+                return new NumberNode(lexem);
             }
 
             throw new Exception("Expecting Real number but got something else");

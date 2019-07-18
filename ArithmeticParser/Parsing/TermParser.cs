@@ -28,11 +28,12 @@ namespace ArithmeticParser.Parsing
             var result = _powerTermParser.Parse(walker);
             while (walker.NextIsDotOperator())
             {
-                result = walker.Pop().Token switch
+                var lexem = walker.Pop();
+                result = lexem.Token switch
                 {
-                    DivideToken _ => new DivisionOperator(result, _powerTermParser.Parse(walker)),
-                    MultiplicationToken _ => new MultiplicationOperator(result, _powerTermParser.Parse(walker)),
-                    ModuloToken _ => new ModuloOperator(result, _powerTermParser.Parse(walker)),
+                    DivideToken _ => new DivisionOperator(result, _powerTermParser.Parse(walker), lexem.Position),
+                    MultiplicationToken _ => new MultiplicationOperator(result, _powerTermParser.Parse(walker), lexem.Position),
+                    ModuloToken _ => new ModuloOperator(result, _powerTermParser.Parse(walker), lexem.Position),
                     _ => result
                 };
             }

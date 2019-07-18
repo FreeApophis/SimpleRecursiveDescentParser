@@ -19,8 +19,8 @@ namespace ArithmeticParser.Parsing
 
             while (walker.NextIs<PowerToken>())
             {
-                walker.Pop();
-                result = new PowerOperator(result, _factorParser.Parse(walker));
+                var lexem = walker.Pop();
+                result = new PowerOperator(result, _factorParser.Parse(walker), lexem.Position);
             }
 
             return result;

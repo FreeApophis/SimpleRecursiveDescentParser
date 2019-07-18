@@ -1,11 +1,12 @@
-﻿using ArithmeticParser.Visitors;
+﻿using apophis.Lexer;
+using ArithmeticParser.Visitors;
 
 namespace ArithmeticParser.Nodes
 {
     public class MinusOperator : BinaryOperator
     {
-        internal MinusOperator(IParseNode leftOperand, IParseNode rightOperand) :
-            base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Line)
+        internal MinusOperator(IParseNode leftOperand, IParseNode rightOperand, Position position) :
+            base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Line, position)
         {
         }
 

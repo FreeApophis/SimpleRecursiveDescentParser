@@ -398,5 +398,48 @@ namespace ArithmeticParser.Test
             _parser.Parse("119\n%\n100").Accept(visitor);
             Assert.Equal(19, visitor.Result);
         }
+
+        [Fact]
+        public void GivenAParseTreeEachNodeHasACorrectPosition()
+        {
+            var parseTree = _parser.Parse("cos(Pi/4)");
+
+            if (parseTree is FunctionNode functionNode)
+            {
+                Assert.Equal(0, functionNode.Position.StartPosition);
+                Assert.Equal(3, functionNode.Position.Length);
+
+                Assert.Equal(3, functionNode.OpenParenthesis.Position.StartPosition);
+                Assert.Equal(8, functionNode.ClosedParenthesis.Position.StartPosition);
+
+                if (functionNode.Parameters.First() is DivisionOperator divisionOperator)
+                {
+                    Assert.Equal(6, divisionOperator.Position.StartPosition);
+                    Assert.Equal(1, divisionOperator.Position.Length);
+                    Assert.Equal(7, divisionOperator.Position.EndPosition);
+
+                    if (divisionOperator.LeftOperand is VariableNode variableNode)
+                    {
+                        Assert.Equal(4, variableNode.Position.StartPosition);
+                        Assert.Equal(2, variableNode.Position.Length);
+                        Assert.Equal(6, variableNode.Position.EndPosition);
+                        
+                    }
+                    else
+                    {
+                        Assert.True(false);
+                    }
+                } 
+                else
+                {
+                    Assert.True(false);
+                }
+            }
+            else
+            {
+                Assert.True(false);
+            }
+
+        }
     }
 }

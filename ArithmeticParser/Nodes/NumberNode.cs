@@ -1,20 +1,29 @@
 ﻿using System.Globalization;
+using apophis.Lexer;
+using ArithmeticParser.Tokens;
 using ArithmeticParser.Visitors;
 
 namespace ArithmeticParser.Nodes
 {
     public class NumberNode : IParseNode
     {
-        internal NumberNode(double number)
+        internal NumberNode(Lexem lexem)
         {
-            Number = number;
+            if (lexem.Token is NumberToken number)
+            {
+                Number = number.Value;
+                Position = lexem.Position;
+            }
         }
+
+        /// <inheritdoc />
+        public Position Position { get; }
+        public double Number { get; }
+
         public virtual void Accept(INodeVisitor visitor)
         {
             visitor.Visit(this);
         }
-
-        public double Number { get; }
 
         public override string ToString()
         {

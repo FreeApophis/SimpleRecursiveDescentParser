@@ -8,7 +8,6 @@ namespace ArithmeticParser.Test
 {
     public class LexerTest
     {
-
         Tokenizer CreateTestTokenizer()
         {
             return new Tokenizer(new TestLexerRules(), s => new LexerReader(s));
