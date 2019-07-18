@@ -10,10 +10,10 @@ namespace apophis.Lexer
     {
         private readonly Tokenizer _tokenizer;
         private readonly Func<IToken> _newEpsilonToken;
-        private List<IToken> _tokens = new List<IToken>();
+        private List<Lexem> _lexems = new List<Lexem>();
         private int _currentIndex;
 
-        private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _tokens.Count;
+        private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _lexems.Count;
 
         public TokenWalker(Tokenizer tokenizer, Func<IToken> newEpsilonToken)
         {
@@ -26,30 +26,30 @@ namespace apophis.Lexer
             Scan(expression, t => t);
         }
 
-        public void Scan(string expression, Func<IEnumerable<IToken>, IEnumerable<IToken>> postProcessTokens)
+        public void Scan(string expression, Func<IEnumerable<Lexem>, IEnumerable<Lexem>> postProcessTokens)
         {
             _currentIndex = 0;
-            var tokens = postProcessTokens(_tokenizer.Scan(expression));
+            var lexems = postProcessTokens(_tokenizer.Scan(expression));
 
-            _tokens = tokens.ToList();
+            _lexems = lexems.ToList();
         }
 
 
-        public IToken Pop()
+        public Lexem Pop()
         {
             return ValidToken()
-                ? _tokens[_currentIndex++]
-                : _newEpsilonToken();
+                ? _lexems[_currentIndex++]
+                : new Lexem(_newEpsilonToken(), new Position(0,0));
         }
 
 
-        public IToken Peek(int lookAhead = 0)
+        public Lexem Peek(int lookAhead = 0)
         {
             Debug.Assert(lookAhead >= 0);
 
             return ValidToken(lookAhead)
-                ? _tokens[_currentIndex + lookAhead]
-                : _newEpsilonToken();
+                ? _lexems[_currentIndex + lookAhead]
+                : new Lexem(_newEpsilonToken(), new Position(0, 0));
         }
     }
 }

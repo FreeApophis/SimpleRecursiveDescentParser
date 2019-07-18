@@ -30,7 +30,7 @@ namespace ArithmeticParser.Parsing
             }
             while (walker.NextIsLineOperator())
             {
-                result = walker.Pop() switch
+                result = walker.Pop().Token switch
                 {
                     MinusToken _ => new MinusOperator(result, TermParser.Parse(walker)),
                     PlusToken _ => new PlusOperator(result, TermParser.Parse(walker)),

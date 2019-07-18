@@ -6,6 +6,6 @@ namespace apophis.Lexer
     public interface ILexerRule
     {
         int Weight { get; }
-        Option<IToken> Match(ILexerReader reader);
+        Option<Lexem> Match(ILexerReader reader);
     }
 }

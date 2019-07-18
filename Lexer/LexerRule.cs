@@ -7,9 +7,9 @@ namespace apophis.Lexer
     public class LexerRule : ILexerRule
     {
         public Predicate<char> Predicate { get; }
-        public Func<ILexerReader, IToken> CreateToken { get; }
+        public Func<ILexerReader, Lexem> CreateToken { get; }
 
-        public LexerRule(Predicate<char> predicate, Func<ILexerReader, IToken> createToken)
+        public LexerRule(Predicate<char> predicate, Func<ILexerReader, Lexem> createToken)
         {
             Predicate = predicate;
             CreateToken = createToken;
@@ -17,7 +17,7 @@ namespace apophis.Lexer
 
         public int Weight { get; } = 0;
 
-        public Option<IToken> Match(ILexerReader reader)
+        public Option<Lexem> Match(ILexerReader reader)
         {
             var predicate =
                 from nextCharacter in reader.Peek()
@@ -25,7 +25,7 @@ namespace apophis.Lexer
 
             return predicate.Match(false, p => p)
                 ? Option.Some(CreateToken(reader))
-                : Option<IToken>.None();
+                : Option<Lexem>.None();
         }
     }
 }

@@ -14,19 +14,21 @@ namespace ArithmeticParser.Test
             yield return new SimpleLexerRule<GreaterToken>("<");
             yield return new SimpleLexerRule<GreaterEqualToken>("<=");
             yield return new SimpleLexerRule<AndToken>("and");
-            yield return new LexerRule(char.IsLetter, reader => new IdentifierToken(ScanIdentifier(reader)));
+            yield return new SimpleLexerRule<SpaceToken>(" ");
+            yield return new LexerRule(char.IsLetter, ScanIdentifier);
 
         }
 
-        private static string ScanIdentifier(ILexerReader reader)
+        private static Lexem ScanIdentifier(ILexerReader reader)
         {
+            var startPosition = reader.Position;
             var stringBuilder = new StringBuilder();
             while (reader.Peek().Match(false, char.IsLetterOrDigit))
             {
                 stringBuilder.Append(reader.Read().Match(' ', c => c));
             }
 
-            return stringBuilder.ToString();
+            return new Lexem(new IdentifierToken(stringBuilder.ToString()), new Position(startPosition, reader.Position - startPosition));
         }
     }
 }

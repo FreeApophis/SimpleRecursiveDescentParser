@@ -26,7 +26,7 @@ namespace ArithmeticParser.Parsing
         /// <returns></returns>
         public IParseNode Parse(TokenWalker walker)
         {
-            if (walker.Pop() is IdentifierToken identifier)
+            if (walker.Pop().Token is IdentifierToken identifier)
             {
 
                 FunctionNode function = new FunctionNode(identifier.Name);

@@ -28,7 +28,7 @@ namespace ArithmeticParser.Parsing
             var result = _powerTermParser.Parse(walker);
             while (walker.NextIsDotOperator())
             {
-                result = walker.Pop() switch
+                result = walker.Pop().Token switch
                 {
                     DivideToken _ => new DivisionOperator(result, _powerTermParser.Parse(walker)),
                     MultiplicationToken _ => new MultiplicationOperator(result, _powerTermParser.Parse(walker)),

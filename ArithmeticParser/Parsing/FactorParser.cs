@@ -52,7 +52,7 @@ namespace ArithmeticParser.Parsing
 
         private static double GetNumber(TokenWalker walker)
         {
-            if (walker.Pop() is NumberToken number)
+            if (walker.Pop().Token is NumberToken number)
             {
                 return number.Value;
 

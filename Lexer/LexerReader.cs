@@ -5,17 +5,17 @@ namespace apophis.Lexer
     public class LexerReader : ILexerReader
     {
         private readonly string _expression;
-        private int _position;
 
         public LexerReader(string expression)
         {
             _expression = expression;
-            _position = 0;
         }
+
+        public int Position { get; private set; }
 
         public Option<char> Peek(int lookAhead = 0)
         {
-            var position = _position + lookAhead;
+            var position = Position + lookAhead;
             if (position >= 0 && position < _expression.Length)
             {
                 return Option.Some(_expression[position]);
@@ -28,7 +28,7 @@ namespace apophis.Lexer
         {
             var result = Peek();
 
-            _position++;
+            Position++;
 
             return result;
         }

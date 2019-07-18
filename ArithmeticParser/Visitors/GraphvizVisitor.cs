@@ -6,6 +6,9 @@ using ArithmeticParser.Nodes;
 
 namespace ArithmeticParser.Visitors
 {
+    /// <summary>
+    /// This class visits a parse tree and returns a dot graph to create a graphical representation of the parse tree.
+    /// </summary>
     public class GraphvizVisitor : INodeVisitor
     {
         private int _nodeId;

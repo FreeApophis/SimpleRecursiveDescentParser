@@ -2,6 +2,9 @@
 
 namespace ArithmeticParser.Visitors
 {
+    /// <summary>
+    /// This represents an interface for the visitor pattern of a node in a parse tree.
+    /// </summary>
     public interface INodeVisitor
     {
         void Visit(NumberNode number);

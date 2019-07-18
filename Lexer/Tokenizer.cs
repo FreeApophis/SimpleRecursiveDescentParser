@@ -17,7 +17,7 @@ namespace apophis.Lexer
             _newLexerReader = newLexerReader;
         }
 
-        public IEnumerable<IToken> Scan(string expression)
+        public IEnumerable<Lexem> Scan(string expression)
         {
             var reader = _newLexerReader(expression);
 
@@ -31,7 +31,7 @@ namespace apophis.Lexer
             }
         }
 
-        private Option<IToken> SelectLexerRule(ILexerReader reader)
+        private Option<Lexem> SelectLexerRule(ILexerReader reader)
         {
             return _lexerRules
                 .GetRules()
