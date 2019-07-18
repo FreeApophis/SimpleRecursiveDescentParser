@@ -8,6 +8,10 @@ namespace ArithmeticParser.Nodes
     /// </summary>
     public interface IParseNode
     {
+        /// <summary>
+        /// Accept method of the visitor pattern (simulate double dispatch)
+        /// </summary>
+        /// <param name="visitor"></param>
         void Accept(INodeVisitor visitor);
 
         /// <summary>

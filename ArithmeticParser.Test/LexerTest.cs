@@ -1,11 +1,13 @@
 ﻿using System.Linq;
 using apophis.Lexer;
-using ArithmeticParser.Lexing;
 using ArithmeticParser.Tokens;
 using Xunit;
 
 namespace ArithmeticParser.Test
 {
+    /// <summary>
+    /// Test to verify the functionality of the lexer
+    /// </summary>
     public class LexerTest
     {
         Tokenizer CreateTestTokenizer()

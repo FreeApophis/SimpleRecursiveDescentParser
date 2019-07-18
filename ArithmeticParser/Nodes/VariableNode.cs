@@ -23,6 +23,7 @@ namespace ArithmeticParser.Nodes
 
         public string Name { get; }
 
+        /// <inheritdoc />
         public void Accept(INodeVisitor visitor)
         {
             visitor.Visit(this);

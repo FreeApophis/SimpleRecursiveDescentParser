@@ -4,7 +4,7 @@ using ArithmeticParser.Visitors;
 namespace ArithmeticParser.Nodes
 {
     /// <summary>
-    /// Represents an unary minus parse node of the abstract syntax tree (AST)
+    /// Represents an unary minus operator parse node of the abstract syntax tree (AST)
     /// </summary>
     public class UnaryMinusOperator : UnaryOperator
     {
@@ -13,11 +13,13 @@ namespace ArithmeticParser.Nodes
         {
         }
 
+        /// <inheritdoc />
         public override void Accept(INodeVisitor visitor)
         {
             visitor.Visit(this);
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return "-";

@@ -36,7 +36,7 @@ namespace ArithmeticParser.Test
 
             var number = parseTree as NumberNode;
             Assert.NotNull(number);
-            Assert.Equal(22.0, number.Number);
+            Assert.Equal(22.0, number?.Number);
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -56,7 +56,7 @@ namespace ArithmeticParser.Test
 
             var number = parseTree as NumberNode;
             Assert.NotNull(number);
-            Assert.Equal(3.14159265, number.Number);
+            Assert.Equal(3.14159265, number?.Number);
 
             var calculator = new CalculateVisitor();
             parseTree.Accept(calculator);
@@ -409,8 +409,8 @@ namespace ArithmeticParser.Test
                 Assert.Equal(0, functionNode.Position.StartPosition);
                 Assert.Equal(3, functionNode.Position.Length);
 
-                Assert.Equal(3, functionNode.OpenParenthesis.Position.StartPosition);
-                Assert.Equal(8, functionNode.ClosedParenthesis.Position.StartPosition);
+                Assert.Equal(3, functionNode.OpenParenthesis?.Position.StartPosition);
+                Assert.Equal(8, functionNode.ClosedParenthesis?.Position.StartPosition);
 
                 if (functionNode.Parameters.First() is DivisionOperator divisionOperator)
                 {

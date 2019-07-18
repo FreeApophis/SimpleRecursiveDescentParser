@@ -2,6 +2,9 @@
 
 namespace apophis.Lexer
 {
+    /// <summary>
+    /// A lexem represents a string token and it's associated position
+    /// </summary>
     public class Lexem
     {
         public Lexem(IToken token, Position position)
@@ -11,6 +14,7 @@ namespace apophis.Lexer
         }
 
         public IToken Token { get; }
+
         public Position Position { get; }
     }
 }

@@ -6,6 +6,10 @@ using ArithmeticParser.Visitors;
 
 namespace ArithmeticParser.Nodes
 {
+    /// <summary>
+    /// Represents a function parse node of the abstract syntax tree (AST)
+    /// </summary>
+
     public class FunctionNode : IParseNode
     {
         public FunctionNode(Lexem lexem)
@@ -23,15 +27,16 @@ namespace ArithmeticParser.Nodes
         /// <inheritdoc />
         public Position Position { get; }
 
-        public Lexem OpenParenthesis { get; set; }
+        public Lexem? OpenParenthesis { get; set; }
 
-        public Lexem ClosedParenthesis { get; set; }
+        public Lexem? ClosedParenthesis { get; set; }
 
         public List<IParseNode> Parameters { get; } = new List<IParseNode>();
 
         public string Name { get; }
 
 
+        /// <inheritdoc />
         public void Accept(INodeVisitor visitor)
         {
             visitor.Visit(this);

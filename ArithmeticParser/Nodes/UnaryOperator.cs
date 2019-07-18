@@ -19,6 +19,7 @@ namespace ArithmeticParser.Nodes
 
         public IParseNode Operand { get; set; }
 
+        /// <inheritdoc />
         public virtual void Accept(INodeVisitor visitor)
         {
         }

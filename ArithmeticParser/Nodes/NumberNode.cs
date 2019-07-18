@@ -20,11 +20,13 @@ namespace ArithmeticParser.Nodes
         public Position Position { get; }
         public double Number { get; }
 
+        /// <inheritdoc />
         public virtual void Accept(INodeVisitor visitor)
         {
             visitor.Visit(this);
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return Number.ToString(CultureInfo.InvariantCulture);

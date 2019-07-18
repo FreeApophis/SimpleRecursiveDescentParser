@@ -12,6 +12,7 @@ namespace ArithmeticParser.Lexing
     /// </summary>
     public class LexerRules : ILexerRules
     {
+        /// <inheritdoc />
         public IEnumerable<ILexerRule> GetRules()
         {
             yield return new LexerRule(char.IsWhiteSpace, ScanWhiteSpace);

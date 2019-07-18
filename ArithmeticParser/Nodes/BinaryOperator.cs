@@ -26,6 +26,7 @@ namespace ArithmeticParser.Nodes
         public bool Commutative { get; }
         public Precedence Precedence { get; }
 
+        /// <inheritdoc />
         public virtual void Accept(INodeVisitor visitor)
         {
             visitor.Visit(this);
