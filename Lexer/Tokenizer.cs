@@ -36,7 +36,7 @@ namespace apophis.Lexer
                 .GetRules()
                 .OrderByDescending(rule => rule.Weight)
                 .Select(rule => rule.Match(reader))
-                .First(mt => mt.Match(none: false, some: t => true));
+                .FirstOrDefault(mt => mt.Match(none: false, some: t => true));
         }
     }
 }

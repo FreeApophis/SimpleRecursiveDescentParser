@@ -1,7 +1,6 @@
 ﻿using apophis.Lexer.Tokens;
-using ArithmeticParser.Tokens;
 
-namespace ArithmeticParser.Test
+namespace apophis.Lexer.Test.Tokens
 {
     internal class GreaterEqualToken : IToken
     {

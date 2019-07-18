@@ -2,7 +2,7 @@
 
 namespace apophis.Lexer
 {
-    internal class UnknownTokenException : Exception
+    public class UnknownTokenException : Exception
     {
     }
 }

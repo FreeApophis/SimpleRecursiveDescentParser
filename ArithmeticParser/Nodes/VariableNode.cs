@@ -1,4 +1,5 @@
-﻿using apophis.Lexer;
+﻿using System;
+using apophis.Lexer;
 using ArithmeticParser.Tokens;
 using ArithmeticParser.Visitors;
 
@@ -15,6 +16,10 @@ namespace ArithmeticParser.Nodes
             {
                 Name = identifier.Name;
                 Position = lexem.Position;
+            } 
+            else
+            {
+                throw new NotImplementedException();
             }
         }
 

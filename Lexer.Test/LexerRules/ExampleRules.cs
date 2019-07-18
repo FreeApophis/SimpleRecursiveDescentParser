@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using apophis.Lexer;
-using ArithmeticParser.Tokens;
+using apophis.Lexer.Test.Tokens;
 
-namespace ArithmeticParser.Test
+namespace apophis.Lexer.Test.LexerRules
 {
-    internal class TestLexerRules : ILexerRules
+    internal class ExampleRules : ILexerRules
     {
         public IEnumerable<ILexerRule> GetRules()
         {
@@ -16,7 +15,6 @@ namespace ArithmeticParser.Test
             yield return new SimpleLexerRule<AndToken>("and");
             yield return new SimpleLexerRule<SpaceToken>(" ");
             yield return new LexerRule(char.IsLetter, ScanIdentifier);
-
         }
 
         private static Lexem ScanIdentifier(ILexerReader reader)

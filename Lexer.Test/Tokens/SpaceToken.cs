@@ -1,6 +1,6 @@
 ﻿using apophis.Lexer.Tokens;
 
-namespace ArithmeticParser.Test
+namespace apophis.Lexer.Test.Tokens
 {
     internal class SpaceToken : IToken
     {

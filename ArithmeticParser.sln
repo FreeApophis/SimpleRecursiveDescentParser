@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29111.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArithmeticParser", "ArithmeticParser\ArithmeticParser.csproj", "{AEE04BDB-97AC-44DD-B6F4-7AC8214615FB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArithmeticParser.Test", "ArithmeticParser.Test\ArithmeticParser.Test.csproj", "{31BA1B18-E2DC-432D-9D75-2744C11E937E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer", "Lexer\Lexer.csproj", "{A783602F-FD99-438A-B861-C429F9C75063}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer", "Lexer\Lexer.csproj", "{A783602F-FD99-438A-B861-C429F9C75063}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer.Test", "Lexer.Test\Lexer.Test.csproj", "{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{A783602F-FD99-438A-B861-C429F9C75063}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A783602F-FD99-438A-B861-C429F9C75063}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A783602F-FD99-438A-B861-C429F9C75063}.Release|Any CPU.Build.0 = Release|Any CPU
+		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
