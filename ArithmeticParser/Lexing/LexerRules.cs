@@ -40,7 +40,6 @@ namespace ArithmeticParser.Lexing
             }
 
             return new Lexem(new WhiteSpaceToken(), new Position(startPosition, reader.Position - startPosition));
-
         }
 
         private static Lexem ScanNumber(ILexerReader reader)

@@ -26,7 +26,11 @@ namespace apophis.Lexer
                     .All(t => reader.Peek(t.index).Match(false, c => c == t.character))
                 && (!_isTextSymbol || reader.Peek(_textSymbol.Length).Match(true, char.IsWhiteSpace)))
             {
-                Debug.Assert(_textSymbol.Select(c => reader.Read()).All(c => true));
+                foreach (var _ in _textSymbol)
+                {
+                    reader.Read();
+                }
+
                 return Option.Some(CreateToken(startPosition));
             }
 

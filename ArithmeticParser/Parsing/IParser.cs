@@ -1,5 +1,4 @@
 ﻿using apophis.Lexer;
-using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 
 namespace ArithmeticParser.Parsing
