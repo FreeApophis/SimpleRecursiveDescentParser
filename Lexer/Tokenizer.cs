@@ -25,7 +25,7 @@ namespace apophis.Lexer
             {
                 yield return SelectLexerRule(reader)
                     .Match(
-                        none: () => throw new UnknownTokenException(),
+                        none: () => throw new UnknownTokenException(reader.Peek(), reader.Position),
                         some: t => t
                         );
             }
