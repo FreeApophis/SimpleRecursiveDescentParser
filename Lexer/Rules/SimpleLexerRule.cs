@@ -1,9 +1,8 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using apophis.Lexer.Tokens;
 using Funcky.Monads;
 
-namespace apophis.Lexer
+namespace apophis.Lexer.Rules
 {
     public class SimpleLexerRule<TToken> : ILexerRule
         where TToken : IToken, new()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using apophis.Lexer.Rules;
 using Funcky.Monads;
 
 namespace apophis.Lexer

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using apophis.Lexer.Rules;
 using apophis.Lexer.Test.Tokens;
 
 namespace apophis.Lexer.Test.LexerRules

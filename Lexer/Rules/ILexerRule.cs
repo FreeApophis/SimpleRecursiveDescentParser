@@ -1,7 +1,6 @@
-﻿using apophis.Lexer.Tokens;
-using Funcky.Monads;
+﻿using Funcky.Monads;
 
-namespace apophis.Lexer
+namespace apophis.Lexer.Rules
 {
     public interface ILexerRule
     {

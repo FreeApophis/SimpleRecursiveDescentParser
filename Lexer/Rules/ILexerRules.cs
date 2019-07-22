@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace apophis.Lexer
+namespace apophis.Lexer.Rules
 {
     /// <summary>
     /// This interface represents a class which can return a full set rules for the lexer

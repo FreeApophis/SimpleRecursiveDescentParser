@@ -1,21 +1,21 @@
 ﻿using System;
-using apophis.Lexer.Tokens;
 using Funcky.Monads;
 
-namespace apophis.Lexer
+namespace apophis.Lexer.Rules
 {
     public class LexerRule : ILexerRule
     {
         public Predicate<char> Predicate { get; }
         public Func<ILexerReader, Lexem> CreateToken { get; }
 
-        public LexerRule(Predicate<char> predicate, Func<ILexerReader, Lexem> createToken)
+        public LexerRule(Predicate<char> predicate, Func<ILexerReader, Lexem> createToken, int weight = 0)
         {
             Predicate = predicate;
             CreateToken = createToken;
+            Weight = weight;
         }
 
-        public int Weight { get; } = 0;
+        public int Weight { get; }
 
         public Option<Lexem> Match(ILexerReader reader)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using apophis.Lexer;
+using apophis.Lexer.Rules;
 using ArithmeticParser.Tokens;
 using Funcky.Extensions;
 
