@@ -1,7 +1,8 @@
 ﻿using apophis.Lexer;
-using System;
-using System.Linq;
+using LambdaCalculusParser.Lexing;
+using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Parsing;
+using LambdaCalculusParser.Tokens;
 
 namespace LambdaCalculusParser
 {
@@ -24,17 +25,29 @@ namespace LambdaCalculusParser
             _tokenWalker = tokenWalker;
             _termParser = termParser;
         }
-        public IParseNode Parse(string expression)
+        public ILambdaExpression Parse(string expression)
         {
             _tokenWalker.Scan(expression, lexems => lexems);
 
             return Parse(_tokenWalker);
         }
-        private IParseNode Parse(TokenWalker walker)
+        private ILambdaExpression Parse(TokenWalker walker)
         {
             return _termParser.Parse(walker);
         }
 
 
+        public static Parser Create()
+        {
+            // Create the object tree without DI Framework
+            var applicationParser = new ApplicationParser();
+            var termParser = new TermParser(applicationParser);
+            var atomParser = new AtomParser(termParser);
+            applicationParser.AtomParser = atomParser;
+            var lexerRules = new LexerRules();
+            var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s));
+            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken());
+            return new Parser(tokenWalker, termParser);
+        }
     }
 }

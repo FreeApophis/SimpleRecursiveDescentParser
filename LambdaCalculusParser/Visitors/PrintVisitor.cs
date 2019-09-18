@@ -1,23 +1,39 @@
 ﻿using System;
+using System.Text;
 using LambdaCalculusParser.Nodes;
 
 namespace LambdaCalculusParser.Visitors
 {
-    class PrintVisitor : INodeVisitor
+    public class PrintVisitor : ILambdaExpressionVisitor
     {
-        public void Visit(LambdaExpression lambdaExpression)
+        private readonly StringBuilder _stringBuilder = new StringBuilder();
+
+        public void Visit(Term lambdaExpression)
         {
-            throw new NotImplementedException();
+            _stringBuilder.Append("λ");
+
+            lambdaExpression.Argument.Accept(this);
+
+            _stringBuilder.Append(".");
+            _stringBuilder.Append("(");
+
+            lambdaExpression.Expression.Accept(this);
+
+            _stringBuilder.Append(")");
         }
 
         public void Visit(Application application)
         {
-            throw new NotImplementedException();
+            application.Function.Accept(this);
+            _stringBuilder.Append(" ");
+            application.Argument.Accept(this);
         }
 
         public void Visit(Variable variable)
         {
-            throw new NotImplementedException();
+            _stringBuilder.Append(variable.Name);
         }
+
+        public string Result => _stringBuilder.ToString();
     }
 }
