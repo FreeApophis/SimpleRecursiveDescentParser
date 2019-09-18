@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using apophis.Lexer.Rules;
 using Funcky.Monads;
 
 namespace apophis.Lexer
@@ -24,7 +25,7 @@ namespace apophis.Lexer
             {
                 yield return SelectLexerRule(reader)
                     .Match(
-                        none: () => throw new UnknownTokenException(),
+                        none: () => throw new UnknownTokenException(reader.Peek(), reader.Position),
                         some: t => t
                         );
             }
