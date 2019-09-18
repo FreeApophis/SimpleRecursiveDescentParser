@@ -4,4 +4,12 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Lexer\Lexer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tokens\" />
+  </ItemGroup>
+
 </Project>
