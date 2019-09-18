@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArithmeticParser.Test", "Ar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer", "Lexer\Lexer.csproj", "{A783602F-FD99-438A-B861-C429F9C75063}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer.Test", "Lexer.Test\Lexer.Test.csproj", "{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer.Test", "Lexer.Test\Lexer.Test.csproj", "{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaCalculusParser", "LambdaCalculusParser\LambdaCalculusParser.csproj", "{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaCalculusParser.Test", "LambdaCalculusParser.Test\LambdaCalculusParser.Test.csproj", "{A39B54C6-FAA8-4E56-87A3-DF13FDA847EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A39B54C6-FAA8-4E56-87A3-DF13FDA847EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A39B54C6-FAA8-4E56-87A3-DF13FDA847EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A39B54C6-FAA8-4E56-87A3-DF13FDA847EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A39B54C6-FAA8-4E56-87A3-DF13FDA847EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
