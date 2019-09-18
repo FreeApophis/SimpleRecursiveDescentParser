@@ -1,6 +1,4 @@
-﻿using System;
-using System.Xml;
-using apophis.Lexer;
+﻿using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Tokens;
 using LambdaCalculusParser.Lexing;

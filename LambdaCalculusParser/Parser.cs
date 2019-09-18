@@ -40,10 +40,10 @@ namespace LambdaCalculusParser
         public static Parser Create()
         {
             // Create the object tree without DI Framework
-            var applicationParser = new ApplicationParser();
-            var termParser = new TermParser(applicationParser);
+            var termParser = new TermParser();
             var atomParser = new AtomParser(termParser);
-            applicationParser.AtomParser = atomParser;
+            var applicationParser = new ApplicationParser(atomParser);
+            termParser.ApplicationParser = applicationParser;
             var lexerRules = new LexerRules();
             var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s));
             var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken());

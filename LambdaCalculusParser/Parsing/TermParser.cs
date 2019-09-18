@@ -9,12 +9,7 @@ namespace LambdaCalculusParser.Parsing
 {
     public class TermParser : IParser
     {
-        private readonly ApplicationParser _applicationParser;
-
-        public TermParser(ApplicationParser applicationParser)
-        {
-            _applicationParser = applicationParser;
-        }
+        public ApplicationParser ApplicationParser { get; set; }
 
         /// <summary>
         /// Parsing the following Production:
@@ -24,7 +19,7 @@ namespace LambdaCalculusParser.Parsing
         {
             if (walker.NextIs<LambdaToken>() == false)
             {
-                return _applicationParser.Parse(walker);
+                return ApplicationParser.Parse(walker);
             }
 
 

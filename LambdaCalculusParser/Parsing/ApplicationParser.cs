@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Xml;
 using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using LambdaCalculusParser.Nodes;
+using LambdaCalculusParser.Tokens;
 
 namespace LambdaCalculusParser.Parsing
 {
     public class ApplicationParser : IParser
     {
-        public AtomParser AtomParser { get; set; }
+        private readonly AtomParser _atomParser;
 
-        public ApplicationParser()
+        public ApplicationParser(AtomParser atomParser)
         {
+            _atomParser = atomParser;
         }
 
         /// <summary>
@@ -21,10 +24,17 @@ namespace LambdaCalculusParser.Parsing
         {
             if (walker.NextIs<OpenParenthesisToken>())
             {
-                return AtomParser.Parse(walker);
+                return _atomParser.Parse(walker);
             }
 
-            throw new NotImplementedException();
+            var application = Parse(walker);
+
+            if (walker.Pop().Token is WhiteSpaceToken)
+            {
+                return new Application(application, _atomParser.Parse(walker));
+            }
+
+            throw new Exception("whitespace expected...");
         }
     }
 }
