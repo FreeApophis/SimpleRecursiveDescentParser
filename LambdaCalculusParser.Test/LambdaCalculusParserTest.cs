@@ -52,16 +52,16 @@ namespace LambdaCalculusParser.Test
             Assert.IsType<Application>(lambdaExpression);
             var application = (Application)lambdaExpression;
 
-            Assert.IsType<Term>(application.Function);
-            var function = (Term)application.Function;
+            Assert.IsType<Abstraction>(application.Function);
+            var function = (Abstraction)application.Function;
 
             Assert.Equal("x", function.Argument.Name);
             Assert.IsType<Variable>(function.Expression);
             var leftVariable = (Variable)function.Expression;
             Assert.Equal("x", leftVariable.Name);
 
-            Assert.IsType<Term>(application.Argument);
-            var argument = (Term)application.Argument;
+            Assert.IsType<Abstraction>(application.Argument);
+            var argument = (Abstraction)application.Argument;
 
             Assert.Equal("y", argument.Argument.Name);
             Assert.IsType<Variable>(argument.Expression);
@@ -72,28 +72,59 @@ namespace LambdaCalculusParser.Test
         [Fact]
         public void GivenAProgramAndAParsedASTWeGetTheSameProgramFromTheAST()
         {
-            var testLambda = @"λs.(λz.(s z))";
+            var testLambda = "λs.(λz.(s z))";
 
             var lambdaExpression = _parser.Parse(testLambda);
 
-            var printVisitor = new PrintVisitor();
+            var printVisitor = new NormalFormVisitor();
             lambdaExpression.Accept(printVisitor);
 
-            Assert.Equal(testLambda, printVisitor.Result);
+            Assert.Equal("(λs.(λz.(s z)))", printVisitor.Result);
         }
 
         [Fact]
-        public void Experiments()
+        public void GivenTheIdentifyFunctionParseAndInterpretToTheIdentifyFunction()
         {
-            var yCobinator = @"λ f . (λ x . f (x x)) (λ x . f (x x))";
+            var identityFunction = "λx.x";
 
-            var lambdaExpression = _parser.Parse(yCobinator);
+            var lambdaExpression = _parser.Parse(identityFunction);
 
-            var graphvizVisitor = new GraphvizVisitor();
-            lambdaExpression.Accept(graphvizVisitor);
+            var interpreter = new InterpreterVisitor();
+            lambdaExpression.Accept(interpreter);
+
+            var printVisitor = new NormalFormVisitor();
+            interpreter.Result.Accept(printVisitor);
+
+            Assert.Equal("(λx.x)", printVisitor.Result);
         }
 
+        [Fact]
+        public void GivenSelector()
+        {
+            var identityFunction = @"λx.(λy.x) λx.(λy.x)";
 
+            var lambdaExpression = _parser.Parse(identityFunction);
+
+            var interpreter = new InterpreterVisitor();
+            interpreter.AlphaReductionEvent += OnAlphaReductionEvent;
+            interpreter.BetaReductionEvent += OnBetaReductionEvent;
+            lambdaExpression.Accept(interpreter);
+
+            var printVisitor = new NormalFormVisitor();
+            interpreter.Result.Accept(printVisitor);
+
+            //Assert.Equal("λy.(λx0.(λx1.x0))", printVisitor.Result);
+        }
+
+        private void OnAlphaReductionEvent(object sender, AlphaReductionEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnBetaReductionEvent(object sender, BetaReductionEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
 
     }
 }
