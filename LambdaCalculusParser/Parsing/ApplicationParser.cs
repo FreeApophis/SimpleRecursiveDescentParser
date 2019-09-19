@@ -1,7 +1,6 @@
-﻿using System;
-using System.Xml;
-using apophis.Lexer;
+﻿using apophis.Lexer;
 using ArithmeticParser.Lexing;
+using ArithmeticParser.Tokens;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Tokens;
 
@@ -18,23 +17,18 @@ namespace LambdaCalculusParser.Parsing
 
         /// <summary>
         /// Parsing the following Production:
-        /// Application := Application Atom | Atom
+        /// Application := Atom Application | Ɛ
         /// </summary>
         public ILambdaExpression Parse(TokenWalker walker)
         {
-            if (walker.NextIs<OpenParenthesisToken>())
+            var result = _atomParser.Parse(walker);
+
+            while (walker.NextIs<IdentifierToken>() || walker.NextIs<OpenParenthesisToken>())
             {
-                return _atomParser.Parse(walker);
+                result = new Application(result, _atomParser.Parse(walker));
             }
 
-            var application = Parse(walker);
-
-            if (walker.Pop().Token is WhiteSpaceToken)
-            {
-                return new Application(application, _atomParser.Parse(walker));
-            }
-
-            throw new Exception("whitespace expected...");
+            return result;
         }
     }
 }

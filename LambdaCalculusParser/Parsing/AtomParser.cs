@@ -1,6 +1,7 @@
 ﻿using System;
 using apophis.Lexer;
 using ArithmeticParser.Lexing;
+using ArithmeticParser.Tokens;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 
@@ -23,25 +24,23 @@ namespace LambdaCalculusParser.Parsing
         {
             if (walker.NextIs<OpenParenthesisToken>())
             {
-                walker.Pop();
-            }
-            else
-            {
-                throw new Exception("Expecting '(' in expression, instead got: " + (walker.Peek() != null ? walker.Peek().ToString() : "End of expression"));
+                walker.Consume<OpenParenthesisToken>();
+
+                var result = _termParser.Parse(walker);
+
+                walker.Consume<ClosedParenthesisToken>();
+
+                return result;
             }
 
-            var result = _termParser.Parse(walker);
 
-            if (walker.NextIs<ClosedParenthesisToken>())
+            var token = walker.Pop().Token;
+            if (token is IdentifierToken variableName)
             {
-                walker.Pop();
-            }
-            else
-            {
-                throw new Exception("Expecting ')' in expression, instead got: " + (walker.Peek() != null ? walker.Peek().ToString() : "End of expression"));
+                return new Variable(variableName.Name);
             }
 
-            return result;
+            throw new Exception($"Expecting an identifier in expression, instead got: {token}");
         }
     }
 }

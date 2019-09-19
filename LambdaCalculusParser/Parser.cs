@@ -1,4 +1,5 @@
-﻿using apophis.Lexer;
+﻿using System.Linq;
+using apophis.Lexer;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Parsing;
@@ -11,8 +12,8 @@ namespace LambdaCalculusParser
     /// This is a Recursive Descent Parser for arithmetic expressions with real numbers with the following grammar in EBNF
     ///
     /// Term        := Application | "λ" Identifier "." Term
-    /// Application := Application Atom | Atom
-    /// Atom        := "(" Term ")"
+    /// Application := Atom Application | Ɛ
+    /// Atom        := "(" Term ")" | Identifier
     /// Identifier  := [a-z]*
     /// </summary>
     public class Parser
@@ -27,7 +28,7 @@ namespace LambdaCalculusParser
         }
         public ILambdaExpression Parse(string expression)
         {
-            _tokenWalker.Scan(expression, lexems => lexems);
+            _tokenWalker.Scan(expression, lexems => lexems.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)));
 
             return Parse(_tokenWalker);
         }
