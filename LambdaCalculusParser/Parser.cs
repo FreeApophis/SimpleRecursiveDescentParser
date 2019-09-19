@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using apophis.Lexer;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
@@ -11,44 +13,54 @@ namespace LambdaCalculusParser
     /// <summary>
     /// This is a Recursive Descent Parser for arithmetic expressions with real numbers with the following grammar in EBNF
     ///
-    /// Abstraction        := Application | "λ" Identifier "." Abstraction
-    /// Application := Atom Application | Ɛ
-    /// Atom        := "(" Abstraction ")" | Identifier
+    /// Application := Expression +
+    /// Expression  := "λ" Identifier "." Application | "(" Application ")" | Identifier
     /// Identifier  := [a-z]*
     /// </summary>
     public class Parser
     {
-        private readonly TokenWalker _tokenWalker;
-        private readonly AbstractionParser _abstractionParser;
+        private readonly ApplicationParser _applicationParser;
+        private readonly ParserContext _parserContext;
 
-        public Parser(TokenWalker tokenWalker, AbstractionParser abstractionParser)
+        public Parser(TokenWalker tokenWalker, ApplicationParser applicationParser)
         {
-            _tokenWalker = tokenWalker;
-            _abstractionParser = abstractionParser;
+            _applicationParser = applicationParser;
+            _parserContext = new ParserContext(tokenWalker);
         }
+
         public ILambdaExpression Parse(string expression)
         {
-            _tokenWalker.Scan(expression, lexems => lexems.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)));
+            _parserContext.TokenWalker.Scan(expression, lexems => lexems.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)));
 
-            return Parse(_tokenWalker);
-        }
-        private ILambdaExpression Parse(TokenWalker walker)
-        {
-            return _abstractionParser.Parse(walker);
-        }
+            var result = _applicationParser.Parse(_parserContext);
 
+            _parserContext.TokenWalker.Consume<EpsilonToken>();
+
+            return result;
+        }
 
         public static Parser Create()
         {
             // Create the object tree without DI Framework
-            var abstractionParser = new AbstractionParser();
-            var atomParser = new AtomParser(abstractionParser);
-            var applicationParser = new ApplicationParser(atomParser);
-            abstractionParser.ApplicationParser = applicationParser;
+            var expressionParser = new ExpressionParser();
+            var applicationParser = new ApplicationParser(expressionParser);
+            expressionParser.ApplicationParser = applicationParser;
+
             var lexerRules = new LexerRules();
             var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s));
             var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken());
-            return new Parser(tokenWalker, abstractionParser);
+            return new Parser(tokenWalker, applicationParser);
         }
+    }
+
+    public class ParserContext
+    {
+        public ParserContext(TokenWalker tokenWalker)
+        {
+            TokenWalker = tokenWalker;
+        }
+        public TokenWalker TokenWalker { get; }
+        public Stack<Variable> BoundVariables { get; } = new Stack<Variable>();
+
     }
 }

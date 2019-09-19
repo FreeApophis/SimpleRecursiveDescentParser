@@ -1,31 +1,30 @@
 ﻿using apophis.Lexer;
-using ArithmeticParser.Lexing;
-using ArithmeticParser.Tokens;
+using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Tokens;
 
 namespace LambdaCalculusParser.Parsing
 {
-    public class ApplicationParser : IParser
+    public class ApplicationParser
     {
-        private readonly AtomParser _atomParser;
+        private readonly ExpressionParser _expressionParser;
 
-        public ApplicationParser(AtomParser atomParser)
+        public ApplicationParser(ExpressionParser expressionParser)
         {
-            _atomParser = atomParser;
+            _expressionParser = expressionParser;
         }
 
         /// <summary>
         /// Parsing the following Production:
-        /// Application := Atom Application | Ɛ
+        /// Application := Expression +
         /// </summary>
-        public ILambdaExpression Parse(TokenWalker walker)
+        public ILambdaExpression Parse(ParserContext parserContext)
         {
-            var result = _atomParser.Parse(walker);
-
-            while (walker.NextIs<IdentifierToken>() || walker.NextIs<OpenParenthesisToken>())
+            var result = _expressionParser.Parse(parserContext);
+            while (!parserContext.TokenWalker.NextIs<ClosedParenthesisToken>() &&
+                   !parserContext.TokenWalker.NextIs<EpsilonToken>())
             {
-                result = new Application(result, _atomParser.Parse(walker));
+                result = new Application(result, _expressionParser.Parse(parserContext));
             }
 
             return result;

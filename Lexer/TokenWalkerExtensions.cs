@@ -1,19 +1,20 @@
 ﻿using System;
+using apophis.Lexer.Tokens;
 
 namespace apophis.Lexer
 {
     public static class TokenWalkerExtensions
     {
         public static Lexem Consume<TToken>(this TokenWalker walker)
+            where TToken : IToken
         {
             var lexem = walker.Pop();
 
-            if (lexem.Token.GetType() is TToken)
+            return lexem.Token switch
             {
-                throw new Exception($"Expecting {typeof(TToken).FullName} but got {lexem.Token} ");
-            }
-
-            return lexem;
+                TToken _ => lexem,
+                _ => throw new Exception($"Expecting {typeof(TToken).FullName} but got {lexem.Token} ")
+            };
         }
 
         public static bool NextIs<TType>(this TokenWalker walker, int lookAhead = 0)

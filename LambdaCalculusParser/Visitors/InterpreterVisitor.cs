@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using LambdaCalculusParser.Nodes;
 
 namespace LambdaCalculusParser.Visitors
@@ -34,6 +35,22 @@ namespace LambdaCalculusParser.Visitors
         }
 
         public void Visit(Application application)
+        {
+            if (application.Function is Abstraction function && application.Argument is Abstraction argument)
+            {
+                Result = Reduce(function, argument.Expression);
+            }
+            else if (!(application.Function is Application))
+            {
+                application.Argument.Accept(this);
+            }
+            else
+            {
+                application.Function.Accept(this);
+            }
+        }
+
+        private ILambdaExpression Reduce(Abstraction abstraction, ILambdaExpression argumentExpression)
         {
             throw new NotImplementedException();
         }

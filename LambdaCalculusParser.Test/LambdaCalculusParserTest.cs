@@ -1,4 +1,5 @@
-﻿using apophis.Lexer;
+﻿using System.Collections.Generic;
+using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Tokens;
 using LambdaCalculusParser.Lexing;
@@ -9,6 +10,26 @@ using Xunit;
 
 namespace LambdaCalculusParser.Test
 {
+    class ReductionEventCollector
+    {
+        public List<string> Events { get; } = new List<string>();
+
+        public void OnAlphaReductionEvent(object sender, AlphaReductionEventArgs e)
+        {
+            Events.Add("α");
+        }
+
+        public void OnBetaReductionEvent(object sender, BetaReductionEventArgs e)
+        {
+            Events.Add("β");
+        }
+
+        public void OnEtaReductionEvent(object sender, EtaReductionEventArgs e)
+        {
+            Events.Add("η");
+        }
+    }
+
     public class LambdaCalculusParserTest
     {
         private readonly Parser _parser;
@@ -99,32 +120,52 @@ namespace LambdaCalculusParser.Test
         }
 
         [Fact]
-        public void GivenSelector()
+        public void GivenAnApplicationEvaluateTheApplicationCorrectly()
         {
-            var identityFunction = @"λx.(λy.x) λx.(λy.x)";
+            var application = @"(λx.(λy.x)) (λx.(λy.x))";
 
-            var lambdaExpression = _parser.Parse(identityFunction);
+            var lambdaExpression = _parser.Parse(application);
 
             var interpreter = new InterpreterVisitor();
-            interpreter.AlphaReductionEvent += OnAlphaReductionEvent;
-            interpreter.BetaReductionEvent += OnBetaReductionEvent;
+            var events = new ReductionEventCollector();
+
+            ConnectEvents(interpreter, events);
+
             lambdaExpression.Accept(interpreter);
 
             var printVisitor = new NormalFormVisitor();
             interpreter.Result.Accept(printVisitor);
 
-            //Assert.Equal("λy.(λx0.(λx1.x0))", printVisitor.Result);
+            Assert.Collection(events.Events,
+                e => Assert.Equal("α", e),
+                e => Assert.Equal("β", e));
+
+            Assert.Equal("λy.(λx0.(λx1.x0))", printVisitor.Result);
         }
 
-        private void OnAlphaReductionEvent(object sender, AlphaReductionEventArgs e)
+        private static void ConnectEvents(InterpreterVisitor interpreter, ReductionEventCollector events)
         {
-            throw new System.NotImplementedException();
+            interpreter.AlphaReductionEvent += events.OnAlphaReductionEvent;
+            interpreter.BetaReductionEvent += events.OnBetaReductionEvent;
+            interpreter.EtaReductionEvent += events.OnEtaReductionEvent;
         }
 
-        private void OnBetaReductionEvent(object sender, BetaReductionEventArgs e)
+        [Fact]
+        public void ApplicationTest()
         {
-            throw new System.NotImplementedException();
-        }
+            var application = "λm.λn.λf.λx.m f (n f x)";
 
+            var lambdaExpression = _parser.Parse(application);
+
+            var printVisitor = new NormalFormVisitor();
+            lambdaExpression.Accept(printVisitor);
+
+
+            Assert.Equal("(λm.(λn.(λf.(λx.((m f) ((n f) x))))))", printVisitor.Result);
+
+            Assert.IsType<Abstraction>(lambdaExpression);
+
+
+        }
     }
 }
