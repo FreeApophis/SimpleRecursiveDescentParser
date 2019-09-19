@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Xml;
 using apophis.Lexer;
 using LambdaCalculusParser.Lexing;
@@ -51,16 +50,5 @@ namespace LambdaCalculusParser
             var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken());
             return new Parser(tokenWalker, applicationParser);
         }
-    }
-
-    public class ParserContext
-    {
-        public ParserContext(TokenWalker tokenWalker)
-        {
-            TokenWalker = tokenWalker;
-        }
-        public TokenWalker TokenWalker { get; }
-        public Stack<Variable> BoundVariables { get; } = new Stack<Variable>();
-
     }
 }

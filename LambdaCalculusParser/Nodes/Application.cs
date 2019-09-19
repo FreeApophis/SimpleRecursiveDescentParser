@@ -20,5 +20,10 @@ namespace LambdaCalculusParser.Nodes
         }
 
         public Position Position { get; }
+
+        public override string ToString()
+        {
+            return $"{nameof(Application)}: {this.ToNormalForm()}";
+        }
     }
 }

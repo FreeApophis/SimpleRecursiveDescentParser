@@ -40,7 +40,7 @@ namespace LambdaCalculusParser.Visitors
             {
                 Result = Reduce(function, argument.Expression);
             }
-            else if (!(application.Function is Application))
+            else if (application.Function is Abstraction)
             {
                 application.Argument.Accept(this);
             }

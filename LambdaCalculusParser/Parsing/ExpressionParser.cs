@@ -23,7 +23,11 @@ namespace LambdaCalculusParser.Parsing
                 {
                     var variable = new Variable(variableName.Name, null);
                     parserContext.TokenWalker.Consume<DotToken>();
-                    return new Abstraction(variable, ApplicationParser.Parse(parserContext));
+                    parserContext.BoundVariables.Push(variable);
+                    var result = new Abstraction(variable, ApplicationParser.Parse(parserContext));
+                    parserContext.BoundVariables.Pop();
+
+                    return result;
                 }
 
                 throw new Exception();
