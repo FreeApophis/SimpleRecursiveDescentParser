@@ -43,7 +43,34 @@ namespace LambdaCalculusParser.Test
         }
 
         [Fact]
-        public void ParseZeroLambdaExpression()
+        public void GivenASimpleProgramThenParseReturnsTheCorrectAbstractSyntaxTree()
+        {
+            var simpleProgram = "(λx. x) (λy. y)";
+
+            var lambdaExpression = _parser.Parse(simpleProgram);
+
+            Assert.IsType<Application>(lambdaExpression);
+            var application = (Application)lambdaExpression;
+
+            Assert.IsType<Term>(application.Function);
+            var function = (Term)application.Function;
+
+            Assert.Equal("x", function.Argument.Name);
+            Assert.IsType<Variable>(function.Expression);
+            var leftVariable = (Variable)function.Expression;
+            Assert.Equal("x", leftVariable.Name);
+
+            Assert.IsType<Term>(application.Argument);
+            var argument = (Term)application.Argument;
+
+            Assert.Equal("y", argument.Argument.Name);
+            Assert.IsType<Variable>(argument.Expression);
+            var rightVariable = (Variable)argument.Expression;
+            Assert.Equal("y", rightVariable.Name);
+        }
+
+        [Fact]
+        public void GivenAProgramAndAParsedASTWeGetTheSameProgramFromTheAST()
         {
             var testLambda = @"λs.(λz.(s z))";
 
@@ -56,16 +83,17 @@ namespace LambdaCalculusParser.Test
         }
 
         [Fact]
-        public void GivenAnAstAndAPrintVisitorWeCreateCorrectSyntax()
+        public void Experiments()
         {
+            var yCobinator = @"λ f . (λ x . f (x x)) (λ x . f (x x))";
 
-            ILambdaExpression expression = new Term(new Variable("s"), new Term(new Variable("z"), new Application(new Variable("s"), new Variable("z"))));
+            var lambdaExpression = _parser.Parse(yCobinator);
 
-            var printVisitor = new PrintVisitor();
-            expression.Accept(printVisitor);
-
-            Assert.Equal("λs.(λz.(s z))", printVisitor.Result);
+            var graphvizVisitor = new GraphvizVisitor();
+            lambdaExpression.Accept(graphvizVisitor);
         }
+
+
 
     }
 }
