@@ -12,11 +12,11 @@ namespace LambdaCalculusParser.Visitors
         private readonly StringBuilder _result = new StringBuilder();
 
         public string Result => $"graph G {{\n{_result}}}";
-        public void Visit(Term lambdaExpression)
+        public void Visit(Abstraction abstraction)
         {
-            EmitGraphvizNodeBegin("Term");
-            lambdaExpression.Argument.Accept(this);
-            lambdaExpression.Expression.Accept(this);
+            EmitGraphvizNodeBegin("Abstraction");
+            abstraction.Argument.Accept(this);
+            abstraction.Expression.Accept(this);
             EmitGraphvizNodeEnd();
         }
 

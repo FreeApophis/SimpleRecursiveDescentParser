@@ -7,13 +7,13 @@ using LambdaCalculusParser.Nodes;
 
 namespace LambdaCalculusParser.Parsing
 {
-    public class TermParser : IParser
+    public class AbstractionParser : IParser
     {
         public ApplicationParser ApplicationParser { get; set; }
 
         /// <summary>
         /// Parsing the following Production:
-        /// Term        := Application | "λ" Identifier "." Term
+        /// Abstraction        := Application | "λ" Identifier "." Abstraction
         /// </summary>
         public ILambdaExpression Parse(TokenWalker walker)
         {
@@ -31,7 +31,7 @@ namespace LambdaCalculusParser.Parsing
 
                 walker.Consume<DotToken>();
 
-                return new Term(variable, Parse(walker));
+                return new Abstraction(variable, Parse(walker));
 
             }
 

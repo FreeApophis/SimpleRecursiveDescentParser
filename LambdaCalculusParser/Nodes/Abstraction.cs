@@ -1,15 +1,14 @@
-﻿using System;
-using apophis.Lexer;
+﻿using apophis.Lexer;
 using LambdaCalculusParser.Visitors;
 
 namespace LambdaCalculusParser.Nodes
 {
-    public class Term : ILambdaExpression
+    public class Abstraction : ILambdaExpression
     {
         public Variable Argument { get; }
         public ILambdaExpression Expression { get; }
 
-        public Term(Variable argument, ILambdaExpression expression)
+        public Abstraction(Variable argument, ILambdaExpression expression)
         {
             Argument = argument;
             Expression = expression;

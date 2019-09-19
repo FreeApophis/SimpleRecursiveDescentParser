@@ -9,16 +9,16 @@ namespace LambdaCalculusParser.Parsing
 {
     public class AtomParser : IParser
     {
-        private readonly TermParser _termParser;
+        private readonly AbstractionParser _abstractionParser;
 
-        public AtomParser(TermParser termParser)
+        public AtomParser(AbstractionParser abstractionParser)
         {
-            _termParser = termParser;
+            _abstractionParser = abstractionParser;
         }
 
         /// <summary>
         /// Parsing the following Production:
-        /// Atom        := "(" Term ")"
+        /// Atom        := "(" Abstraction ")"
         /// </summary>
         public ILambdaExpression Parse(TokenWalker walker)
         {
@@ -26,7 +26,7 @@ namespace LambdaCalculusParser.Parsing
             {
                 walker.Consume<OpenParenthesisToken>();
 
-                var result = _termParser.Parse(walker);
+                var result = _abstractionParser.Parse(walker);
 
                 walker.Consume<ClosedParenthesisToken>();
 

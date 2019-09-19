@@ -11,20 +11,20 @@ namespace LambdaCalculusParser
     /// <summary>
     /// This is a Recursive Descent Parser for arithmetic expressions with real numbers with the following grammar in EBNF
     ///
-    /// Term        := Application | "λ" Identifier "." Term
+    /// Abstraction        := Application | "λ" Identifier "." Abstraction
     /// Application := Atom Application | Ɛ
-    /// Atom        := "(" Term ")" | Identifier
+    /// Atom        := "(" Abstraction ")" | Identifier
     /// Identifier  := [a-z]*
     /// </summary>
     public class Parser
     {
         private readonly TokenWalker _tokenWalker;
-        private readonly TermParser _termParser;
+        private readonly AbstractionParser _abstractionParser;
 
-        public Parser(TokenWalker tokenWalker, TermParser termParser)
+        public Parser(TokenWalker tokenWalker, AbstractionParser abstractionParser)
         {
             _tokenWalker = tokenWalker;
-            _termParser = termParser;
+            _abstractionParser = abstractionParser;
         }
         public ILambdaExpression Parse(string expression)
         {
@@ -34,21 +34,21 @@ namespace LambdaCalculusParser
         }
         private ILambdaExpression Parse(TokenWalker walker)
         {
-            return _termParser.Parse(walker);
+            return _abstractionParser.Parse(walker);
         }
 
 
         public static Parser Create()
         {
             // Create the object tree without DI Framework
-            var termParser = new TermParser();
-            var atomParser = new AtomParser(termParser);
+            var abstractionParser = new AbstractionParser();
+            var atomParser = new AtomParser(abstractionParser);
             var applicationParser = new ApplicationParser(atomParser);
-            termParser.ApplicationParser = applicationParser;
+            abstractionParser.ApplicationParser = applicationParser;
             var lexerRules = new LexerRules();
             var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s));
             var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken());
-            return new Parser(tokenWalker, termParser);
+            return new Parser(tokenWalker, abstractionParser);
         }
     }
 }
