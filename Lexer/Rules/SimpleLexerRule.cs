@@ -17,13 +17,12 @@ namespace apophis.Lexer.Rules
         }
 
         public int Weight => _textSymbol.Length;
+
         public Option<Lexem> Match(ILexerReader reader)
         {
             var startPosition = reader.Position;
 
-            if (_textSymbol.Select((character, index) => new { character, index })
-                    .All(t => reader.Peek(t.index).Match(false, c => c == t.character))
-                && (!_isTextSymbol || reader.Peek(_textSymbol.Length).Match(true, char.IsWhiteSpace)))
+            if (IsSymbolMatchingReader(reader) && (IsOperator() || HasWordBoundary(reader)))
             {
                 foreach (var _ in _textSymbol)
                 {
@@ -34,7 +33,29 @@ namespace apophis.Lexer.Rules
             }
 
             return Option<Lexem>.None();
+        }
 
+        private bool HasWordBoundary(ILexerReader reader)
+        {
+            // we do not want to extract key words in the middle of a word, so a symbol must have ended.
+            // Which means after a textsymbol must come something other than a digit or a letter.
+            return reader.Peek(_textSymbol.Length).Match(true, NonLetterOrDigit);
+        }
+
+        private bool IsOperator()
+        {
+            return !_isTextSymbol;
+        }
+
+        private bool NonLetterOrDigit(char character)
+        {
+            return !char.IsLetterOrDigit(character);
+        }
+
+        private bool IsSymbolMatchingReader(ILexerReader reader)
+        {
+            return _textSymbol.Select((character, index) => new { character, index })
+                                .All(t => reader.Peek(t.index).Match(false, c => c == t.character));
         }
 
         private Lexem CreateToken(int start)
