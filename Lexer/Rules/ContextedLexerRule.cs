@@ -4,16 +4,19 @@ using Funcky.Monads;
 
 namespace apophis.Lexer.Rules
 {
-    public class LexerRule : ILexerRule
+    public class ContextedLexerRule : ILexerRule
     {
-        public LexerRule(Predicate<char> predicate, Func<ILexerReader, Lexem> createToken, int weight = 0)
+        public ContextedLexerRule(Predicate<char> symbolPredicate, Predicate<List<Lexem>> contextPredicate, Func<ILexerReader, Lexem> createToken, int weight)
         {
-            Predicate = predicate;
+            SymbolPredicate = symbolPredicate;
+            ContextPredicate = contextPredicate;
             CreateToken = createToken;
             Weight = weight;
         }
 
-        public Predicate<char> Predicate { get; }
+        public Predicate<char> SymbolPredicate { get; }
+
+        public Predicate<List<Lexem>> ContextPredicate { get; }
 
         public Func<ILexerReader, Lexem> CreateToken { get; }
 
@@ -23,7 +26,7 @@ namespace apophis.Lexer.Rules
         {
             var predicate =
                 from nextCharacter in reader.Peek()
-                select Predicate(nextCharacter);
+                select SymbolPredicate(nextCharacter);
 
             return predicate.Match(false, p => p)
                 ? Option.Some(CreateToken(reader))
@@ -32,7 +35,7 @@ namespace apophis.Lexer.Rules
 
         public bool IsActive(List<Lexem> context)
         {
-            return true;
+            return ContextPredicate(context);
         }
     }
 }

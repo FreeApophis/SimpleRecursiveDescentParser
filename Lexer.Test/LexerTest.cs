@@ -70,9 +70,39 @@ namespace apophis.Lexer.Test
         {
             var tokenizer = new Tokenizer(new EmptyRules(), s => new LexerReader(s));
 
-            var lexems = tokenizer.Scan("You can't tokenize this!");
+            Assert.Throws<UnknownTokenException>(() => tokenizer.Scan("You can't tokenize this!"));
+        }
 
-            Assert.Throws<UnknownTokenException>(() => lexems.Count());
+
+        
+
+        [Fact]
+        void GivenALexerAndAContextedLexerRuleGenerateTokenContexted()
+        {
+            var x = new ContextedRules();
+            var tokenizer = new Tokenizer(x, s => new LexerReader(s));
+
+            var lexems = tokenizer.Scan("aa aa cc aa bb cc aa").ToList();
+
+            Assert.Equal(13, lexems.Count);
+
+            Assert.IsType<AaToken>(lexems[0].Token);
+            Assert.IsType<SpaceToken>(lexems[1].Token);
+            Assert.IsType<AaToken>(lexems[2].Token);
+            Assert.IsType<SpaceToken>(lexems[3].Token);
+            
+            // The first cc produces a CcToken
+            Assert.IsType<CcToken>(lexems[4].Token);
+            Assert.IsType<SpaceToken>(lexems[5].Token);
+            Assert.IsType<AaToken>(lexems[6].Token);
+            Assert.IsType<SpaceToken>(lexems[7].Token);
+            Assert.IsType<BbToken>(lexems[8].Token);
+            Assert.IsType<SpaceToken>(lexems[9].Token);
+
+            // The second cc produces a CcAfterBbToken because there is a BbToken already produced
+            Assert.IsType<CcAfterBbToken>(lexems[10].Token);
+            Assert.IsType<SpaceToken>(lexems[11].Token);
+            Assert.IsType<AaToken>(lexems[12].Token);
         }
     }
 }

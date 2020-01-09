@@ -17,23 +17,29 @@ namespace apophis.Lexer
             _newLexerReader = newLexerReader;
         }
 
-        public IEnumerable<Lexem> Scan(string expression)
+        public List<Lexem> Scan(string expression)
         {
             var reader = _newLexerReader(expression);
 
+            var lexems = new List<Lexem>();
             while (reader.Peek().Match(false, c => true))
             {
-                yield return SelectLexerRule(reader)
+                var lexem = SelectLexerRule(reader, lexems)
                     .Match(
                         none: () => throw new UnknownTokenException(reader.Peek(), reader.Position),
                         some: t => t);
+
+                lexems.Add(lexem);
             }
+
+            return lexems;
         }
 
-        private Option<Lexem> SelectLexerRule(ILexerReader reader)
+        private Option<Lexem> SelectLexerRule(ILexerReader reader, List<Lexem> context)
         {
             return _lexerRules
                 .GetRules()
+                .Where(rule => rule.IsActive(context))
                 .OrderByDescending(rule => rule.Weight)
                 .Select(rule => rule.Match(reader))
                 .FirstOrDefault(mt => mt.Match(none: false, some: t => true));

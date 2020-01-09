@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using apophis.Lexer.Tokens;
 using Funcky.Monads;
 
@@ -33,6 +34,11 @@ namespace apophis.Lexer.Rules
             }
 
             return Option<Lexem>.None();
+        }
+
+        public bool IsActive(List<Lexem> context)
+        {
+            return true;
         }
 
         private bool HasWordBoundary(ILexerReader reader)
