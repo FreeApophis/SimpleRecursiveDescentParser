@@ -3,7 +3,7 @@
 namespace apophis.Lexer
 {
     /// <summary>
-    /// A lexem represents a string token and it's associated position
+    /// A lexem represents a string token and it's associated position.
     /// </summary>
     public class Lexem
     {

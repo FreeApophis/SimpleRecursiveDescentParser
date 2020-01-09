@@ -13,8 +13,6 @@ namespace apophis.Lexer
         private List<Lexem> _lexems = new List<Lexem>();
         private int _currentIndex;
 
-        private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _lexems.Count;
-
         public TokenWalker(Tokenizer tokenizer, Func<IToken> newEpsilonToken)
         {
             _tokenizer = tokenizer;
@@ -34,22 +32,22 @@ namespace apophis.Lexer
             _lexems = lexems.ToList();
         }
 
-
         public Lexem Pop()
         {
             return ValidToken()
                 ? _lexems[_currentIndex++]
-                : new Lexem(_newEpsilonToken(), new Position(0,0));
+                : new Lexem(_newEpsilonToken(), new Position(0, 0));
         }
-
 
         public Lexem Peek(int lookAhead = 0)
         {
-            Debug.Assert(lookAhead >= 0);
+            Debug.Assert(lookAhead >= 0, "a negative look ahead is not supported");
 
             return ValidToken(lookAhead)
                 ? _lexems[_currentIndex + lookAhead]
                 : new Lexem(_newEpsilonToken(), new Position(0, 0));
         }
+
+        private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _lexems.Count;
     }
 }

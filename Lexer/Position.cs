@@ -5,7 +5,7 @@ using System.Text;
 namespace apophis.Lexer
 {
     /// <summary>
-    /// Represents the position of a Lexem
+    /// Represents the position of a Lexem.
     /// </summary>
     public readonly struct Position
     {
@@ -29,6 +29,5 @@ namespace apophis.Lexer
         /// Represents the length of the lexem.
         /// </summary>
         public int Length { get; }
-
     }
 }

@@ -5,15 +5,16 @@ namespace apophis.Lexer.Rules
 {
     public class LexerRule : ILexerRule
     {
-        public Predicate<char> Predicate { get; }
-        public Func<ILexerReader, Lexem> CreateToken { get; }
-
         public LexerRule(Predicate<char> predicate, Func<ILexerReader, Lexem> createToken, int weight = 0)
         {
             Predicate = predicate;
             CreateToken = createToken;
             Weight = weight;
         }
+
+        public Predicate<char> Predicate { get; }
+
+        public Func<ILexerReader, Lexem> CreateToken { get; }
 
         public int Weight { get; }
 

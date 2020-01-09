@@ -24,7 +24,7 @@ namespace apophis.Lexer.Rules
 
             if (IsSymbolMatchingReader(reader) && (IsOperator() || HasWordBoundary(reader)))
             {
-                foreach (var _ in _textSymbol)
+                foreach (var dummy in _textSymbol)
                 {
                     reader.Read();
                 }
