@@ -47,8 +47,8 @@ namespace ArithmeticParser
             var termParser = new TermParser(powerTermParser);
             expressionParser.TermParser = termParser;
             var lexerRules = new LexerRules();
-            var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s));
-            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken());
+            var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
+            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken(), lexems => new LinePositionCalculator(lexems));
             return new Parser(tokenWalker, expressionParser);
         }
 

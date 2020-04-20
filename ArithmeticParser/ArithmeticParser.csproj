@@ -15,10 +15,10 @@
     <PackageProjectUrl>https://github.com/FreeApophis/ArithmeticParser</PackageProjectUrl>
     <Copyright>apophis@apophis.ch</Copyright>
     <PackageTags>parser</PackageTags>
-    <Version>1.2.0</Version>
-    <FileVersion>1.2.0.0</FileVersion>
+    <Version>1.2.1</Version>
+    <FileVersion>1.2.1.0</FileVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <AssemblyVersion>1.2.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -12,7 +12,7 @@ namespace apophis.Lexer.Test
     {
         Tokenizer CreateTestTokenizer()
         {
-            return new Tokenizer(new ExampleRules(), s => new LexerReader(s));
+            return new Tokenizer(new ExampleRules(), s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
         }
 
         [Fact]
@@ -68,19 +68,29 @@ namespace apophis.Lexer.Test
         [Fact]
         public void GivenALexerMissingAProductionForAGivenStringItShouldThrowAnException()
         {
-            var tokenizer = new Tokenizer(new EmptyRules(), s => new LexerReader(s));
+            var tokenizer = new Tokenizer(new EmptyRules(), s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
 
             Assert.Throws<UnknownTokenException>(() => tokenizer.Scan("You can't tokenize this!"));
         }
 
 
-        
+        [Fact]
+        public void GivenAStringAndAMissingTokenizerThrows()
+        {
+            var x = new ContextedRules();
+            var tokenizer = new Tokenizer(x, s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
+
+
+            var exception = Assert.Throws<UnknownTokenException>(() => tokenizer.Scan("aa aa cc aa UU cc aa"));
+
+            Assert.Equal("Unknown Token 'U' at Line 1 Column 13", exception.Message);
+        }
 
         [Fact]
         public void GivenALexerAndAContextedLexerRuleGenerateTokenContexted()
         {
             var x = new ContextedRules();
-            var tokenizer = new Tokenizer(x, s => new LexerReader(s));
+            var tokenizer = new Tokenizer(x, s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
 
             var lexems = tokenizer.Scan("aa aa cc aa bb cc aa").ToList();
 

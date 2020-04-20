@@ -10,13 +10,17 @@ namespace apophis.Lexer
     {
         private readonly Tokenizer _tokenizer;
         private readonly Func<IToken> _newEpsilonToken;
+        private readonly Func<List<Lexem>, ILinePositionCalculator> _newLinePositionCalculator;
         private List<Lexem> _lexems = new List<Lexem>();
+        private ILinePositionCalculator? _linePositionCalculator;
+
         private int _currentIndex;
 
-        public TokenWalker(Tokenizer tokenizer, Func<IToken> newEpsilonToken)
+        public TokenWalker(Tokenizer tokenizer, Func<IToken> newEpsilonToken, Func<List<Lexem>, ILinePositionCalculator> newLinePositionCalculator)
         {
             _tokenizer = tokenizer;
             _newEpsilonToken = newEpsilonToken;
+            _newLinePositionCalculator = newLinePositionCalculator;
         }
 
         public void Scan(string expression)
@@ -27,9 +31,9 @@ namespace apophis.Lexer
         public void Scan(string expression, Func<IEnumerable<Lexem>, IEnumerable<Lexem>> postProcessTokens)
         {
             _currentIndex = 0;
-            var lexems = postProcessTokens(_tokenizer.Scan(expression));
-
-            _lexems = lexems.ToList();
+            var unfilteredLexems = _tokenizer.Scan(expression);
+            _linePositionCalculator = _newLinePositionCalculator(unfilteredLexems);
+            _lexems = postProcessTokens(unfilteredLexems).ToList();
         }
 
         public Lexem Pop()
@@ -46,6 +50,16 @@ namespace apophis.Lexer
             return ValidToken(lookAhead)
                 ? _lexems[_currentIndex + lookAhead]
                 : new Lexem(_newEpsilonToken(), new Position(0, 0));
+        }
+
+        public LinePosition CalculateLinePosition(Lexem lexem)
+        {
+            if (_linePositionCalculator == null)
+            {
+                throw new Exception("Call Scan first before you try to calculate a position.");
+            }
+
+            return _linePositionCalculator.CalculateLinePosition(lexem);
         }
 
         private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _lexems.Count;

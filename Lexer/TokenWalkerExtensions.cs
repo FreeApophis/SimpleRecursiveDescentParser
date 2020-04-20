@@ -13,8 +13,15 @@ namespace apophis.Lexer
             return lexem.Token switch
             {
                 TToken _ => lexem,
-                _ => throw new Exception($"Expecting {typeof(TToken).FullName} but got {lexem.Token} ")
+                _ => HandleMissingLexem<TToken>(lexem, walker),
             };
+        }
+
+        private static Lexem HandleMissingLexem<TToken>(Lexem lexem, TokenWalker walker)
+        {
+            var position = walker.CalculateLinePosition(lexem);
+
+            throw new Exception($"Expecting {typeof(TToken).FullName} but got {lexem.Token} at Line {position.Line} Column {position.Column}.");
         }
 
         public static bool NextIs<TType>(this TokenWalker walker, int lookAhead = 0)

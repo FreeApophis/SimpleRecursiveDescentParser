@@ -10,29 +10,44 @@ namespace apophis.Lexer
     {
         private readonly ILexerRules _lexerRules;
         private readonly Func<string, ILexerReader> _newLexerReader;
+        private readonly Func<List<Lexem>, ILinePositionCalculator> _newLinePositionCalculator;
+        private readonly List<Lexem> _lexems = new List<Lexem>();
 
-        public Tokenizer(ILexerRules lexerRules, Func<string, ILexerReader> newLexerReader)
+        public Tokenizer(ILexerRules lexerRules, Func<string, ILexerReader> newLexerReader, Func<List<Lexem>, ILinePositionCalculator> newLinePositionCalculator)
         {
             _lexerRules = lexerRules;
             _newLexerReader = newLexerReader;
+            _newLinePositionCalculator = newLinePositionCalculator;
         }
 
         public List<Lexem> Scan(string expression)
         {
             var reader = _newLexerReader(expression);
 
-            var lexems = new List<Lexem>();
+            _lexems.Clear();
             while (reader.Peek().Match(false, c => true))
             {
-                var lexem = SelectLexerRule(reader, lexems)
+                var lexem = SelectLexerRule(reader, _lexems)
                     .Match(
-                        none: () => throw new UnknownTokenException(reader.Peek(), reader.Position),
+                        none: () => HandleUnknownToken(reader),
                         some: t => t);
 
-                lexems.Add(lexem);
+                _lexems.Add(lexem);
             }
 
-            return lexems;
+            return _lexems;
+        }
+
+        private Lexem HandleUnknownToken(ILexerReader reader)
+        {
+            throw new UnknownTokenException(reader.Peek(), CalculateCurrentLinePosition(reader.Position));
+        }
+
+        private LinePosition CalculateCurrentLinePosition(int position)
+        {
+            var positionCalculator = _newLinePositionCalculator(_lexems);
+
+            return positionCalculator.CalculateLinePosition(position);
         }
 
         private Option<Lexem> SelectLexerRule(ILexerReader reader, List<Lexem> context)

@@ -6,17 +6,13 @@ namespace apophis.Lexer
     public class UnknownTokenException : Exception
     {
         private readonly Option<char> _token;
-        private readonly int _position;
+        private readonly LinePosition _position;
 
-        public UnknownTokenException(Option<char> token, int position)
+        public UnknownTokenException(Option<char> token, LinePosition position)
+            : base($"Unknown Token '{token.Match(none: 'Ɛ', some: t => t)}' at Line {position.Line} Column {position.Column}")
         {
             _token = token;
             _position = position;
-        }
-
-        public override string ToString()
-        {
-            return $"Unknown Token '{_token}' on position: {_position}";
         }
     }
 }

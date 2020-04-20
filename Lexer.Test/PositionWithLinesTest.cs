@@ -11,7 +11,7 @@ namespace apophis.Lexer.Test
         [Fact]
         public void GiveALexerAndALineSeperatorThePositionsAreGivenInLineAndColumn()
         {
-            var tokenizer = new Tokenizer(new WordTokenizerWithLines(), s => new LexerReader(s));
+            var tokenizer = new Tokenizer(new WordTokenizerWithLines(), s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
 
             var lexems = tokenizer.Scan(_exampleTextWihtNewLines);
             

@@ -22,8 +22,8 @@ namespace LambdaCalculusParser.Test
         public void GivenLambdaCalculusSourceTheTokenizerGivesAUsefulTokenStream()
         {
             var lexerRules = new LexerRules();
-            var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s));
-            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken());
+            var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
+            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken(), lexems => new LinePositionCalculator(lexems));
 
             tokenWalker.Scan(@"λs.(λz.(s z))");
 
