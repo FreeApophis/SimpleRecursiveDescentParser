@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using apophis.Lexer.Rules;
 using apophis.Lexer.Test.Tokens;
-using apophis.Lexer.Tokens;
 
 namespace apophis.Lexer.Test.LexerRules
 {
@@ -38,22 +37,5 @@ namespace apophis.Lexer.Test.LexerRules
 
             throw new NotImplementedException();
         }
-    }
-
-    internal class BbToken : IToken
-    {
-    }
-
-    internal class AaToken : IToken
-    {
-    }
-
-    internal class CcToken : IToken
-    {
-    }
-
-    internal class CcAfterBbToken : IToken
-    {
-
     }
 }

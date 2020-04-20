@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace apophis.Lexer
+﻿namespace apophis.Lexer
 {
     /// <summary>
     /// Represents the position of a Lexem.
@@ -12,6 +8,7 @@ namespace apophis.Lexer
         public Position(int start, int length)
         {
             StartPosition = start;
+            EndPosition = start + length;
             Length = length;
         }
 
@@ -23,7 +20,7 @@ namespace apophis.Lexer
         /// <summary>
         /// Represents the position of the first character after the lexem, countent in number of characters.
         /// </summary>
-        public int EndPosition => StartPosition + Length;
+        public int EndPosition { get; }
 
         /// <summary>
         /// Represents the length of the lexem.

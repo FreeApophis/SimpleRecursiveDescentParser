@@ -16,7 +16,7 @@ namespace apophis.Lexer.Test
         }
 
         [Fact]
-        void GivenSymbolsWithOverlappingPrefixesTheLexerGetsTheLongerOne()
+        public void GivenSymbolsWithOverlappingPrefixesTheLexerGetsTheLongerOne()
         {
             var tokenizer = CreateTestTokenizer();
 
@@ -29,7 +29,7 @@ namespace apophis.Lexer.Test
         }
 
         [Fact]
-        void GivenALexerRuleForIdentifiersDoNotReturKeyTokenInTheMiddle()
+        public void GivenALexerRuleForIdentifiersDoNotReturKeyTokenInTheMiddle()
         {
             var tokenizer = CreateTestTokenizer();
 
@@ -39,7 +39,7 @@ namespace apophis.Lexer.Test
         }
 
         [Fact]
-        void GivenLexerRulesTheLexemsHaveTheRightPositions()
+        public void GivenLexerRulesTheLexemsHaveTheRightPositions()
         {
             var tokenizer = CreateTestTokenizer();
 
@@ -66,7 +66,7 @@ namespace apophis.Lexer.Test
         }
 
         [Fact]
-        void GivenALexerMissingAProductionForAGivenStringItShouldThrowAnException()
+        public void GivenALexerMissingAProductionForAGivenStringItShouldThrowAnException()
         {
             var tokenizer = new Tokenizer(new EmptyRules(), s => new LexerReader(s));
 
@@ -77,7 +77,7 @@ namespace apophis.Lexer.Test
         
 
         [Fact]
-        void GivenALexerAndAContextedLexerRuleGenerateTokenContexted()
+        public void GivenALexerAndAContextedLexerRuleGenerateTokenContexted()
         {
             var x = new ContextedRules();
             var tokenizer = new Tokenizer(x, s => new LexerReader(s));

@@ -7,14 +7,17 @@ namespace apophis.Lexer
     /// </summary>
     public class Lexem
     {
-        public Lexem(IToken token, Position position)
+        public Lexem(IToken token, Position position, bool isLineBreak = false)
         {
             Token = token;
             Position = position;
+            IsLineBreak = isLineBreak;
         }
 
         public IToken Token { get; }
 
         public Position Position { get; }
+
+        public bool IsLineBreak { get; }
     }
 }

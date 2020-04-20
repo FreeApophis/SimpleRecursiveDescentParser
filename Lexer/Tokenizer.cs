@@ -40,9 +40,21 @@ namespace apophis.Lexer
             return _lexerRules
                 .GetRules()
                 .Where(rule => rule.IsActive(context))
-                .OrderByDescending(rule => rule.Weight)
+                .OrderByDescending(GetRuleWeight)
                 .Select(rule => rule.Match(reader))
-                .FirstOrDefault(mt => mt.Match(none: false, some: t => true));
+                .FirstOrDefault(HasRuleMatched);
+        }
+
+        private bool HasRuleMatched(Option<Lexem> matched)
+        {
+            return matched.Match(
+                none: false,
+                some: t => true);
+        }
+
+        private object GetRuleWeight(ILexerRule rule)
+        {
+            return rule.Weight;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace apophis.Lexer.Rules
 
             if (IsSymbolMatchingReader(reader) && (IsOperator() || HasWordBoundary(reader)))
             {
-                foreach (var dummy in _textSymbol)
+                foreach (var _ in _textSymbol)
                 {
                     reader.Read();
                 }
@@ -65,8 +65,9 @@ namespace apophis.Lexer.Rules
         }
 
         private Lexem CreateToken(int start)
-        {
-            return new Lexem(new TToken(), new Position(start, _textSymbol.Length));
+        { 
+            var token = new TToken();
+            return new Lexem(token, new Position(start, _textSymbol.Length), token is ILineBreakToken);
         }
     }
 }
