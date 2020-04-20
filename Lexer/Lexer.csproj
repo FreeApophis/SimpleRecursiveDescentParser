@@ -32,7 +32,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Funcky" Version="1.1.0" />
+    <PackageReference Include="Funcky" Version="1.5.1" />
   </ItemGroup>
 
 </Project>

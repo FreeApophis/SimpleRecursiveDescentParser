@@ -30,8 +30,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.9.2" />
-    <PackageReference Include="Funcky" Version="1.1.0" />
+    <PackageReference Include="Autofac" Version="5.1.2" />
+    <PackageReference Include="Funcky" Version="1.5.1" />
   </ItemGroup>
 
   <ItemGroup>
