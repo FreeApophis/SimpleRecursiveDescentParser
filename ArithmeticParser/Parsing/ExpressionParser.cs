@@ -19,15 +19,10 @@ namespace ArithmeticParser.Parsing
         {
             Debug.Assert(TermParser != null);
 
-            IParseNode result;
-            if (walker.NextIs<MinusToken>())
-            {
-                var lexem  = walker.Pop();
-                result = new UnaryMinusOperator(TermParser.Parse(walker), lexem.Position);
-            } else
-            {
-                result = TermParser.Parse(walker);
-            }
+            IParseNode result = walker.NextIs<MinusToken>()
+                ? ParseUnaryMinus(walker)
+                : TermParser.Parse(walker);
+
             while (walker.NextIsLineOperator())
             {
                 var lexem = walker.Pop();
@@ -40,6 +35,13 @@ namespace ArithmeticParser.Parsing
             }
 
             return result;
+        }
+
+        private IParseNode ParseUnaryMinus(TokenWalker walker)
+        {
+            var lexem = walker.Pop();
+
+            return new UnaryMinusOperator(TermParser.Parse(walker), lexem.Position);
         }
     }
 }
