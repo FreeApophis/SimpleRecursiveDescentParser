@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
@@ -21,15 +22,15 @@ namespace ArithmeticParser.Parsing
 
             IParseNode result = walker.NextIs<MinusToken>()
                 ? ParseUnaryMinus(walker)
-                : TermParser.Parse(walker);
+                : SafeTermParser.Parse(walker);
 
             while (walker.NextIsLineOperator())
             {
                 var lexem = walker.Pop();
                 result = lexem.Token switch
                 {
-                    MinusToken _ => new MinusOperator(result, TermParser.Parse(walker), lexem.Position),
-                    PlusToken _ => new PlusOperator(result, TermParser.Parse(walker), lexem.Position),
+                    MinusToken _ => new MinusOperator(result, SafeTermParser.Parse(walker), lexem.Position),
+                    PlusToken _ => new PlusOperator(result, SafeTermParser.Parse(walker), lexem.Position),
                     _ => result
                 };
             }
@@ -37,11 +38,13 @@ namespace ArithmeticParser.Parsing
             return result;
         }
 
+        private TermParser SafeTermParser => TermParser ?? throw new NotImplementedException();
+
         private IParseNode ParseUnaryMinus(TokenWalker walker)
         {
             var lexem = walker.Pop();
 
-            return new UnaryMinusOperator(TermParser.Parse(walker), lexem.Position);
+            return new UnaryMinusOperator(SafeTermParser.Parse(walker), lexem.Position);
         }
     }
 }
