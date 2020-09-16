@@ -31,4 +31,9 @@
     <ProjectReference Include="..\Lexer\Lexer.csproj" />
   </ItemGroup>
 
+  <Target Name="_AddVersionRangesToProjectReferences" AfterTargets="_GetProjectReferenceVersions">
+    <ItemGroup>
+      <_ProjectReferencesWithVersions Update="@(_ProjectReferencesWithVersions)" ProjectVersion="[%(ProjectVersion), 2)" Condition="'$([MSBuild]::MakeRelative($(MSBuildProjectDirectory), %(Identity)))' == '..\Lexer\Lexer.csproj'" />
+    </ItemGroup>
+  </Target>
 </Project>

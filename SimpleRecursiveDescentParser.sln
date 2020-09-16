@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer", "Lexer\Lexer.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer.Test", "Lexer.Test\Lexer.Test.csproj", "{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaCalculusParser", "LambdaCalculusParser\LambdaCalculusParser.csproj", "{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LambdaCalculusParser", "LambdaCalculusParser\LambdaCalculusParser.csproj", "{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaCalculusParser.Test", "LambdaCalculusParser.Test\LambdaCalculusParser.Test.csproj", "{A39B54C6-FAA8-4E56-87A3-DF13FDA847EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LambdaCalculusParser.Test", "LambdaCalculusParser.Test\LambdaCalculusParser.Test.csproj", "{A39B54C6-FAA8-4E56-87A3-DF13FDA847EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
