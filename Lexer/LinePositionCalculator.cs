@@ -12,6 +12,8 @@ namespace apophis.Lexer
 
     public class LinePositionCalculator : ILinePositionCalculator
     {
+        public delegate ILinePositionCalculator Factory(List<Lexem> lexems);
+
         private readonly List<Position> _newLines;
 
         public LinePositionCalculator(List<Lexem> lexems)

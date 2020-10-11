@@ -10,10 +10,10 @@ namespace apophis.Lexer
     {
         private readonly ILexerRules _lexerRules;
         private readonly Func<string, ILexerReader> _newLexerReader;
-        private readonly Func<List<Lexem>, ILinePositionCalculator> _newLinePositionCalculator;
+        private readonly LinePositionCalculator.Factory _newLinePositionCalculator;
         private readonly List<Lexem> _lexems = new List<Lexem>();
 
-        public Tokenizer(ILexerRules lexerRules, Func<string, ILexerReader> newLexerReader, Func<List<Lexem>, ILinePositionCalculator> newLinePositionCalculator)
+        public Tokenizer(ILexerRules lexerRules, Func<string, ILexerReader> newLexerReader, LinePositionCalculator.Factory newLinePositionCalculator)
         {
             _lexerRules = lexerRules;
             _newLexerReader = newLexerReader;

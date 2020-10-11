@@ -10,13 +10,13 @@ namespace apophis.Lexer
     {
         private readonly Tokenizer _tokenizer;
         private readonly Func<IToken> _newEpsilonToken;
-        private readonly Func<List<Lexem>, ILinePositionCalculator> _newLinePositionCalculator;
+        private readonly LinePositionCalculator.Factory _newLinePositionCalculator;
         private List<Lexem> _lexems = new List<Lexem>();
         private ILinePositionCalculator? _linePositionCalculator;
 
         private int _currentIndex;
 
-        public TokenWalker(Tokenizer tokenizer, Func<IToken> newEpsilonToken, Func<List<Lexem>, ILinePositionCalculator> newLinePositionCalculator)
+        public TokenWalker(Tokenizer tokenizer, Func<IToken> newEpsilonToken, LinePositionCalculator.Factory newLinePositionCalculator)
         {
             _tokenizer = tokenizer;
             _newEpsilonToken = newEpsilonToken;
