@@ -1,4 +1,5 @@
 ﻿using apophis.Lexer;
+using Funcky.Monads;
 using LambdaCalculusParser.Visitors;
 
 namespace LambdaCalculusParser.Nodes
@@ -6,9 +7,9 @@ namespace LambdaCalculusParser.Nodes
     public class Variable : ILambdaExpression
     {
         public string Name { get; }
-        public int? DeBruinIndex { get; }
+        public Option<int> DeBruinIndex { get; }
 
-        public Variable(string name, int? deBruinIndex)
+        public Variable(string name, Option<int> deBruinIndex = default)
         {
             Name = name;
             DeBruinIndex = deBruinIndex;

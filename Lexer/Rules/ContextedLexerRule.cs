@@ -24,7 +24,7 @@ namespace apophis.Lexer.Rules
 
         public Option<Lexem> Match(ILexerReader reader)
             => ApplyPredicate(reader).Match(false, p => p)
-                ? Option.Some(CreateToken(reader))
+                ? CreateToken(reader)
                 : Option<Lexem>.None();
 
         private Option<bool> ApplyPredicate(ILexerReader reader)

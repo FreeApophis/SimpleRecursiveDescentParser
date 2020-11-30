@@ -38,6 +38,7 @@ namespace LambdaCalculusParser.Visitors
         {
             if (application.Function is Abstraction function && application.Argument is Abstraction argument)
             {
+                // Implicit conversion fails because of interface types
                 Result = Option.Some(Reduce(function, argument.Expression));
             }
             else if (application.Function is Abstraction)

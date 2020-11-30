@@ -2,6 +2,7 @@
 using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Tokens;
+using Funcky.Monads;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 
@@ -27,7 +28,7 @@ namespace LambdaCalculusParser.Parsing
                 parserContext.TokenWalker.Consume<LambdaToken>();
                 if (parserContext.TokenWalker.Pop().Token is IdentifierToken variableName)
                 {
-                    var variable = new Variable(variableName.Name, null);
+                    var variable = new Variable(variableName.Name);
                     parserContext.TokenWalker.Consume<DotToken>();
                     parserContext.BoundVariables.Push(variable);
                     var result = new Abstraction(variable, ApplicationParser.Parse(parserContext));
@@ -50,7 +51,7 @@ namespace LambdaCalculusParser.Parsing
             if (parserContext.TokenWalker.NextIs<IdentifierToken>())
             {
                 var lexem = parserContext.TokenWalker.Pop();
-                return new Variable(((IdentifierToken)lexem.Token).Name, null);
+                return new Variable(((IdentifierToken)lexem.Token).Name);
             }
 
             throw new Exception("EOF");

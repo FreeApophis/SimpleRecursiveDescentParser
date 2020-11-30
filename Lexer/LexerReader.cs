@@ -18,8 +18,8 @@ namespace apophis.Lexer
             var position = Position + lookAhead;
 
             return position >= 0 && position < _expression.Length
-                ? Option.Some(_expression[position])
-                : Option<char>.None();
+                ? _expression[position]
+                : default;
         }
 
         public Option<char> Read()

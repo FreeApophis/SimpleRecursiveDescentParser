@@ -30,7 +30,7 @@ namespace apophis.Lexer.Rules
                     reader.Read();
                 }
 
-                return Option.Some(CreateToken(startPosition));
+                return CreateToken(startPosition);
             }
 
             return Option<Lexem>.None();
