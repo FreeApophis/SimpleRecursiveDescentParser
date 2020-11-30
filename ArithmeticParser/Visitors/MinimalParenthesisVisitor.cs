@@ -32,7 +32,7 @@ namespace ArithmeticParser.Visitors
             _operators.Push(op);
             if (withParenthesis) { _resultBuilder.Append("("); }
             op.LeftOperand.Accept(this);
-            _resultBuilder.AppendFormat(op.ToString());
+            _resultBuilder.AppendFormat(op.ToString() ?? throw new Exception("ToString() on BinaryOperator returns null unexpectedly."));
             op.RightOperand.Accept(this);
             if (withParenthesis) { _resultBuilder.Append(")"); }
             _operators.Pop();

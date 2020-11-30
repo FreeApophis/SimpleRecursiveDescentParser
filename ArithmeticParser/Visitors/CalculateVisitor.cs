@@ -13,25 +13,29 @@ namespace ArithmeticParser.Visitors
         };
 
         readonly Dictionary<string, MethodInfo> _functions = new Dictionary<string, MethodInfo>(StringComparer.OrdinalIgnoreCase) {
-            { "sin",  typeof(Math).GetMethod("Sin") },
-            { "cos",  typeof(Math).GetMethod("Cos") },
-            { "tan",  typeof(Math).GetMethod("Tan") },
-            { "sinh",  typeof(Math).GetMethod("Sinh") },
-            { "cosh",  typeof(Math).GetMethod("Cosh") },
-            { "tanh",  typeof(Math).GetMethod("Tanh") },
-            { "asin",  typeof(Math).GetMethod("Asin") },
-            { "acos",  typeof(Math).GetMethod("Acos") },
-            { "atan",  typeof(Math).GetMethod("Atan") },
-            { "atan2",  typeof(Math).GetMethod("Atan2") },
-            { "sqrt",  typeof(Math).GetMethod("Sqrt") },
-            { "pow",  typeof(Math).GetMethod("Pow") },
-            { "lb",  new Func<double, double>(LogarithmBinaris).Method },
+            { "sin",  FromSystemMath("Sin") },
+            { "cos",  FromSystemMath("Cos") },
+            { "tan",  FromSystemMath("Tan") },
+            { "sinh",  FromSystemMath("Sinh") },
+            { "cosh",  FromSystemMath("Cosh") },
+            { "tanh",  FromSystemMath("Tanh") },
+            { "asin",  FromSystemMath("Asin") },
+            { "acos",  FromSystemMath("Acos") },
+            { "atan",  FromSystemMath("Atan") },
+            { "atan2",  FromSystemMath("Atan2") },
+            { "sqrt",  FromSystemMath("Sqrt") },
+            { "pow",  FromSystemMath("Pow") },
+            { "lb",  new Func<double, double>(BinaryLogarithm).Method },
             { "ln",  new Func<double, double>(Math.Log).Method },
-            { "lg",  typeof(Math).GetMethod("Log10") },
+            { "lg",  FromSystemMath("Log10") },
             { "log",  new Func<double, double, double>(Math.Log).Method },
         };
 
-        private static double LogarithmBinaris(double value)
+        private static MethodInfo FromSystemMath(string mathFunction)
+            => typeof(Math).GetMethod(mathFunction)
+                ?? throw new Exception($"function '{mathFunction} not found in System.Math'");
+
+        private static double BinaryLogarithm(double value)
         {
             return Math.Log(value, 2.0);
         }
@@ -40,7 +44,6 @@ namespace ArithmeticParser.Visitors
         {
             _stack.Push(number.Number);
         }
-
 
         public void Visit(UnaryOperator op)
         {

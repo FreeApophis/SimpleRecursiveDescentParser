@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace ArithmeticParser.Visitors
 
         public void Visit(UnaryOperator op)
         {
-            EmitGraphvizNodeBegin(op.ToString());
+            EmitGraphvizNodeBegin(op.ToString() ?? throw new Exception("ToString() on UnaryOperator returns null unexpectedly."));
             op.Operand.Accept(this);
             EmitGraphvizNodeEnd();
         }
@@ -37,7 +38,7 @@ namespace ArithmeticParser.Visitors
 
         public void Visit(BinaryOperator op)
         {
-            EmitGraphvizNodeBegin(op.ToString());
+            EmitGraphvizNodeBegin(op.ToString() ?? throw new Exception("ToString() on BinaryOperator returns null unexpectedly."));
             op.LeftOperand.Accept(this);
             op.RightOperand.Accept(this);
             EmitGraphvizNodeEnd();

@@ -23,7 +23,8 @@ namespace LambdaCalculusParser.Test
             lambdaExpression.Accept(interpreter);
 
             var printVisitor = new NormalFormVisitor();
-            interpreter.Result.Accept(printVisitor);
+
+            interpreter.Result.AndThen(expression => expression.Accept(printVisitor));
 
             Assert.Equal("(λx.x)", printVisitor.Result);
         }
@@ -39,7 +40,7 @@ namespace LambdaCalculusParser.Test
             lambdaExpression.Accept(interpreter);
 
             var printVisitor = new NormalFormVisitor();
-            interpreter.Result.Accept(printVisitor);
+            interpreter.Result.AndThen(expression => expression.Accept(printVisitor));
 
             Assert.Equal("(λt.yt)", printVisitor.Result);
         }
@@ -52,7 +53,8 @@ namespace LambdaCalculusParser.Test
             var lambdaExpression = _parser.Parse(application);
 
             var interpreter = new InterpreterVisitor();
-            interpreter.Result.Accept(interpreter);
+            interpreter.Result.AndThen(expression => expression.Accept(interpreter));
+
 
             var printVisitor = new NormalFormVisitor();
             lambdaExpression.Accept(printVisitor);
@@ -75,7 +77,7 @@ namespace LambdaCalculusParser.Test
             lambdaExpression.Accept(interpreter);
 
             var printVisitor = new NormalFormVisitor();
-            interpreter.Result.Accept(printVisitor);
+            interpreter.Result.AndThen(expression => expression.Accept(printVisitor));
 
             Assert.Collection(events.Events,
                 e => Assert.Equal("α", e),

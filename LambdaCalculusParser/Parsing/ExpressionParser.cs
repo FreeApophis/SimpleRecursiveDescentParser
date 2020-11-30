@@ -9,7 +9,13 @@ namespace LambdaCalculusParser.Parsing
 {
     public class ExpressionParser
     {
-        public ApplicationParser ApplicationParser { get; set; }
+        private ApplicationParser? _applicationParser;
+
+        public ApplicationParser ApplicationParser
+        {
+            get => _applicationParser ?? throw new Exception("Application Parser has not been set by DI.");
+            set => _applicationParser = value;
+        }
 
         /// <summary>
         /// Parsing the following Production:

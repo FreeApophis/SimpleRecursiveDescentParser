@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using Funcky.Monads;
 using LambdaCalculusParser.Nodes;
 
 namespace LambdaCalculusParser.Visitors
@@ -22,11 +22,11 @@ namespace LambdaCalculusParser.Visitors
         public delegate void BetaReductionEventHandler(object sender, BetaReductionEventArgs e);
         public delegate void EtaReductionEventHandler(object sender, EtaReductionEventArgs e);
 
-        public event AlphaReductionEventHandler AlphaReductionEvent;
-        public event BetaReductionEventHandler BetaReductionEvent;
-        public event EtaReductionEventHandler EtaReductionEvent;
+        public event AlphaReductionEventHandler? AlphaReductionEvent;
+        public event BetaReductionEventHandler? BetaReductionEvent;
+        public event EtaReductionEventHandler? EtaReductionEvent;
 
-        public ILambdaExpression Result;
+        public Option<ILambdaExpression> Result;
 
 
         public void Visit(Abstraction abstraction)
@@ -38,7 +38,7 @@ namespace LambdaCalculusParser.Visitors
         {
             if (application.Function is Abstraction function && application.Argument is Abstraction argument)
             {
-                Result = Reduce(function, argument.Expression);
+                Result = Option.Some(Reduce(function, argument.Expression));
             }
             else if (application.Function is Abstraction)
             {
