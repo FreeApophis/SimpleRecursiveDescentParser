@@ -2,6 +2,7 @@
 {
     public class PlusToken : OperatorToken
     {
-        public override string ToString() => "Addition Operator";
+        public override string ToString() 
+            => "Addition Operator";
     }
 }

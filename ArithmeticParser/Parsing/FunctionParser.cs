@@ -1,6 +1,5 @@
 ﻿using System;
 using apophis.Lexer;
-using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
 
@@ -29,7 +28,7 @@ namespace ArithmeticParser.Parsing
             var lexem = walker.Pop();
             if (lexem.Token is IdentifierToken)
             {
-                FunctionNode function = new FunctionNode(lexem);
+                var function = new FunctionNode(lexem);
 
                 // Pop opening parenthesis
                 function.OpenParenthesis = walker.Consume<OpenParenthesisToken>();

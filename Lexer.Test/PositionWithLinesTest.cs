@@ -1,19 +1,18 @@
-﻿using System.Linq;
-using apophis.Lexer.Test.LexerRules;
+﻿using apophis.Lexer.Test.LexerRules;
 using Xunit;
 
 namespace apophis.Lexer.Test
 {
     public class PositionWithLinesTest
     {
-        private const string _exampleTextWihtNewLines = "Hello\r\n\r\nThis is a test\nWe are on line four\nLine five\r\nthe end";
+        private const string ExampleTextWihtNewLines = "Hello\r\n\r\nThis is a test\nWe are on line four\nLine five\r\nthe end";
 
         [Fact]
-        public void GiveALexerAndALineSeperatorThePositionsAreGivenInLineAndColumn()
+        public void GiveALexerAndALineSeparatorThePositionsAreGivenInLineAndColumn()
         {
             var tokenizer = new Tokenizer(new WordTokenizerWithLines(), s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
 
-            var lexems = tokenizer.Scan(_exampleTextWihtNewLines);
+            var lexems = tokenizer.Scan(ExampleTextWihtNewLines);
             
             var positions = new LinePositionCalculator(lexems);
 

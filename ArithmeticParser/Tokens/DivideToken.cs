@@ -2,6 +2,7 @@
 {
     public class DivideToken : OperatorToken
     {
-        public override string ToString() => "Division Operator";
+        public override string ToString() 
+            => "Division Operator";
     }
 }

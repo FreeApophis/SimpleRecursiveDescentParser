@@ -5,7 +5,7 @@ namespace LambdaCalculusParser.Visitors
 {
     public class NormalFormVisitor : ILambdaExpressionVisitor
     {
-        private readonly StringBuilder _stringBuilder = new StringBuilder();
+        private readonly StringBuilder _stringBuilder = new();
 
         public void Visit(Abstraction lambdaExpression)
         {
@@ -35,6 +35,7 @@ namespace LambdaCalculusParser.Visitors
             _stringBuilder.Append(variable.Name);
         }
 
-        public string Result => _stringBuilder.ToString();
+        public string Result 
+            => _stringBuilder.ToString();
     }
 }

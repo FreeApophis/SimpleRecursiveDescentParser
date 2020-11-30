@@ -11,7 +11,7 @@ namespace apophis.Lexer
         private readonly Tokenizer _tokenizer;
         private readonly Func<IToken> _newEpsilonToken;
         private readonly LinePositionCalculator.Factory _newLinePositionCalculator;
-        private List<Lexem> _lexems = new List<Lexem>();
+        private List<Lexem> _lexems = new();
         private ILinePositionCalculator? _linePositionCalculator;
 
         private int _currentIndex;
@@ -37,11 +37,9 @@ namespace apophis.Lexer
         }
 
         public Lexem Pop()
-        {
-            return ValidToken()
+            => ValidToken()
                 ? _lexems[_currentIndex++]
                 : new Lexem(_newEpsilonToken(), new Position(0, 0));
-        }
 
         public Lexem Peek(int lookAhead = 0)
         {
@@ -53,14 +51,9 @@ namespace apophis.Lexer
         }
 
         public LinePosition CalculateLinePosition(Lexem lexem)
-        {
-            if (_linePositionCalculator == null)
-            {
-                throw new Exception("Call Scan first before you try to calculate a position.");
-            }
-
-            return _linePositionCalculator.CalculateLinePosition(lexem);
-        }
+            => _linePositionCalculator == null
+                ? throw new Exception("Call Scan first before you try to calculate a position.")
+                : _linePositionCalculator.CalculateLinePosition(lexem);
 
         private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _lexems.Count;
     }

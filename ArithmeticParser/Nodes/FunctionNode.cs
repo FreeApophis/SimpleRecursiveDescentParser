@@ -31,7 +31,7 @@ namespace ArithmeticParser.Nodes
 
         public Lexem? ClosedParenthesis { get; set; }
 
-        public List<IParseNode> Parameters { get; } = new List<IParseNode>();
+        public List<IParseNode> Parameters { get; } = new();
 
         public string Name { get; }
 

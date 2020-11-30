@@ -16,12 +16,10 @@ namespace apophis.Lexer
         public Option<char> Peek(int lookAhead = 0)
         {
             var position = Position + lookAhead;
-            if (position >= 0 && position < _expression.Length)
-            {
-                return Option.Some(_expression[position]);
-            }
 
-            return Option<char>.None();
+            return position >= 0 && position < _expression.Length
+                ? Option.Some(_expression[position])
+                : Option<char>.None();
         }
 
         public Option<char> Read()

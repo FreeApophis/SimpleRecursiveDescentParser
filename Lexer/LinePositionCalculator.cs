@@ -16,56 +16,41 @@ namespace apophis.Lexer
 
         private readonly List<Position> _newLines;
 
-        public LinePositionCalculator(List<Lexem> lexems)
-        {
+        public LinePositionCalculator(List<Lexem> lexems) =>
             _newLines = lexems
                 .Where(l => l.IsLineBreak)
                 .Select(l => l.Position)
                 .ToList();
-        }
 
         public LinePosition CalculateLinePosition(Lexem lexem)
-        {
-            return CalculateRelativePosition(
+            => CalculateRelativePosition(
                 LineNumber(lexem.Position.StartPosition),
                 lexem.Position.StartPosition,
                 lexem.Position.Length,
                 FindClosestNewLineBefore(lexem.Position.StartPosition));
-        }
 
         public LinePosition CalculateLinePosition(int absolutePosition)
-        {
-            return CalculateRelativePosition(
+            => CalculateRelativePosition(
                 LineNumber(absolutePosition),
                 absolutePosition,
                 1,
                 FindClosestNewLineBefore(absolutePosition));
-        }
 
         private int LineNumber(int absolutePosition)
-        {
-            return _newLines
+            => _newLines
                 .Count(l => l.StartPosition < absolutePosition);
-        }
 
         private LinePosition CalculateRelativePosition(int lineNumber, int absolutePosition, int length, Position newLinePosition)
-        {
-            return new LinePosition(
+            => new(
                 ToHumanIndex(lineNumber),
                 ToHumanIndex(absolutePosition - newLinePosition.EndPosition),
                 length);
-        }
 
         private int ToHumanIndex(int index)
-        {
-            return index + 1;
-        }
+            => index + 1;
 
         private Position FindClosestNewLineBefore(int position)
-        {
-            return _newLines
+            => _newLines
                 .LastOrDefault(l => l.StartPosition < position);
-        }
-
     }
 }

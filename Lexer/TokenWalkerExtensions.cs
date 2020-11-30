@@ -25,8 +25,6 @@ namespace apophis.Lexer
         }
 
         public static bool NextIs<TType>(this TokenWalker walker, int lookAhead = 0)
-        {
-            return walker.Peek(lookAhead).Token is TType;
-        }
+            => walker.Peek(lookAhead).Token is TType;
     }
 }

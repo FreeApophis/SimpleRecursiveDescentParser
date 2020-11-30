@@ -11,6 +11,7 @@ namespace ArithmeticParser.Tokens
 
         public double Value { get; }
 
-        public override string ToString() => $"Number: {Value}";
+        public override string ToString() 
+            => $"Number: {Value}";
     }
 }

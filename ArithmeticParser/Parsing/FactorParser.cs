@@ -34,7 +34,7 @@ namespace ArithmeticParser.Parsing
         {
             if (walker.NextIs<NumberToken>())
             {
-                return (CreateNumberNode(walker));
+                return CreateNumberNode(walker);
             }
 
             if (walker.NextIs<IdentifierToken>())

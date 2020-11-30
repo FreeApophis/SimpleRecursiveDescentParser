@@ -7,12 +7,12 @@ namespace ArithmeticParser.Visitors
 {
     public class CalculateVisitor : INodeVisitor
     {
-        public Dictionary<string, double> Variables { get; } = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase) {
+        public Dictionary<string, double> Variables { get; } = new(StringComparer.OrdinalIgnoreCase) {
             { "e",  Math.E },
             { "pi",  Math.PI }
         };
 
-        readonly Dictionary<string, MethodInfo> _functions = new Dictionary<string, MethodInfo>(StringComparer.OrdinalIgnoreCase) {
+        readonly Dictionary<string, MethodInfo> _functions = new(StringComparer.OrdinalIgnoreCase) {
             { "sin",  FromSystemMath("Sin") },
             { "cos",  FromSystemMath("Cos") },
             { "tan",  FromSystemMath("Tan") },
@@ -35,10 +35,8 @@ namespace ArithmeticParser.Visitors
             => typeof(Math).GetMethod(mathFunction)
                 ?? throw new Exception($"function '{mathFunction} not found in System.Math'");
 
-        private static double BinaryLogarithm(double value)
-        {
-            return Math.Log(value, 2.0);
-        }
+        private static double BinaryLogarithm(double value) 
+            => Math.Log(value, 2.0);
 
         public void Visit(NumberNode number)
         {

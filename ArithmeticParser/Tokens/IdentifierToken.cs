@@ -11,7 +11,8 @@ namespace ArithmeticParser.Tokens
 
         public string Name { get; }
 
-        public override string ToString() => $"Identifier: {Name}";
+        public override string ToString()
+            => $"Identifier: {Name}";
 
     }
 }

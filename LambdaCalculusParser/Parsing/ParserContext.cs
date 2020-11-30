@@ -11,7 +11,7 @@ namespace LambdaCalculusParser
             TokenWalker = tokenWalker;
         }
         public TokenWalker TokenWalker { get; }
-        public Stack<Variable> BoundVariables { get; } = new Stack<Variable>();
+        public Stack<Variable> BoundVariables { get; } = new();
 
     }
 }

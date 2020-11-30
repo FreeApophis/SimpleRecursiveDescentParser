@@ -75,7 +75,9 @@ namespace ArithmeticParser.Visitors
             _resultBuilder.Append(op.Name);
         }
 
-        public string Result => _resultBuilder.ToString();
-        private readonly StringBuilder _resultBuilder = new StringBuilder();
+        public string Result 
+            => _resultBuilder.ToString();
+
+        private readonly StringBuilder _resultBuilder = new();
     }
 }

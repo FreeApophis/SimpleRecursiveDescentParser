@@ -37,9 +37,7 @@ namespace apophis.Lexer.Rules
         }
 
         public bool IsActive(List<Lexem> context)
-        {
-            return true;
-        }
+            => true;
 
         private bool HasWordBoundary(ILexerReader reader)
         {
@@ -49,23 +47,17 @@ namespace apophis.Lexer.Rules
         }
 
         private bool IsOperator()
-        {
-            return !_isTextSymbol;
-        }
+            => !_isTextSymbol;
 
         private bool NonLetterOrDigit(char character)
-        {
-            return !char.IsLetterOrDigit(character);
-        }
+            => !char.IsLetterOrDigit(character);
 
         private bool IsSymbolMatchingReader(ILexerReader reader)
-        {
-            return _textSymbol.Select((character, index) => new { character, index })
-                                .All(t => reader.Peek(t.index).Match(false, c => c == t.character));
-        }
+            => _textSymbol.Select((character, index) => new { character, index })
+                .All(t => reader.Peek(t.index).Match(false, c => c == t.character));
 
         private Lexem CreateToken(int start)
-        { 
+        {
             var token = new TToken();
             return new Lexem(token, new Position(start, _textSymbol.Length), token is ILineBreakToken);
         }

@@ -23,19 +23,15 @@ namespace apophis.Lexer.Rules
         public int Weight { get; }
 
         public Option<Lexem> Match(ILexerReader reader)
-        {
-            var predicate =
-                from nextCharacter in reader.Peek()
-                select SymbolPredicate(nextCharacter);
-
-            return predicate.Match(false, p => p)
+            => ApplyPredicate(reader).Match(false, p => p)
                 ? Option.Some(CreateToken(reader))
                 : Option<Lexem>.None();
-        }
+
+        private Option<bool> ApplyPredicate(ILexerReader reader)
+            => from nextCharacter in reader.Peek()
+               select SymbolPredicate(nextCharacter);
 
         public bool IsActive(List<Lexem> context)
-        {
-            return ContextPredicate(context);
-        }
+            => ContextPredicate(context);
     }
 }

@@ -2,6 +2,7 @@
 {
     public class OpenParenthesisToken : ParenthesisToken
     {
-        public override string ToString() => "Opening Parenthesis";
+        public override string ToString() 
+            => "Opening Parenthesis";
     }
 }

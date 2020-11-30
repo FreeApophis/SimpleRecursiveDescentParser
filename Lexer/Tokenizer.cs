@@ -51,25 +51,19 @@ namespace apophis.Lexer
         }
 
         private Option<Lexem> SelectLexerRule(ILexerReader reader, List<Lexem> context)
-        {
-            return _lexerRules
+            => _lexerRules
                 .GetRules()
                 .Where(rule => rule.IsActive(context))
                 .OrderByDescending(GetRuleWeight)
                 .Select(rule => rule.Match(reader))
                 .FirstOrDefault(HasRuleMatched);
-        }
 
         private bool HasRuleMatched(Option<Lexem> matched)
-        {
-            return matched.Match(
+            => matched.Match(
                 none: false,
                 some: t => true);
-        }
 
         private object GetRuleWeight(ILexerRule rule)
-        {
-            return rule.Weight;
-        }
+            => rule.Weight;
     }
 }

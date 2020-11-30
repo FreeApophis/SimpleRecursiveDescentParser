@@ -20,7 +20,7 @@ namespace ArithmeticParser.Lexing
         {
             if (!(walker.NextIs<ClosedParenthesisToken>()))
             {
-                throw new Exception("Expecting ')' in expression, instead got: " + (walker.Peek() != null ? walker.Peek().Token.ToString() : "End of expression"));
+                throw new Exception($"Expecting ')' in expression, instead got: {walker.Peek().Token}");
             }
             walker.Pop();
         }
@@ -29,7 +29,7 @@ namespace ArithmeticParser.Lexing
         {
             if (!walker.NextIs<OpenParenthesisToken>())
             {
-                throw new Exception("Expecting Real number or '(' in expression, instead got : " + (walker.Peek() != null ? walker.Peek().Token.ToString() : "End of expression"));
+                throw new Exception($"Expecting Real number or '(' in expression, instead got: {walker.Peek().Token}");
             }
             walker.Pop();
         }

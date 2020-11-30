@@ -5,7 +5,7 @@ namespace LambdaCalculusParser.Test
 {
     class ReductionEventCollector
     {
-        public List<string> Events { get; } = new List<string>();
+        public List<string> Events { get; } = new();
 
         public void OnAlphaReductionEvent(object sender, AlphaReductionEventArgs e)
         {

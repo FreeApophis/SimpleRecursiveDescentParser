@@ -84,17 +84,12 @@ namespace ArithmeticParser.Visitors
         }
 
         private static bool IsAssociativityRelevant(BinaryOperator currentNode, BinaryOperator parentOp)
-        {
-            return !currentNode.Commutative
-                   && parentOp.GetType() == currentNode.GetType();
-        }
+            => !currentNode.Commutative && parentOp.GetType() == currentNode.GetType();
 
         private static IParseNode GetNonAssociativeNode(BinaryOperator currentNode, BinaryOperator parentOp)
-        {
-            return currentNode.Associativity == Associativity.Left
+            => currentNode.Associativity == Associativity.Left
                 ? parentOp.RightOperand
                 : parentOp.LeftOperand;
-        }
 
         public void Visit(VariableNode op)
         {
@@ -119,9 +114,11 @@ namespace ArithmeticParser.Visitors
             _operators.Pop();
         }
 
-        public string Result => _resultBuilder.ToString();
-        private readonly StringBuilder _resultBuilder = new StringBuilder();
-        private readonly Stack<IParseNode> _operators = new Stack<IParseNode>();
+        public string Result 
+            => _resultBuilder.ToString();
+
+        private readonly StringBuilder _resultBuilder = new();
+        private readonly Stack<IParseNode> _operators = new();
 
         public void Clear()
         {

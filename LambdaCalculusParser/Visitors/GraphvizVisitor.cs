@@ -8,8 +8,8 @@ namespace LambdaCalculusParser.Visitors
     public class GraphvizVisitor : ILambdaExpressionVisitor
     {
         private int _nodeId;
-        private readonly Stack<int> _stack = new Stack<int>();
-        private readonly StringBuilder _result = new StringBuilder();
+        private readonly Stack<int> _stack = new();
+        private readonly StringBuilder _result = new();
 
         public string Result => $"graph G {{\n{_result}}}";
         public void Visit(Abstraction abstraction)
