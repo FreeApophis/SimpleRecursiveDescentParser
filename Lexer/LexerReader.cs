@@ -19,7 +19,7 @@ namespace apophis.Lexer
 
             return position >= 0 && position < _expression.Length
                 ? _expression[position]
-                : default;
+                : Option<char>.None();
         }
 
         public Option<char> Read()
