@@ -8,6 +8,7 @@ namespace apophis.Lexer
 {
     public class TokenWalker
     {
+        private const int EpsilonLength = 0;
         private readonly Tokenizer _tokenizer;
         private readonly Func<IToken> _newEpsilonToken;
         private readonly LinePositionCalculator.Factory _newLinePositionCalculator;
@@ -22,6 +23,9 @@ namespace apophis.Lexer
             _newEpsilonToken = newEpsilonToken;
             _newLinePositionCalculator = newLinePositionCalculator;
         }
+
+        private Position EpsilonPosition
+            => new(_lexems.Last().Position.EndPosition, EpsilonLength);
 
         public void Scan(string expression)
         {
@@ -39,7 +43,7 @@ namespace apophis.Lexer
         public Lexem Pop()
             => ValidToken()
                 ? _lexems[_currentIndex++]
-                : new Lexem(_newEpsilonToken(), new Position(0, 0));
+                : new Lexem(_newEpsilonToken(), EpsilonPosition);
 
         public Lexem Peek(int lookAhead = 0)
         {
@@ -47,7 +51,7 @@ namespace apophis.Lexer
 
             return ValidToken(lookAhead)
                 ? _lexems[_currentIndex + lookAhead]
-                : new Lexem(_newEpsilonToken(), new Position(0, 0));
+                : new Lexem(_newEpsilonToken(), EpsilonPosition);
         }
 
         public LinePosition CalculateLinePosition(Lexem lexem)
