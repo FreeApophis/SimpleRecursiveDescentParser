@@ -68,7 +68,7 @@ namespace ArithmeticParser.Lexing
             }
 
 
-            var maybeDouble = stringBuilder.ToString().TryParseDouble();
+            var maybeDouble = stringBuilder.ToString().ParseDoubleOrNone();
 
             var parsedDouble = maybeDouble.Match(
                 none: () => throw new Exception("Could not parse number: " + stringBuilder),
