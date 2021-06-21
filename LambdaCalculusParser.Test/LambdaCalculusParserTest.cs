@@ -1,10 +1,12 @@
 ﻿using apophis.Lexer;
+using apophis.Lexer.Exceptions;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Tokens;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Tokens;
 using LambdaCalculusParser.Visitors;
+using System;
 using Xunit;
 
 namespace LambdaCalculusParser.Test
@@ -96,6 +98,16 @@ namespace LambdaCalculusParser.Test
             Assert.Equal("(λm.(λn.(λf.(λx.((m f) ((n f) x))))))", printVisitor.Result);
 
             Assert.IsType<Abstraction>(lambdaExpression);
+        }
+
+        [Fact]
+        public void FailTest()
+        {
+            var application = "λm.λn.λf.λx.m f (n f x";
+
+
+            Assert.Throws<InvalidTokenException>(() => _parser.Parse(application));
+
         }
     }
 }

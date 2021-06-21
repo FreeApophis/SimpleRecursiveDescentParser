@@ -1,7 +1,7 @@
 ﻿using System;
 using Funcky.Monads;
 
-namespace apophis.Lexer
+namespace apophis.Lexer.Exceptions
 {
     public class UnknownTokenException : Exception
     {

@@ -4,7 +4,7 @@ using Funcky.Monads;
 
 namespace apophis.Lexer.Rules
 {
-    public class ContextedLexerRule : ILexerRule
+    public record ContextedLexerRule : ILexerRule
     {
         public ContextedLexerRule(Predicate<char> symbolPredicate, Predicate<List<Lexem>> contextPredicate, Func<ILexerReader, Lexem> createToken, int weight)
         {

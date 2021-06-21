@@ -5,19 +5,5 @@ namespace apophis.Lexer
     /// <summary>
     /// A lexem represents a string token and it's associated position.
     /// </summary>
-    public class Lexem
-    {
-        public Lexem(IToken token, Position position, bool isLineBreak = false)
-        {
-            Token = token;
-            Position = position;
-            IsLineBreak = isLineBreak;
-        }
-
-        public IToken Token { get; }
-
-        public Position Position { get; }
-
-        public bool IsLineBreak { get; }
-    }
+    public record Lexem(IToken Token, Position Position, bool IsLineBreak = false);
 }

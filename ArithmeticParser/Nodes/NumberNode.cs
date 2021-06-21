@@ -21,15 +21,11 @@ namespace ArithmeticParser.Nodes
         public double Number { get; }
 
         /// <inheritdoc />
-        public virtual void Accept(INodeVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
+        public virtual void Accept(INodeVisitor visitor) 
+            => visitor.Visit(this);
 
         /// <inheritdoc />
-        public override string ToString()
-        {
-            return Number.ToString(CultureInfo.InvariantCulture);
-        }
+        public override string ToString() 
+            => Number.ToString(CultureInfo.InvariantCulture);
     }
 }

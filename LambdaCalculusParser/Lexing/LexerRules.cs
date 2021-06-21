@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using apophis.Lexer;
@@ -11,7 +10,7 @@ using LambdaCalculusParser.Tokens;
 namespace LambdaCalculusParser.Lexing
 {
     /// <summary>
-    /// This class represents the necessary lexer rules for the arithmetic parser
+    /// This class represents the necessary lexer rules for the lambda calculus parser
     /// </summary>
     public class LexerRules : ILexerRules
     {

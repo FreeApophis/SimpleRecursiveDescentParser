@@ -2,7 +2,6 @@
 using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Tokens;
-using Funcky.Monads;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 

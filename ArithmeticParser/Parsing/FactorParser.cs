@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Schema;
 using apophis.Lexer;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;

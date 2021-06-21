@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="Funcky" />
+    <PackageReference Include="IsExternalInit" />
   </ItemGroup>
 
 </Project>

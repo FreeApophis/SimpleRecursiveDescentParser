@@ -1,4 +1,5 @@
 ﻿using System;
+using apophis.Lexer.Exceptions;
 using apophis.Lexer.Tokens;
 
 namespace apophis.Lexer
@@ -7,22 +8,18 @@ namespace apophis.Lexer
     {
         public static Lexem Consume<TToken>(this TokenWalker walker)
             where TToken : IToken
-        {
-            var lexem = walker.Pop();
+            => ConsumeLexem<TToken>(walker, walker.Pop());
 
-            return lexem.Token switch
-            {
-                TToken _ => lexem,
-                _ => HandleMissingLexem<TToken>(lexem, walker),
-            };
-        }
+        private static Lexem ConsumeLexem<TToken>(TokenWalker walker, Lexem lexem) where TToken : IToken
+            => lexem.Token is TToken
+                ? lexem
+                : HandleMissingLexem<TToken>(lexem, walker);
 
         private static Lexem HandleMissingLexem<TToken>(Lexem lexem, TokenWalker walker)
-        {
-            var position = walker.CalculateLinePosition(lexem);
+            => ThrowExpectingTokenException<TToken>(lexem, walker.CalculateLinePosition(lexem));
 
-            throw new Exception($"Expecting {typeof(TToken).FullName} but got {lexem.Token} at Line {position.Line} Column {position.Column}.");
-        }
+        private static Lexem ThrowExpectingTokenException<TToken>(Lexem lexem, LinePosition position)
+            => throw new InvalidTokenException($"Expecting {typeof(TToken).FullName} but got {lexem.Token} at Line {position.Line} Column {position.Column}.");
 
         public static bool NextIs<TType>(this TokenWalker walker, int lookAhead = 0)
             => walker.Peek(lookAhead).Token is TType;

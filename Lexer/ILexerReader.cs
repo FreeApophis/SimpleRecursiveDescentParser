@@ -1,4 +1,5 @@
 ﻿using Funcky.Monads;
+using System.Collections.Generic;
 
 namespace apophis.Lexer
 {

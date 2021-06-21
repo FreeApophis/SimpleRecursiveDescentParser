@@ -1,6 +1,5 @@
 ﻿using System;
 using apophis.Lexer;
-using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
 
@@ -17,15 +16,12 @@ namespace ArithmeticParser.Parsing
         /// </summary>
         /// <param name="walker">Lexer input</param>
         /// <returns></returns>
-        public IParseNode Parse(TokenWalker walker)
-        {
-            var lexem = walker.Pop();
-            if (lexem.Token is IdentifierToken)
-            {
-                return new VariableNode(lexem);
-            }
+        public IParseNode Parse(TokenWalker walker) 
+            => ParseIdentifier(walker.Pop());
 
-            throw new ArgumentNullException();
-        }
+        private static IParseNode ParseIdentifier(Lexem lexem)
+            => lexem.Token is IdentifierToken
+                ? new VariableNode(lexem)
+                : throw new ArgumentNullException();
     }
 }

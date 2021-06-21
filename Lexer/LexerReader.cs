@@ -6,21 +6,13 @@ namespace apophis.Lexer
     {
         private readonly string _expression;
 
-        public LexerReader(string expression)
-        {
-            _expression = expression;
-        }
+        public LexerReader(string expression) 
+            => _expression = expression;
 
         public int Position { get; private set; }
 
         public Option<char> Peek(int lookAhead = 0)
-        {
-            var position = Position + lookAhead;
-
-            return position >= 0 && position < _expression.Length
-                ? _expression[position]
-                : Option<char>.None();
-        }
+            => PeekAt(Position + lookAhead);
 
         public Option<char> Read()
         {
@@ -30,5 +22,10 @@ namespace apophis.Lexer
 
             return result;
         }
+
+        private Option<char> PeekAt(int position)
+            => position >= 0 && position < _expression.Length
+                ? _expression[position]
+                : Option<char>.None();
     }
 }

@@ -46,7 +46,7 @@ namespace apophis.Lexer
                 ToHumanIndex(absolutePosition - newLinePosition.EndPosition),
                 length);
 
-        private int ToHumanIndex(int index)
+        private static int ToHumanIndex(int index)
             => index + 1;
 
         private Position FindClosestNewLineBefore(int position)

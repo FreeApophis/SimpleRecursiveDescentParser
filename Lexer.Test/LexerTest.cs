@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using apophis.Lexer.Exceptions;
 using apophis.Lexer.Test.LexerRules;
 using apophis.Lexer.Test.Tokens;
 using Xunit;

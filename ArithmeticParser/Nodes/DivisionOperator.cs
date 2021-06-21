@@ -15,14 +15,10 @@ namespace ArithmeticParser.Nodes
 
         /// <inheritdoc />
         public override void Accept(INodeVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
+            => visitor.Visit(this);
 
         /// <inheritdoc />
-        public override string ToString()
-        {
-            return "/";
-        }
+        public override string ToString() 
+            => "/";
     }
 }

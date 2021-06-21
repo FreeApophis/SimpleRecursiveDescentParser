@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Xml;
 using apophis.Lexer;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;

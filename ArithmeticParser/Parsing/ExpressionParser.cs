@@ -38,7 +38,8 @@ namespace ArithmeticParser.Parsing
             return result;
         }
 
-        private TermParser SafeTermParser => TermParser ?? throw new NotImplementedException();
+        private TermParser SafeTermParser 
+            => TermParser ?? throw new NotImplementedException();
 
         private IParseNode ParseUnaryMinus(TokenWalker walker)
         {

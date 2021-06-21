@@ -17,20 +17,14 @@ namespace apophis.Lexer
 
         private int _currentIndex;
 
-        public TokenWalker(Tokenizer tokenizer, Func<IToken> newEpsilonToken, LinePositionCalculator.Factory newLinePositionCalculator)
-        {
-            _tokenizer = tokenizer;
-            _newEpsilonToken = newEpsilonToken;
-            _newLinePositionCalculator = newLinePositionCalculator;
-        }
+        public TokenWalker(Tokenizer tokenizer, Func<IToken> newEpsilonToken, LinePositionCalculator.Factory newLinePositionCalculator) 
+            => (_tokenizer, _newEpsilonToken, _newLinePositionCalculator) = (tokenizer, newEpsilonToken, newLinePositionCalculator);
 
         private Position EpsilonPosition
             => new(_lexems.Last().Position.EndPosition, EpsilonLength);
 
-        public void Scan(string expression)
-        {
-            Scan(expression, t => t);
-        }
+        public void Scan(string expression) 
+            => Scan(expression, t => t);
 
         public void Scan(string expression, Func<IEnumerable<Lexem>, IEnumerable<Lexem>> postProcessTokens)
         {
@@ -59,6 +53,7 @@ namespace apophis.Lexer
                 ? throw new Exception("Call Scan first before you try to calculate a position.")
                 : _linePositionCalculator.CalculateLinePosition(lexem);
 
-        private bool ValidToken(int lookAhead = 0) => _currentIndex + lookAhead < _lexems.Count;
+        private bool ValidToken(int lookAhead = 0) 
+            => _currentIndex + lookAhead < _lexems.Count;
     }
 }

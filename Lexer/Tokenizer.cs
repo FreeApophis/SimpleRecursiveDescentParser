@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using apophis.Lexer.Exceptions;
 using apophis.Lexer.Rules;
 using Funcky.Monads;
 
@@ -13,12 +14,8 @@ namespace apophis.Lexer
         private readonly LinePositionCalculator.Factory _newLinePositionCalculator;
         private readonly List<Lexem> _lexems = new List<Lexem>();
 
-        public Tokenizer(ILexerRules lexerRules, Func<string, ILexerReader> newLexerReader, LinePositionCalculator.Factory newLinePositionCalculator)
-        {
-            _lexerRules = lexerRules;
-            _newLexerReader = newLexerReader;
-            _newLinePositionCalculator = newLinePositionCalculator;
-        }
+        public Tokenizer(ILexerRules lexerRules, Func<string, ILexerReader> newLexerReader, LinePositionCalculator.Factory newLinePositionCalculator) 
+            => (_lexerRules, _newLexerReader, _newLinePositionCalculator) = (lexerRules, newLexerReader, newLinePositionCalculator);
 
         public List<Lexem> Scan(string expression)
         {

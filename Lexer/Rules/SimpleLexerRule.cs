@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using apophis.Lexer.Tokens;
+using Funcky.Extensions;
 using Funcky.Monads;
 
 namespace apophis.Lexer.Rules
@@ -17,34 +18,31 @@ namespace apophis.Lexer.Rules
             _isTextSymbol = textSymbol.All(char.IsLetter);
         }
 
-        public int Weight => _textSymbol.Length;
+        public int Weight
+            => _textSymbol.Length;
 
         public Option<Lexem> Match(ILexerReader reader)
+            => MatchLexem(reader, reader.Position);
+
+        private Option<Lexem> MatchLexem(ILexerReader reader, int startPosition)
+            => IsSymbolMatchingReader(reader) && (IsOperator() || HasWordBoundary(reader))
+                ? ConsumeLexem(reader, startPosition)
+                : Option<Lexem>.None();
+
+        private Option<Lexem> ConsumeLexem(ILexerReader reader, int startPosition)
         {
-            var startPosition = reader.Position;
+            _textSymbol.ForEach(_ => reader.Read());
 
-            if (IsSymbolMatchingReader(reader) && (IsOperator() || HasWordBoundary(reader)))
-            {
-                foreach (var _ in _textSymbol)
-                {
-                    reader.Read();
-                }
-
-                return CreateToken(startPosition);
-            }
-
-            return Option<Lexem>.None();
+            return CreateLexem(startPosition);
         }
 
         public bool IsActive(List<Lexem> context)
             => true;
 
         private bool HasWordBoundary(ILexerReader reader)
-        {
             // we do not want to extract key words in the middle of a word, so a symbol must have ended.
             // Which means after a textsymbol must come something other than a digit or a letter.
-            return reader.Peek(_textSymbol.Length).Match(true, NonLetterOrDigit);
-        }
+            => reader.Peek(_textSymbol.Length).Match(true, NonLetterOrDigit);
 
         private bool IsOperator()
             => !_isTextSymbol;
@@ -56,10 +54,10 @@ namespace apophis.Lexer.Rules
             => _textSymbol.Select((character, index) => new { character, index })
                 .All(t => reader.Peek(t.index).Match(false, c => c == t.character));
 
-        private Lexem CreateToken(int start)
-        {
-            var token = new TToken();
-            return new Lexem(token, new Position(start, _textSymbol.Length), token is ILineBreakToken);
-        }
+        private Lexem CreateLexem(int start)
+            => CreateLexemFromToken(start, new TToken());
+
+        private Lexem CreateLexemFromToken(int start, TToken token)
+            => new(token, new Position(start, _textSymbol.Length), token is ILineBreakToken);
     }
 }
