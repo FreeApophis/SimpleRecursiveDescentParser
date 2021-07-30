@@ -9,7 +9,7 @@ namespace ArithmeticParser.Parsing
     /// Parsing the following Production:
     /// Term       := Factor { ( "*" | "/" ) Factor }
     /// </summary>
-    public class TermParser : IParser
+    public class TermParser
     {
         private readonly PowerTermParser _powerTermParser;
 

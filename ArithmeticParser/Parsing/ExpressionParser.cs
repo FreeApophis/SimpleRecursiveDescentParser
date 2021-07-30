@@ -11,7 +11,7 @@ namespace ArithmeticParser.Parsing
     /// Parsing the following Production:
     /// Expression := [ "-" ] Term { ("+" | "-") Term }
     /// </summary>
-    public class ExpressionParser : IParser
+    public class ExpressionParser
     {
         // Break the dependency cycle
         public TermParser? TermParser { get; set; }

@@ -20,7 +20,7 @@ namespace ArithmeticParser
     /// RealNumber := Digit{Digit} | [Digit] "." {Digit}
     /// Digit      := "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
     /// </summary>
-    public class Parser : IParser
+    public class Parser
     {
         private readonly TokenWalker _tokenWalker;
         private readonly ExpressionParser _expressionParser;
@@ -31,9 +31,9 @@ namespace ArithmeticParser
             _expressionParser = expressionParser;
         }
 
-        public IParseNode Parse(TokenWalker walker)
+        public IParseNode Parse()
         {
-            return _expressionParser.Parse(walker);
+            return _expressionParser.Parse(_tokenWalker);
         }
 
         public static Parser Create()
@@ -58,7 +58,7 @@ namespace ArithmeticParser
         {
             _tokenWalker.Scan(expression, lexems => lexems.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)));
 
-            return Parse(_tokenWalker);
+            return Parse();
         }
     }
 }

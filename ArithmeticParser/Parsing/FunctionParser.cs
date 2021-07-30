@@ -9,7 +9,7 @@ namespace ArithmeticParser.Parsing
     /// Parsing the following Production:
     /// Function   := Identifier "(" Expression { "," Expression } ")"
     /// </summary>
-    public class FunctionParser : IParser
+    public class FunctionParser
     {
         private readonly ExpressionParser _expressionParser;
 

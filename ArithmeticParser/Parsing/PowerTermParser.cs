@@ -4,7 +4,7 @@ using ArithmeticParser.Tokens;
 
 namespace ArithmeticParser.Parsing
 {
-    public class PowerTermParser : IParser
+    public class PowerTermParser
     {
         private readonly FactorParser _factorParser;
 

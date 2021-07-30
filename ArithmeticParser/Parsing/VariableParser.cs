@@ -9,7 +9,7 @@ namespace ArithmeticParser.Parsing
     /// Parsing the following Production:
     /// Variable   := Identifier
     /// </summary>
-    public class VariableParser : IParser
+    public class VariableParser
     {
         /// <summary>
         /// Overloaded Parse function to parse a Function
