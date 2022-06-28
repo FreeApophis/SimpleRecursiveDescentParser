@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using apophis.Lexer;
 using ArithmeticParser.Tokens;
 using ArithmeticParser.Visitors;
+using Messerli.Lexer;
 
 namespace ArithmeticParser.Nodes
 {
@@ -12,12 +12,12 @@ namespace ArithmeticParser.Nodes
 
     public class FunctionNode : IParseNode
     {
-        public FunctionNode(Lexem lexem)
+        public FunctionNode(Lexeme lexeme)
         {
-            if (lexem.Token is IdentifierToken identifier)
+            if (lexeme.Token is IdentifierToken identifier)
             {
                 Name = identifier.Name;
-                Position = lexem.Position;
+                Position = lexeme.Position;
             } else
             {
                 throw new NotImplementedException();
@@ -27,9 +27,9 @@ namespace ArithmeticParser.Nodes
         /// <inheritdoc />
         public Position Position { get; }
 
-        public Lexem? OpenParenthesis { get; set; }
+        public Lexeme? OpenParenthesis { get; set; }
 
-        public Lexem? ClosedParenthesis { get; set; }
+        public Lexeme? ClosedParenthesis { get; set; }
 
         public List<IParseNode> Parameters { get; } = new();
 

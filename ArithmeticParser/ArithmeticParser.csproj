@@ -1,39 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk; Microsoft.Build.CentralPackageVersions">
 
-  <PropertyGroup>
-    <TargetFrameworks>net5.0;netstandard2.0;netstandard2.1</TargetFrameworks>
-    <LangVersion>9.0</LangVersion>
-    <Nullable>enable</Nullable>
-    <PackageId>SimpleArithmeticParser</PackageId>
-    <Authors>Thomas Bruderer</Authors>
-    <Company>apophis.ch</Company>
-    <Description>Very Simple Proof of Concept Parser for Simple Arithmetic Expressions which supports Addition, Subtraction, Multiplication, Division, Function Calls and Variables</Description>
-    <PackageLicenseExpression>BSD-3-Clause-Clear</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/FreeApophis/ArithmeticParser</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/FreeApophis/ArithmeticParser</PackageProjectUrl>
-    <Copyright>apophis@apophis.ch</Copyright>
-    <PackageTags>parser</PackageTags>
-    <Version>1.2.1</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <NoWarn>$(NoWarn);1591</NoWarn>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
+        <LangVersion>10.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <PackageId>SimpleArithmeticParser</PackageId>
+        <Authors>Thomas Bruderer</Authors>
+        <Company>apophis.ch</Company>
+        <Description>Very Simple Proof of Concept Parser for Simple Arithmetic Expressions which supports Addition, Subtraction, Multiplication, Division, Function Calls and Variables</Description>
+        <PackageLicenseExpression>BSD-3-Clause-Clear</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/FreeApophis/ArithmeticParser</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageProjectUrl>https://github.com/FreeApophis/ArithmeticParser</PackageProjectUrl>
+        <Copyright>apophis@apophis.ch</Copyright>
+        <PackageTags>parser</PackageTags>
+        <Version>1.2.1</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Autofac" />
-    <PackageReference Include="Funcky" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Lexer\Lexer.csproj" />
-  </ItemGroup>
-
-  <Target Name="_AddVersionRangesToProjectReferences" AfterTargets="_GetProjectReferenceVersions">
     <ItemGroup>
-      <_ProjectReferencesWithVersions Update="@(_ProjectReferencesWithVersions)" ProjectVersion="[%(ProjectVersion), 2)" Condition="'$([MSBuild]::MakeRelative($(MSBuildProjectDirectory), %(Identity)))' == '..\Lexer\Lexer.csproj'" />
+        <PackageReference Include="Autofac" />
+        <PackageReference Include="Funcky" />
+        <PackageReference Include="Messerli.Lexer" />
     </ItemGroup>
-  </Target>
 </Project>

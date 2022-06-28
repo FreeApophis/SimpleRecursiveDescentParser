@@ -1,7 +1,7 @@
 ﻿using System;
-using apophis.Lexer;
 using ArithmeticParser.Tokens;
 using ArithmeticParser.Visitors;
+using Messerli.Lexer;
 
 namespace ArithmeticParser.Nodes
 {
@@ -10,12 +10,12 @@ namespace ArithmeticParser.Nodes
     /// </summary>
     public class VariableNode : IParseNode
     {
-        public VariableNode(Lexem lexem)
+        public VariableNode(Lexeme lexeme)
         {
-            if (lexem.Token is IdentifierToken identifier)
+            if (lexeme.Token is IdentifierToken identifier)
             {
                 Name = identifier.Name;
-                Position = lexem.Position;
+                Position = lexeme.Position;
             } 
             else
             {

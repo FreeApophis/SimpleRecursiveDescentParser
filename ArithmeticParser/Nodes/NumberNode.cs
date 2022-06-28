@@ -1,18 +1,18 @@
 ﻿using System.Globalization;
-using apophis.Lexer;
 using ArithmeticParser.Tokens;
 using ArithmeticParser.Visitors;
+using Messerli.Lexer;
 
 namespace ArithmeticParser.Nodes
 {
     public class NumberNode : IParseNode
     {
-        internal NumberNode(Lexem lexem)
+        internal NumberNode(Lexeme lexeme)
         {
-            if (lexem.Token is NumberToken number)
+            if (lexeme.Token is NumberToken number)
             {
                 Number = number.Value;
-                Position = lexem.Position;
+                Position = lexeme.Position;
             }
         }
 

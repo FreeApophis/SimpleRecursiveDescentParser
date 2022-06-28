@@ -1,7 +1,7 @@
 ﻿using System;
-using apophis.Lexer;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
+using Messerli.Lexer;
 
 namespace ArithmeticParser.Parsing
 {
@@ -16,12 +16,12 @@ namespace ArithmeticParser.Parsing
         /// </summary>
         /// <param name="walker">Lexer input</param>
         /// <returns></returns>
-        public IParseNode Parse(TokenWalker walker) 
+        public IParseNode Parse(ITokenWalker walker) 
             => ParseIdentifier(walker.Pop());
 
-        private static IParseNode ParseIdentifier(Lexem lexem)
-            => lexem.Token is IdentifierToken
-                ? new VariableNode(lexem)
+        private static IParseNode ParseIdentifier(Lexeme lexeme)
+            => lexeme.Token is IdentifierToken
+                ? new VariableNode(lexeme)
                 : throw new ArgumentNullException();
     }
 }

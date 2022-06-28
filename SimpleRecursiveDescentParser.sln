@@ -1,15 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29111.141
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArithmeticParser", "ArithmeticParser\ArithmeticParser.csproj", "{AEE04BDB-97AC-44DD-B6F4-7AC8214615FB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArithmeticParser.Test", "ArithmeticParser.Test\ArithmeticParser.Test.csproj", "{31BA1B18-E2DC-432D-9D75-2744C11E937E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer", "Lexer\Lexer.csproj", "{A783602F-FD99-438A-B861-C429F9C75063}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer.Test", "Lexer.Test\Lexer.Test.csproj", "{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LambdaCalculusParser", "LambdaCalculusParser\LambdaCalculusParser.csproj", "{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}"
 EndProject
@@ -35,14 +31,6 @@ Global
 		{31BA1B18-E2DC-432D-9D75-2744C11E937E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31BA1B18-E2DC-432D-9D75-2744C11E937E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31BA1B18-E2DC-432D-9D75-2744C11E937E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A783602F-FD99-438A-B861-C429F9C75063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A783602F-FD99-438A-B861-C429F9C75063}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A783602F-FD99-438A-B861-C429F9C75063}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A783602F-FD99-438A-B861-C429F9C75063}.Release|Any CPU.Build.0 = Release|Any CPU
-		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{637A704D-5D3F-49A1-A7CA-4AD5A543CDCA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00CF7D56-DF13-4CBC-A975-F47C2F9F229F}.Release|Any CPU.ActiveCfg = Release|Any CPU

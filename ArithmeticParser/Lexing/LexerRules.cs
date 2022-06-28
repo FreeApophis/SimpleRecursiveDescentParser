@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using apophis.Lexer;
-using apophis.Lexer.Rules;
 using ArithmeticParser.Tokens;
 using Funcky.Extensions;
+using Messerli.Lexer;
+using Messerli.Lexer.Rules;
 
 namespace ArithmeticParser.Lexing
 {
     /// <summary>
     /// This class represents the necessary lexer rules for the arithmetic parser
     /// </summary>
-    public class LexerRules : ILexerRules
+    public static class LexerRules 
     {
-        /// <inheritdoc />
-        public IEnumerable<ILexerRule> GetRules()
+        public static IEnumerable<ILexerRule> GetRules()
         {
             yield return new LexerRule(char.IsWhiteSpace, ScanWhiteSpace);
             yield return new LexerRule(c => char.IsDigit(c) || c == '.', ScanNumber);
@@ -30,7 +29,7 @@ namespace ArithmeticParser.Lexing
             yield return new SimpleLexerRule<CommaToken>(",");
         }
 
-        private static Lexem ScanWhiteSpace(ILexerReader reader)
+        private static Lexeme ScanWhiteSpace(ILexerReader reader)
         {
             var startPosition = reader.Position;
 
@@ -40,10 +39,10 @@ namespace ArithmeticParser.Lexing
                 reader.Read();
             }
 
-            return new Lexem(new WhiteSpaceToken(), new Position(startPosition, reader.Position - startPosition));
+            return new Lexeme(new WhiteSpaceToken(), new Position(startPosition, reader.Position - startPosition));
         }
 
-        private static Lexem ScanNumber(ILexerReader reader)
+        private static Lexeme ScanNumber(ILexerReader reader)
         {
             var startPosition = reader.Position;
             var stringBuilder = new StringBuilder();
@@ -75,10 +74,10 @@ namespace ArithmeticParser.Lexing
                 some: d => d
                 );
 
-            return new Lexem(new NumberToken(parsedDouble), new Position(startPosition, reader.Position - startPosition));
+            return new Lexeme(new NumberToken(parsedDouble), new Position(startPosition, reader.Position - startPosition));
         }
 
-        private static Lexem ScanIdentifier(ILexerReader reader)
+        private static Lexeme ScanIdentifier(ILexerReader reader)
         {
             var startPosition = reader.Position;
             var stringBuilder = new StringBuilder();
@@ -87,7 +86,7 @@ namespace ArithmeticParser.Lexing
                 stringBuilder.Append(reader.Read().Match(' ', c => c));
             }
 
-            return new Lexem(new IdentifierToken(stringBuilder.ToString()), new Position(startPosition, reader.Position - startPosition));
+            return new Lexeme(new IdentifierToken(stringBuilder.ToString()), new Position(startPosition, reader.Position - startPosition));
         }
     }
 }

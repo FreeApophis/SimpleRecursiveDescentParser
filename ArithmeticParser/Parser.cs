@@ -1,9 +1,9 @@
-﻿using apophis.Lexer;
-using ArithmeticParser.Lexing;
+﻿using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Parsing;
 using ArithmeticParser.Tokens;
 using System.Linq;
+using Messerli.Lexer;
 
 namespace ArithmeticParser
 {
@@ -46,10 +46,8 @@ namespace ArithmeticParser
             var powerTermParser = new PowerTermParser(factorParser);
             var termParser = new TermParser(powerTermParser);
             expressionParser.TermParser = termParser;
-            var lexerRules = new LexerRules();
-            var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
-            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken(), lexems => new LinePositionCalculator(lexems));
-            return new Parser(tokenWalker, expressionParser);
+
+            return new Parser(TokenWalker.Create<EpsilonToken>(LexerRules.GetRules()), expressionParser);
         }
 
 

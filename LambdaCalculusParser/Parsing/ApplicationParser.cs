@@ -1,7 +1,7 @@
-﻿using apophis.Lexer;
-using LambdaCalculusParser.Lexing;
+﻿using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Tokens;
+using Messerli.Lexer;
 
 namespace LambdaCalculusParser.Parsing
 {

@@ -1,12 +1,11 @@
-﻿using apophis.Lexer;
-using apophis.Lexer.Exceptions;
-using ArithmeticParser.Lexing;
+﻿using ArithmeticParser.Lexing;
 using ArithmeticParser.Tokens;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Tokens;
 using LambdaCalculusParser.Visitors;
-using System;
+using Messerli.Lexer;
+using Messerli.Lexer.Exceptions;
 using Xunit;
 
 namespace LambdaCalculusParser.Test
@@ -23,9 +22,7 @@ namespace LambdaCalculusParser.Test
         [Fact]
         public void GivenLambdaCalculusSourceTheTokenizerGivesAUsefulTokenStream()
         {
-            var lexerRules = new LexerRules();
-            var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
-            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken(), lexems => new LinePositionCalculator(lexems));
+            var tokenWalker = TokenWalker.Create<EpsilonToken>(LexerRules.GetRules());
 
             tokenWalker.Scan(@"λs.(λz.(s z))");
 

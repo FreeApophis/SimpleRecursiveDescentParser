@@ -1,22 +1,22 @@
 ﻿using System;
-using apophis.Lexer;
 using ArithmeticParser.Tokens;
+using Messerli.Lexer;
 
 namespace ArithmeticParser.Lexing
 {
     public static class TokenWalkerExtensions
     {
-        public static bool NextIsLineOperator(this TokenWalker walker, int lookAhead = 0)
+        public static bool NextIsLineOperator(this ITokenWalker walker, int lookAhead = 0)
         {
             return walker.NextIs<MinusToken>(lookAhead) || walker.NextIs<PlusToken>(lookAhead);
         }
 
-        public static bool NextIsDotOperator(this TokenWalker walker, int lookAhead = 0)
+        public static bool NextIsDotOperator(this ITokenWalker walker, int lookAhead = 0)
         {
             return walker.NextIs<MultiplicationToken>(lookAhead) || walker.NextIs<DivideToken>(lookAhead) || walker.NextIs<ModuloToken>(lookAhead);
         }
 
-        public static void ExpectClosingParenthesis(this TokenWalker walker)
+        public static void ExpectClosingParenthesis(this ITokenWalker walker)
         {
             if (!(walker.NextIs<ClosedParenthesisToken>()))
             {
@@ -25,7 +25,7 @@ namespace ArithmeticParser.Lexing
             walker.Pop();
         }
 
-        public static void ExpectOpeningParenthesis(this TokenWalker walker)
+        public static void ExpectOpeningParenthesis(this ITokenWalker walker)
         {
             if (!walker.NextIs<OpenParenthesisToken>())
             {

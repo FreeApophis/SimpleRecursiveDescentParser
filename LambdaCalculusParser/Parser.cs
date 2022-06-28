@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using apophis.Lexer;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Parsing;
 using LambdaCalculusParser.Tokens;
+using Messerli.Lexer;
 
 namespace LambdaCalculusParser
 {
@@ -44,10 +44,7 @@ namespace LambdaCalculusParser
             var applicationParser = new ApplicationParser(expressionParser);
             expressionParser.ApplicationParser = applicationParser;
 
-            var lexerRules = new LexerRules();
-            var tokenizer = new Tokenizer(lexerRules, s => new LexerReader(s), lexems => new LinePositionCalculator(lexems));
-            var tokenWalker = new TokenWalker(tokenizer, () => new EpsilonToken(), lexems => new LinePositionCalculator(lexems));
-            return new Parser(tokenWalker, applicationParser);
+            return new Parser(TokenWalker.Create<EpsilonToken>(LexerRules.GetRules()), applicationParser);
         }
     }
 }

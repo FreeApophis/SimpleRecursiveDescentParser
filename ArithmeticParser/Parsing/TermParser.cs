@@ -1,7 +1,7 @@
-﻿using apophis.Lexer;
-using ArithmeticParser.Lexing;
+﻿using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
+using Messerli.Lexer;
 
 namespace ArithmeticParser.Parsing
 {
@@ -29,12 +29,12 @@ namespace ArithmeticParser.Parsing
                 ? ParseNextDot(walker, NextToken(walker, result, walker.Pop()))
                 : result;
 
-        private IParseNode NextToken(TokenWalker walker, IParseNode result, Lexem lexem)
-            => lexem.Token switch
+        private IParseNode NextToken(TokenWalker walker, IParseNode result, Lexeme lexeme)
+            => lexeme.Token switch
             {
-                DivideToken _ => new DivisionOperator(result, _powerTermParser.Parse(walker), lexem.Position),
-                MultiplicationToken _ => new MultiplicationOperator(result, _powerTermParser.Parse(walker), lexem.Position),
-                ModuloToken _ => new ModuloOperator(result, _powerTermParser.Parse(walker), lexem.Position),
+                DivideToken _ => new DivisionOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
+                MultiplicationToken _ => new MultiplicationOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
+                ModuloToken _ => new ModuloOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
                 _ => result
             };
     }

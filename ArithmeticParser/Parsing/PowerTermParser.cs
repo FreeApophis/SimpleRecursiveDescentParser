@@ -1,6 +1,6 @@
-﻿using apophis.Lexer;
-using ArithmeticParser.Nodes;
+﻿using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
+using Messerli.Lexer;
 
 namespace ArithmeticParser.Parsing
 {
@@ -18,7 +18,7 @@ namespace ArithmeticParser.Parsing
                 ? ParseNextPowerToken(walker, NextToken(walker, result, walker.Pop()))
                 : result;
 
-        private PowerOperator NextToken(TokenWalker walker, IParseNode result, Lexem lexem)
-            => new(result, _factorParser.Parse(walker), lexem.Position);
+        private PowerOperator NextToken(TokenWalker walker, IParseNode result, Lexeme lexeme)
+            => new(result, _factorParser.Parse(walker), lexeme.Position);
     }
 }
