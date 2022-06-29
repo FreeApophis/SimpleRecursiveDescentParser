@@ -11,11 +11,6 @@ namespace ArithmeticParser.Parsing
     /// </summary>
     public class VariableParser
     {
-        /// <summary>
-        /// Overloaded Parse function to parse a Function
-        /// </summary>
-        /// <param name="walker">Lexer input</param>
-        /// <returns></returns>
         public IParseNode Parse(ITokenWalker walker) 
             => ParseIdentifier(walker.Pop());
 

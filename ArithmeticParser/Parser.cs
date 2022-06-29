@@ -54,7 +54,7 @@ namespace ArithmeticParser
 
         public IParseNode Parse(string expression)
         {
-            _tokenWalker.Scan(expression, lexems => lexems.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)));
+            _tokenWalker.Scan(expression, lexemes => lexemes.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)));
 
             return Parse();
         }

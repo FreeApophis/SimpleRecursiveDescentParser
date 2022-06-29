@@ -7,31 +7,19 @@ namespace ArithmeticParser.Lexing
     public static class TokenWalkerExtensions
     {
         public static bool NextIsLineOperator(this ITokenWalker walker, int lookAhead = 0)
-        {
-            return walker.NextIs<MinusToken>(lookAhead) || walker.NextIs<PlusToken>(lookAhead);
-        }
+            => walker.Peek(lookAhead).Token is MinusToken or PlusToken;
 
         public static bool NextIsDotOperator(this ITokenWalker walker, int lookAhead = 0)
-        {
-            return walker.NextIs<MultiplicationToken>(lookAhead) || walker.NextIs<DivideToken>(lookAhead) || walker.NextIs<ModuloToken>(lookAhead);
-        }
+            => walker.Peek(lookAhead).Token is MultiplicationToken or DivideToken or ModuloToken;
 
-        public static void ExpectClosingParenthesis(this ITokenWalker walker)
-        {
-            if (!(walker.NextIs<ClosedParenthesisToken>()))
-            {
-                throw new Exception($"Expecting ')' in expression, instead got: {walker.Peek().Token}");
-            }
-            walker.Pop();
-        }
+        public static Lexeme ExpectClosingParenthesis(this ITokenWalker walker) 
+            => walker.NextIs<ClosedParenthesisToken>()
+                ? walker.Pop()
+                : throw new Exception($"Expecting ')' in expression, instead got: {walker.Peek().Token}");
 
-        public static void ExpectOpeningParenthesis(this ITokenWalker walker)
-        {
-            if (!walker.NextIs<OpenParenthesisToken>())
-            {
-                throw new Exception($"Expecting Real number or '(' in expression, instead got: {walker.Peek().Token}");
-            }
-            walker.Pop();
-        }
+        public static Lexeme ExpectOpeningParenthesis(this ITokenWalker walker) 
+            => walker.NextIs<OpenParenthesisToken>()
+                ? walker.Pop()
+                : throw new Exception($"Expecting Real number or '(' in expression, instead got: {walker.Peek().Token}");
     }
 }

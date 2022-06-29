@@ -5,6 +5,7 @@ using ArithmeticParser.Tokens;
 using Funcky.Extensions;
 using Messerli.Lexer;
 using Messerli.Lexer.Rules;
+using static Funcky.Functional;
 
 namespace ArithmeticParser.Lexing
 {
@@ -33,7 +34,7 @@ namespace ArithmeticParser.Lexing
         {
             var startPosition = reader.Position;
 
-            while (reader.Peek().Match(false, char.IsWhiteSpace))
+            while (reader.Peek().Match(none: false, some: char.IsWhiteSpace))
             {
                 // we are not interested in what kind of whitespace, so we just discard the result
                 reader.Read();
@@ -47,14 +48,14 @@ namespace ArithmeticParser.Lexing
             var startPosition = reader.Position;
             var stringBuilder = new StringBuilder();
             var decimalExists = false;
-            while (reader.Peek().Match(false, char.IsDigit) || reader.Peek().Match(false, c => c == '.'))
+            while (reader.Peek().Match(none: false, some: char.IsDigit) || reader.Peek().Match(none: false, some: c => c == '.'))
             {
                 var digit = reader.Read();
                 var isDot =
                     from d in digit
                     select d == '.';
 
-                if (isDot.Match(false, p => p))
+                if (isDot.Match(none: false, some: Identity))
                 {
                     if (decimalExists)
                     {
@@ -63,16 +64,11 @@ namespace ArithmeticParser.Lexing
                     decimalExists = true;
                 }
 
-                stringBuilder.Append(digit.Match(' ', d => d));
+                stringBuilder.Append(digit.Match(none: ' ', some: Identity));
             }
 
 
-            var maybeDouble = stringBuilder.ToString().ParseDoubleOrNone();
-
-            var parsedDouble = maybeDouble.Match(
-                none: () => throw new Exception("Could not parse number: " + stringBuilder),
-                some: d => d
-                );
+            var parsedDouble = stringBuilder.ToString().ParseDoubleOrNone().Match(none: () => throw new Exception("Could not parse number: " + stringBuilder), some: Identity);
 
             return new Lexeme(new NumberToken(parsedDouble), new Position(startPosition, reader.Position - startPosition));
         }
@@ -83,7 +79,7 @@ namespace ArithmeticParser.Lexing
             var stringBuilder = new StringBuilder();
             while (reader.Peek().Match(false, char.IsLetterOrDigit))
             {
-                stringBuilder.Append(reader.Read().Match(' ', c => c));
+                stringBuilder.Append(reader.Read().Match(none: ' ', some: Identity));
             }
 
             return new Lexeme(new IdentifierToken(stringBuilder.ToString()), new Position(startPosition, reader.Position - startPosition));

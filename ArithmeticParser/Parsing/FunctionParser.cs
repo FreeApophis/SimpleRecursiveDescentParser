@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Immutable;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
 using Messerli.Lexer;
@@ -18,33 +19,29 @@ namespace ArithmeticParser.Parsing
             _expressionParser = expressionParser;
         }
 
-        /// <summary>
-        /// Overloaded Parse function to parse a Function
-        /// </summary>
-        /// <param name="walker">Lexer input</param>
-        /// <returns></returns>
-        public IParseNode Parse(TokenWalker walker)
+        public IParseNode Parse(ITokenWalker walker) 
+            => walker.Pop() is { Token: IdentifierToken } lexeme
+                ? ParseFunction(walker, lexeme)
+                : throw new ArgumentNullException();
+
+        private IParseNode ParseFunction(ITokenWalker walker, Lexeme functionLexeme)
         {
-            var lexem = walker.Pop();
-            if (lexem.Token is IdentifierToken)
-            {
-                var function = new FunctionNode(lexem);
+            var openParenthesis = walker.Consume<OpenParenthesisToken>();
+            var parameters = ParseNextParameter(walker, ImmutableList.Create(_expressionParser.Parse(walker)));
+            var closedParenthesis = walker.Consume<ClosedParenthesisToken>();
 
-                // Pop opening parenthesis
-                function.OpenParenthesis = walker.Consume<OpenParenthesisToken>();
+            return new FunctionNode(functionLexeme, openParenthesis, parameters, closedParenthesis);
+        }
 
-                function.Parameters.Add(_expressionParser.Parse(walker));
-                while (walker.NextIs<CommaToken>())
-                {
-                    walker.Consume<CommaToken>();
-                    function.Parameters.Add(_expressionParser.Parse(walker));
-                }
+        private ImmutableList<IParseNode> ParseNextParameter(ITokenWalker walker, ImmutableList<IParseNode> parameters) 
+            => walker.NextIs<CommaToken>()
+                ? ParseNextParameter(walker, ParseParameter(walker, parameters))
+                : parameters;
 
-                function.ClosedParenthesis = walker.Consume<ClosedParenthesisToken>();
-                return function;
-            }
-
-            throw new ArgumentNullException();
+        private ImmutableList<IParseNode> ParseParameter(ITokenWalker walker, ImmutableList<IParseNode> parameters)
+        {
+            walker.Consume<CommaToken>();
+            return parameters.Add(_expressionParser.Parse(walker));
         }
     }
 }

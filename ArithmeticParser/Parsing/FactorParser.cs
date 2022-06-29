@@ -24,25 +24,21 @@ namespace ArithmeticParser.Parsing
             _functionParser = functionParser;
         }
 
-        /// <summary>
-        /// Overloaded Parse function to parse a Factor
-        /// </summary>
-        /// <param name="walker">Lexer input</param>
-        /// <returns></returns>
-        public IParseNode Parse(TokenWalker walker)
+        public IParseNode Parse(ITokenWalker walker) 
+            => walker.Peek().Token switch
+            {
+                NumberToken => CreateNumberNode(walker),
+                IdentifierToken => ParseFunctionOrVariable(walker),
+                _ => ParseParenthesisExpression(walker),
+            };
+
+        private IParseNode ParseFunctionOrVariable(ITokenWalker walker) 
+            => walker.NextIs<OpenParenthesisToken>(1)
+                ? _functionParser.Parse(walker)
+                : _variableParser.Parse(walker);
+
+        private IParseNode ParseParenthesisExpression(ITokenWalker walker)
         {
-            if (walker.NextIs<NumberToken>())
-            {
-                return CreateNumberNode(walker);
-            }
-
-            if (walker.NextIs<IdentifierToken>())
-            {
-                return walker.NextIs<OpenParenthesisToken>(1)
-                    ? _functionParser.Parse(walker)
-                    : _variableParser.Parse(walker);
-            }
-
             walker.ExpectOpeningParenthesis();
             var result = _expressionParser.Parse(walker);
             walker.ExpectClosingParenthesis();
@@ -50,15 +46,9 @@ namespace ArithmeticParser.Parsing
             return result;
         }
 
-        private static NumberNode CreateNumberNode(TokenWalker walker)
-        {
-            var lexem = walker.Pop();
-            if (lexem.Token is NumberToken)
-            {
-                return new NumberNode(lexem);
-            }
-
-            throw new Exception("Expecting Real number but got something else");
-        }
+        private static NumberNode CreateNumberNode(ITokenWalker walker) 
+            => walker.Pop() is { Token: NumberToken } lexeme
+                ? new NumberNode(lexeme)
+                : throw new Exception("Expecting Real number but got something else");
     }
 }

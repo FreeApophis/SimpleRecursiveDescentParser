@@ -49,8 +49,8 @@ namespace LambdaCalculusParser.Parsing
 
             if (parserContext.TokenWalker.NextIs<IdentifierToken>())
             {
-                var lexem = parserContext.TokenWalker.Pop();
-                return new Variable(((IdentifierToken)lexem.Token).Name);
+                var lexeme = parserContext.TokenWalker.Pop();
+                return new Variable(((IdentifierToken)lexeme.Token).Name);
             }
 
             throw new Exception("EOF");

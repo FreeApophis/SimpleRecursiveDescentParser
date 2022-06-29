@@ -10,15 +10,16 @@ namespace ArithmeticParser.Parsing
 
         public PowerTermParser(FactorParser factorParser)
             => _factorParser = factorParser;
-        public IParseNode Parse(TokenWalker walker)
+
+        public IParseNode Parse(ITokenWalker walker)
             => ParseNextPowerToken(walker, _factorParser.Parse(walker));
 
-        private IParseNode ParseNextPowerToken(TokenWalker walker, IParseNode result)
+        private IParseNode ParseNextPowerToken(ITokenWalker walker, IParseNode result)
             => walker.NextIs<PowerToken>()
                 ? ParseNextPowerToken(walker, NextToken(walker, result, walker.Pop()))
                 : result;
 
-        private PowerOperator NextToken(TokenWalker walker, IParseNode result, Lexeme lexeme)
+        private PowerOperator NextToken(ITokenWalker walker, IParseNode result, Lexeme lexeme)
             => new(result, _factorParser.Parse(walker), lexeme.Position);
     }
 }

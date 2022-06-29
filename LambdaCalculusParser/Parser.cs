@@ -28,7 +28,7 @@ namespace LambdaCalculusParser
 
         public ILambdaExpression Parse(string expression)
         {
-            _parserContext.TokenWalker.Scan(expression, lexems => lexems.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)));
+            _parserContext.TokenWalker.Scan(expression, lexemes => lexemes.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)));
 
             var result = _applicationParser.Parse(_parserContext);
 

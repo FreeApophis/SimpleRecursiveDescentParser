@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
@@ -16,36 +15,34 @@ namespace ArithmeticParser.Parsing
         // Break the dependency cycle
         public TermParser? TermParser { get; set; }
 
-        public IParseNode Parse(TokenWalker walker)
-        {
-            Debug.Assert(TermParser != null);
+        public IParseNode Parse(ITokenWalker walker) 
+            => ParseNextTerm(walker, ParseFirstTerm(walker));
 
-            IParseNode result = walker.NextIs<MinusToken>()
+        private IParseNode ParseNextTerm(ITokenWalker walker, IParseNode result) 
+            => walker.NextIsLineOperator()
+                ? ParseNextTerm(walker, NextTerm(walker, result))
+                : result;
+
+        private IParseNode NextTerm(ITokenWalker walker, IParseNode result)
+            => walker.Pop() switch
+            {
+                { Token: MinusToken } lexeme => new MinusOperator(result, SafeTermParser.Parse(walker), lexeme.Position),
+                { Token: PlusToken } lexeme => new PlusOperator(result, SafeTermParser.Parse(walker), lexeme.Position),
+                _ => result
+            };
+
+        private IParseNode ParseFirstTerm(ITokenWalker walker)
+            => walker.NextIs<MinusToken>()
                 ? ParseUnaryMinus(walker)
                 : SafeTermParser.Parse(walker);
 
-            while (walker.NextIsLineOperator())
-            {
-                var lexem = walker.Pop();
-                result = lexem.Token switch
-                {
-                    MinusToken _ => new MinusOperator(result, SafeTermParser.Parse(walker), lexem.Position),
-                    PlusToken _ => new PlusOperator(result, SafeTermParser.Parse(walker), lexem.Position),
-                    _ => result
-                };
-            }
-
-            return result;
-        }
-
         private TermParser SafeTermParser 
-            => TermParser ?? throw new NotImplementedException();
+            => TermParser ?? throw new Exception("Term Parser should be injected by the DI container, but is null");
 
-        private IParseNode ParseUnaryMinus(TokenWalker walker)
-        {
-            var lexem = walker.Pop();
+        private IParseNode ParseUnaryMinus(ITokenWalker walker) 
+            => ParseUnaryMinusTerm(walker, walker.Pop());
 
-            return new UnaryMinusOperator(SafeTermParser.Parse(walker), lexem.Position);
-        }
+        private IParseNode ParseUnaryMinusTerm(ITokenWalker walker, Lexeme lexeme) 
+            => new UnaryMinusOperator(SafeTermParser.Parse(walker), lexeme.Position);
     }
 }

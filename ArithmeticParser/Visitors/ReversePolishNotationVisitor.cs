@@ -24,7 +24,7 @@ namespace ArithmeticParser.Visitors
         public void Visit(BinaryOperator op)
         {
             op.LeftOperand.Accept(this);
-            _resultBuilder.Append(" ");
+            _resultBuilder.Append(' ');
             op.RightOperand.Accept(this);
             _resultBuilder.Append($" {op}");
         }
@@ -66,10 +66,10 @@ namespace ArithmeticParser.Visitors
 
         public void Visit(FunctionNode op)
         {
-            foreach (IParseNode parameter in op.Parameters)
+            foreach (var parameter in op.Parameters)
             {
                 parameter.Accept(this);
-                _resultBuilder.Append(" ");
+                _resultBuilder.Append(' ');
 
             }
             _resultBuilder.Append(op.Name);

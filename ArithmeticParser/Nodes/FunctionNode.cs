@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using ArithmeticParser.Tokens;
 using ArithmeticParser.Visitors;
 using Messerli.Lexer;
@@ -10,28 +11,32 @@ namespace ArithmeticParser.Nodes
     /// Represents a function parse node of the abstract syntax tree (AST)
     /// </summary>
 
-    public class FunctionNode : IParseNode
+    public record FunctionNode : IParseNode
     {
-        public FunctionNode(Lexeme lexeme)
+        public FunctionNode(Lexeme lexeme, Lexeme openParenthesis, ImmutableList<IParseNode> parameters, Lexeme closedParenthesis)
         {
             if (lexeme.Token is IdentifierToken identifier)
             {
                 Name = identifier.Name;
                 Position = lexeme.Position;
-            } else
+                OpenParenthesisPosition = openParenthesis.Position;
+                Parameters = parameters.ToImmutableList();
+                ClosedParenthesisPosition = closedParenthesis.Position;
+            } 
+            else
             {
-                throw new NotImplementedException();
+                throw new Exception("Function node must come from Identifier token.");
             }
         }
 
         /// <inheritdoc />
         public Position Position { get; }
 
-        public Lexeme? OpenParenthesis { get; set; }
+        public Position OpenParenthesisPosition { get;  }
 
-        public Lexeme? ClosedParenthesis { get; set; }
+        public Position ClosedParenthesisPosition { get;  }
 
-        public List<IParseNode> Parameters { get; } = new();
+        public ImmutableList<IParseNode> Parameters { get; } 
 
         public string Name { get; }
 

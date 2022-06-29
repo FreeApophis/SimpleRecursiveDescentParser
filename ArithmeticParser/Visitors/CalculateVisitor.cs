@@ -149,6 +149,6 @@ namespace ArithmeticParser.Visitors
         }
 
         public double Result => _stack.Peek();
-        private readonly Stack<double> _stack = new Stack<double>();
+        private readonly Stack<double> _stack = new();
     }
 }

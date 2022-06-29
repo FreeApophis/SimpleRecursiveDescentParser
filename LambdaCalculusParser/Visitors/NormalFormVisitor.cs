@@ -9,25 +9,25 @@ namespace LambdaCalculusParser.Visitors
 
         public void Visit(Abstraction lambdaExpression)
         {
-            _stringBuilder.Append("(");
-            _stringBuilder.Append("λ");
+            _stringBuilder.Append('(');
+            _stringBuilder.Append('λ');
 
             lambdaExpression.Argument.Accept(this);
 
-            _stringBuilder.Append(".");
+            _stringBuilder.Append('.');
 
             lambdaExpression.Expression.Accept(this);
 
-            _stringBuilder.Append(")");
+            _stringBuilder.Append(')');
         }
 
         public void Visit(Application application)
         {
-            _stringBuilder.Append("(");
+            _stringBuilder.Append('(');
             application.Function.Accept(this);
-            _stringBuilder.Append(" ");
+            _stringBuilder.Append(' ');
             application.Argument.Accept(this);
-            _stringBuilder.Append(")");
+            _stringBuilder.Append(')');
         }
 
         public void Visit(Variable variable)

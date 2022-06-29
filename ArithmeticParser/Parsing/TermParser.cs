@@ -16,20 +16,15 @@ namespace ArithmeticParser.Parsing
         public TermParser(PowerTermParser powerTermParser)
             => _powerTermParser = powerTermParser;
 
-        /// <summary>
-        /// Overloaded Parse function to parse a Term
-        /// </summary>
-        /// <param name="walker">Lexer input</param>
-        /// <returns></returns>
-        public IParseNode Parse(TokenWalker walker)
+        public IParseNode Parse(ITokenWalker walker)
             => ParseNextDot(walker, _powerTermParser.Parse(walker));
 
-        private IParseNode ParseNextDot(TokenWalker walker, IParseNode result)
+        private IParseNode ParseNextDot(ITokenWalker walker, IParseNode result)
             => walker.NextIsDotOperator()
                 ? ParseNextDot(walker, NextToken(walker, result, walker.Pop()))
                 : result;
 
-        private IParseNode NextToken(TokenWalker walker, IParseNode result, Lexeme lexeme)
+        private IParseNode NextToken(ITokenWalker walker, IParseNode result, Lexeme lexeme)
             => lexeme.Token switch
             {
                 DivideToken _ => new DivisionOperator(result, _powerTermParser.Parse(walker), lexeme.Position),

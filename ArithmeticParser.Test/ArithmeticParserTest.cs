@@ -409,8 +409,8 @@ namespace ArithmeticParser.Test
                 Assert.Equal(0, functionNode.Position.StartPosition);
                 Assert.Equal(3, functionNode.Position.Length);
 
-                Assert.Equal(3, functionNode.OpenParenthesis?.Position.StartPosition);
-                Assert.Equal(8, functionNode.ClosedParenthesis?.Position.StartPosition);
+                Assert.Equal(3, functionNode.OpenParenthesisPosition.StartPosition);
+                Assert.Equal(8, functionNode.ClosedParenthesisPosition.StartPosition);
 
                 if (functionNode.Parameters.First() is DivisionOperator divisionOperator)
                 {
