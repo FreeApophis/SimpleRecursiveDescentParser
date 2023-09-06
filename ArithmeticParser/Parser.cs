@@ -1,6 +1,7 @@
 ﻿using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Parsing;
+using Funcky;
 using Funcky.Lexer;
 
 namespace ArithmeticParser;
@@ -45,4 +46,5 @@ public class Parser
 
     public IParseNode Parse(string expression)
         => _expressionParser.Parse(_ruleBook.Scan(expression).Walker);
+
 }

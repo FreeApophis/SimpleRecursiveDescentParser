@@ -87,7 +87,6 @@ public class ArithmeticParserTest
         parseTree.Accept(calculator);
 
         Assert.Equal(55.0, calculator.Result);
-
     }
 
     [Fact]
@@ -198,7 +197,6 @@ public class ArithmeticParserTest
         var calculator = new CalculateVisitor();
         parseTree.Accept(calculator);
 
-
         Assert.Equal(2 * Math.PI * Math.PI, calculator.Result);
     }
 
@@ -209,7 +207,6 @@ public class ArithmeticParserTest
 
         var calculator = new CalculateVisitor();
         parseTree.Accept(calculator);
-
 
         Assert.Equal(2 * Math.Cos(Math.PI), calculator.Result);
     }
@@ -222,7 +219,6 @@ public class ArithmeticParserTest
         var calculator = new CalculateVisitor();
         parseTree.Accept(calculator);
 
-
         Assert.Equal(2, calculator.Result, new MagnitudeDoubleComparer(0.00001));
     }
 
@@ -234,19 +230,17 @@ public class ArithmeticParserTest
         var calculator = new CalculateVisitor();
         parseTree.Accept(calculator);
 
-
         Assert.Equal(Math.E * 16, calculator.Result, new MagnitudeDoubleComparer(0.00001));
     }
 
     [Fact]
     public void ShouldParseVariableXAndCalculateWithDifferentValuesOfXCorrectly()
     {
-
         var parseTree = _parser.Parse("100 * x");
 
         var calculator = new CalculateVisitor();
 
-        foreach (int x in Enumerable.Range(0, 100))
+        foreach (var x in Enumerable.Range(0, 100))
         {
             calculator.Variables["x"] = x;
             parseTree.Accept(calculator);
@@ -421,13 +415,12 @@ public class ArithmeticParserTest
                     Assert.Equal(4, variableNode.Position.StartPosition);
                     Assert.Equal(2, variableNode.Position.Length);
                     Assert.Equal(6, variableNode.Position.EndPosition);
-                        
                 }
                 else
                 {
                     Assert.True(false);
                 }
-            } 
+            }
             else
             {
                 Assert.True(false);
@@ -437,6 +430,5 @@ public class ArithmeticParserTest
         {
             Assert.True(false);
         }
-
     }
 }

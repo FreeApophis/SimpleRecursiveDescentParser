@@ -5,14 +5,14 @@ using static Funcky.Functional;
 namespace ArithmeticParser.Lexing;
 
 /// <summary>
-/// This class represents the necessary lexer rules for the arithmetic parser
+/// This class represents the necessary lexer rules for the arithmetic parser.
 /// </summary>
 public static class LexerRules
 {
     public static LexerRuleBook GetRules()
         => LexerRuleBook.Builder
             .AddRule(char.IsWhiteSpace, ScanWhiteSpace)
-            .AddRule(c => char.IsDigit(c) || c == '.', ScanNumber)
+            .AddRule(c => char.IsDigit(c) || c is '.', ScanNumber)
             .AddRule(char.IsLetter, ScanIdentifier)
             .AddSimpleRule<MinusToken>("-")
             .AddSimpleRule<PlusToken>("+")
@@ -41,7 +41,7 @@ public static class LexerRules
     private static Lexeme ScanNumber(ILexemeBuilder builder)
     {
         var decimalExists = false;
-        while (builder.Peek().Match(none: false, some: char.IsDigit) || builder.Peek().Match(none: false, some: c => c == '.'))
+        while (builder.Peek().Match(none: false, some: c => c is '.' || char.IsDigit(c)))
         {
             var digit = builder.Peek();
             var isDot =
@@ -54,6 +54,7 @@ public static class LexerRules
                 {
                     throw new Exception("Multiple dots in decimal number");
                 }
+
                 decimalExists = true;
             }
 
@@ -66,12 +67,7 @@ public static class LexerRules
     }
 
     private static Lexeme ScanIdentifier(ILexemeBuilder builder)
-    {
-        while (builder.Peek().Match(false, char.IsLetterOrDigit))
-        {
-            builder.Retain();
-        }
-
-        return builder.Build(new IdentifierToken(builder.CurrentToken));
-    }
+        => builder.Peek().Match(false, char.IsLetterOrDigit)
+            ? ScanIdentifier(builder.Retain())
+            : builder.Build(new IdentifierToken(builder.CurrentToken));
 }

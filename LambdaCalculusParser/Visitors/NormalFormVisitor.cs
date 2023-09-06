@@ -7,6 +7,9 @@ public class NormalFormVisitor : ILambdaExpressionVisitor
 {
     private readonly StringBuilder _stringBuilder = new();
 
+    public string Result
+        => _stringBuilder.ToString();
+
     public void Visit(Abstraction lambdaExpression)
     {
         _stringBuilder.Append('(');
@@ -34,7 +37,4 @@ public class NormalFormVisitor : ILambdaExpressionVisitor
     {
         _stringBuilder.Append(variable.Name);
     }
-
-    public string Result 
-        => _stringBuilder.ToString();
 }

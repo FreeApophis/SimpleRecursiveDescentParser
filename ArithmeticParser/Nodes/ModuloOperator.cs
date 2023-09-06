@@ -5,8 +5,8 @@ namespace ArithmeticParser.Nodes;
 
 public class ModuloOperator : BinaryOperator
 {
-    internal ModuloOperator(IParseNode leftOperand, IParseNode rightOperand, Position position) :
-        base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Point, position)
+    internal ModuloOperator(IParseNode leftOperand, IParseNode rightOperand, Position position)
+        : base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Point, position)
     {
     }
 
@@ -15,6 +15,6 @@ public class ModuloOperator : BinaryOperator
         => visitor.Visit(this);
 
     /// <inheritdoc />
-    public override string ToString() 
+    public override string ToString()
         => "%";
 }

@@ -13,6 +13,8 @@ namespace LambdaCalculusParser;
 /// Application := Expression +
 /// Expression  := "λ" Identifier "." Application | "(" Application ")" | Identifier
 /// Identifier  := [a-z]*
+///
+/// The lambda can be either λ or \.
 /// </summary>
 public class Parser
 {

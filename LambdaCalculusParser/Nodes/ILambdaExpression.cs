@@ -5,7 +5,7 @@ namespace LambdaCalculusParser.Nodes;
 
 public interface ILambdaExpression
 {
-    void Accept(ILambdaExpressionVisitor visitor);
-
     Position Position { get; }
+
+    void Accept(ILambdaExpressionVisitor visitor);
 }

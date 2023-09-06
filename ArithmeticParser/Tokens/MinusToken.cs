@@ -2,6 +2,6 @@
 
 public class MinusToken : OperatorToken
 {
-    public override string ToString() 
+    public override string ToString()
         => "Subtraction Operator";
 }

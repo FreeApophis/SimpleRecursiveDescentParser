@@ -2,6 +2,6 @@
 
 public class ClosedParenthesisToken : ParenthesisToken
 {
-    public override string ToString() 
+    public override string ToString()
         => "Closing Parenthesis";
 }

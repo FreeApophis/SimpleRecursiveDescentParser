@@ -6,21 +6,22 @@ namespace LambdaCalculusParser.Nodes;
 
 public class Variable : ILambdaExpression
 {
-    public string Name { get; }
-    public Option<int> DeBruinIndex { get; }
-
     public Variable(string name, Option<int> deBruinIndex = default)
     {
         Name = name;
         DeBruinIndex = deBruinIndex;
     }
 
+    public string Name { get; }
+
+    public Option<int> DeBruinIndex { get; }
+
+    public Position Position { get; }
+
     public void Accept(ILambdaExpressionVisitor visitor)
     {
         visitor.Visit(this);
     }
-
-    public Position Position { get; }
 
     public override string ToString()
     {

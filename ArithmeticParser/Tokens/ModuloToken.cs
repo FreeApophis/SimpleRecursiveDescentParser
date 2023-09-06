@@ -1,8 +1,7 @@
 ﻿namespace ArithmeticParser.Tokens;
 
-class ModuloToken : OperatorToken
+public class ModuloToken : OperatorToken
 {
-    public override string ToString() 
+    public override string ToString()
         => "Modulo Operator";
-
 }

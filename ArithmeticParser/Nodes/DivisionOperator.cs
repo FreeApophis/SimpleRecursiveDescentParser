@@ -4,12 +4,12 @@ using Funcky.Lexer;
 namespace ArithmeticParser.Nodes;
 
 /// <summary>
-/// Represents a division operator parse node of the abstract syntax tree (AST)
+/// Represents a division operator parse node of the abstract syntax tree (AST).
 /// </summary>
 public class DivisionOperator : BinaryOperator
 {
-    internal DivisionOperator(IParseNode leftOperand, IParseNode rightOperand, Position position) :
-        base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Line, position)
+    internal DivisionOperator(IParseNode leftOperand, IParseNode rightOperand, Position position)
+        : base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Line, position)
     {
     }
 
@@ -18,6 +18,6 @@ public class DivisionOperator : BinaryOperator
         => visitor.Visit(this);
 
     /// <inheritdoc />
-    public override string ToString() 
+    public override string ToString()
         => "/";
 }

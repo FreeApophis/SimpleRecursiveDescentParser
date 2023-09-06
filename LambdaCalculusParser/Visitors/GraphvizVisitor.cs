@@ -5,11 +5,12 @@ namespace LambdaCalculusParser.Visitors;
 
 public class GraphvizVisitor : ILambdaExpressionVisitor
 {
-    private int _nodeId;
     private readonly Stack<int> _stack = new();
     private readonly StringBuilder _result = new();
+    private int _nodeId;
 
     public string Result => $"graph G {{\n{_result}}}";
+
     public void Visit(Abstraction abstraction)
     {
         EmitGraphvizNodeBegin("Abstraction");
@@ -40,9 +41,11 @@ public class GraphvizVisitor : ILambdaExpressionVisitor
         {
             _result.AppendLine($"    node{_stack.Peek()} -- node{_nodeId}");
         }
+
         _stack.Push(_nodeId);
         _nodeId++;
     }
+
     private void EmitGraphvizNodeEnd()
     {
         _stack.Pop();

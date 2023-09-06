@@ -1,17 +1,17 @@
 ﻿namespace ArithmeticParser.Nodes;
 
 /// <summary>
-/// An enum representing the associativity of an operator
+/// An enum representing the associativity of an operator.
 /// </summary>
 public enum Associativity
 {
     /// <summary>
-    /// Left associative (a + b) + c
+    /// Left associative (a + b) + c.
     /// </summary>
     Left,
 
     /// <summary>
-    /// Right associative a + (b + c)
+    /// Right associative a + (b + c).
     /// </summary>
-    Right
+    Right,
 }

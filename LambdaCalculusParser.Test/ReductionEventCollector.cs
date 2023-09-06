@@ -2,7 +2,7 @@
 
 namespace LambdaCalculusParser.Test;
 
-class ReductionEventCollector
+internal class ReductionEventCollector
 {
     public List<string> Events { get; } = new();
 

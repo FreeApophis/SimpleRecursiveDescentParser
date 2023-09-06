@@ -1,16 +1,13 @@
 ﻿using System.Reflection;
 using ArithmeticParser.Nodes;
+using Funcky.Extensions;
 
 namespace ArithmeticParser.Visitors;
 
 public class CalculateVisitor : INodeVisitor
 {
-    public Dictionary<string, double> Variables { get; } = new(StringComparer.OrdinalIgnoreCase) {
-        { "e",  Math.E },
-        { "pi",  Math.PI }
-    };
-
-    readonly Dictionary<string, MethodInfo> _functions = new(StringComparer.OrdinalIgnoreCase) {
+    private readonly Dictionary<string, MethodInfo> _functions = new(StringComparer.OrdinalIgnoreCase)
+    {
         { "sin",  FromSystemMath("Sin") },
         { "cos",  FromSystemMath("Cos") },
         { "tan",  FromSystemMath("Tan") },
@@ -29,12 +26,15 @@ public class CalculateVisitor : INodeVisitor
         { "log",  new Func<double, double, double>(Math.Log).Method },
     };
 
-    private static MethodInfo FromSystemMath(string mathFunction)
-        => typeof(Math).GetMethod(mathFunction)
-           ?? throw new Exception($"function '{mathFunction} not found in System.Math'");
+    private readonly Stack<double> _stack = new();
 
-    private static double BinaryLogarithm(double value) 
-        => Math.Log(value, 2.0);
+    public Dictionary<string, double> Variables { get; } = new(StringComparer.OrdinalIgnoreCase)
+    {
+        { "e",  Math.E },
+        { "pi",  Math.PI },
+    };
+
+    public double Result => _stack.Peek();
 
     public void Visit(NumberNode number)
     {
@@ -110,42 +110,39 @@ public class CalculateVisitor : INodeVisitor
         _stack.Push(Math.Pow(_stack.Pop(), temp));
     }
 
-
     public void Visit(VariableNode variable)
-    {
-        if (Variables.ContainsKey(variable.Name))
-        {
-            _stack.Push(Variables[variable.Name]);
-        }
-        else
-        {
-            throw new Exception("Unknown variable with name: " + variable.Name);
-        }
-
-    }
+        => Variables.GetValueOrNone(readOnlyKey: variable.Name)
+            .Switch(
+                none: () => throw new Exception("Unknown variable with name: " + variable.Name),
+                some: _stack.Push);
 
     public void Visit(FunctionNode function)
-    {
-        if (_functions.ContainsKey(function.Name))
+        => _functions
+            .GetValueOrNone(readOnlyKey: function.Name)
+            .Switch(
+                none: () => throw new Exception("Unknown function with name: " + function.Name),
+                some: InvokeWithParameters(function.Parameters));
+
+    private static MethodInfo FromSystemMath(string mathFunction)
+        => typeof(Math).GetMethod(mathFunction)
+           ?? throw new Exception($"function '{mathFunction} not found in System.Math'");
+
+    private static double BinaryLogarithm(double value)
+        => Math.Log(value, 2.0);
+
+    private Action<MethodInfo> InvokeWithParameters(IEnumerable<IParseNode> parameterNodes)
+        => methodInfo =>
         {
             var parameters = new List<object>();
-            foreach (var parameter in function.Parameters)
+            foreach (var parameter in parameterNodes)
             {
                 parameter.Accept(this);
                 parameters.Add(_stack.Pop());
             }
 
-            if (_functions[function.Name].Invoke(null, parameters.ToArray()) is double result)
+            if (methodInfo.Invoke(null, parameters.ToArray()) is double result)
             {
                 _stack.Push(result);
             }
-        }
-        else
-        {
-            throw new Exception("Unknown function with name: " + function.Name);
-        }
-    }
-
-    public double Result => _stack.Peek();
-    private readonly Stack<double> _stack = new();
+        };
 }

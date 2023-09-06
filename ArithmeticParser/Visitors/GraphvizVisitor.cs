@@ -9,9 +9,9 @@ namespace ArithmeticParser.Visitors;
 /// </summary>
 public class GraphvizVisitor : INodeVisitor
 {
-    private int _nodeId;
     private readonly Stack<int> _stack = new();
     private readonly StringBuilder _result = new();
+    private int _nodeId;
 
     public string Result => $"graph G {{\n{_result}}}";
 
@@ -85,6 +85,7 @@ public class GraphvizVisitor : INodeVisitor
         {
             parameter.Accept(this);
         }
+
         EmitGraphvizNodeEnd();
     }
 
@@ -100,12 +101,13 @@ public class GraphvizVisitor : INodeVisitor
         {
             _result.AppendLine($"    node{_stack.Peek()} -- node{_nodeId}");
         }
+
         _stack.Push(_nodeId);
         _nodeId++;
     }
+
     private void EmitGraphvizNodeEnd()
     {
         _stack.Pop();
     }
-
 }

@@ -5,10 +5,15 @@ namespace ArithmeticParser.Visitors;
 
 public class FullParenthesisVisitor : INodeVisitor
 {
+    private readonly StringBuilder _resultBuilder = new();
+
+    public string Result => _resultBuilder.ToString();
+
     public void Visit(NumberNode number)
     {
         _resultBuilder.Append(number);
     }
+
     public void Visit(UnaryOperator op)
     {
         _resultBuilder.Append('(');
@@ -79,10 +84,7 @@ public class FullParenthesisVisitor : INodeVisitor
                 _resultBuilder.Append(',');
             }
         }
+
         _resultBuilder.Append(')');
-
     }
-
-    public string Result => _resultBuilder.ToString();
-    private readonly StringBuilder _resultBuilder = new();
 }

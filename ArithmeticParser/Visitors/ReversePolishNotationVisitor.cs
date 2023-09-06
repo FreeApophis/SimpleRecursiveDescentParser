@@ -5,6 +5,11 @@ namespace ArithmeticParser.Visitors;
 
 public class ReversePolishNotationVisitor : INodeVisitor
 {
+    private readonly StringBuilder _resultBuilder = new();
+
+    public string Result
+        => _resultBuilder.ToString();
+
     public void Visit(NumberNode number)
     {
         _resultBuilder.Append(number);
@@ -70,13 +75,8 @@ public class ReversePolishNotationVisitor : INodeVisitor
         {
             parameter.Accept(this);
             _resultBuilder.Append(' ');
-
         }
+
         _resultBuilder.Append(op.Name);
     }
-
-    public string Result 
-        => _resultBuilder.ToString();
-
-    private readonly StringBuilder _resultBuilder = new();
 }

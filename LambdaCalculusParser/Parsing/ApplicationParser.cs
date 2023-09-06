@@ -1,5 +1,4 @@
 ﻿using Funcky.Lexer.Extensions;
-using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Tokens;
 

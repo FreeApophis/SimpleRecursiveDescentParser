@@ -18,15 +18,18 @@ public class EtaReductionEventArgs
 public class InterpreterVisitor : ILambdaExpressionVisitor
 {
     public delegate void AlphaReductionEventHandler(object sender, AlphaReductionEventArgs e);
+
     public delegate void BetaReductionEventHandler(object sender, BetaReductionEventArgs e);
+
     public delegate void EtaReductionEventHandler(object sender, EtaReductionEventArgs e);
 
     public event AlphaReductionEventHandler? AlphaReductionEvent;
+
     public event BetaReductionEventHandler? BetaReductionEvent;
+
     public event EtaReductionEventHandler? EtaReductionEvent;
 
-    public Option<ILambdaExpression> Result;
-
+    public Option<ILambdaExpression> Result { get; set; }
 
     public void Visit(Abstraction abstraction)
     {
@@ -50,14 +53,14 @@ public class InterpreterVisitor : ILambdaExpressionVisitor
         }
     }
 
-    private ILambdaExpression Reduce(Abstraction abstraction, ILambdaExpression argumentExpression)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Visit(Variable variable)
     {
         Result = variable;
+    }
+
+    private ILambdaExpression Reduce(Abstraction abstraction, ILambdaExpression argumentExpression)
+    {
+        throw new NotImplementedException();
     }
 
     private void AlphaReduction()

@@ -1,5 +1,4 @@
 ﻿using Funcky.Lexer.Extensions;
-using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Tokens;
 
@@ -16,14 +15,14 @@ public class ExpressionParser
     }
 
     /// <summary>
-    /// Parsing the following Production:
+    /// Parsing the following Production.
     /// </summary>
     public ILambdaExpression Parse(ParserContext parserContext)
     {
         if (parserContext.Walker.NextIs<LambdaToken>())
         {
             parserContext.Walker.Consume<LambdaToken>();
-            if (parserContext.Walker.Pop().Token is IdentifierToken variableName)
+            if (parserContext.Walker.Pop() is { Token: IdentifierToken variableName })
             {
                 var variable = new Variable(variableName.Name);
                 parserContext.Walker.Consume<DotToken>();

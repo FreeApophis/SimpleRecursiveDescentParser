@@ -5,17 +5,17 @@ using Funcky.Lexer;
 namespace ArithmeticParser.Nodes;
 
 /// <summary>
-/// Represents a variable parse node of the abstract syntax tree (AST)
+/// Represents a variable parse node of the abstract syntax tree (AST).
 /// </summary>
 public class VariableNode : IParseNode
 {
     public VariableNode(Lexeme lexeme)
     {
-        if (lexeme.Token is IdentifierToken identifier)
+        if (lexeme is { Token: IdentifierToken identifier })
         {
             Name = identifier.Name;
             Position = lexeme.Position;
-        } 
+        }
         else
         {
             throw new NotImplementedException();
@@ -28,6 +28,6 @@ public class VariableNode : IParseNode
     public string Name { get; }
 
     /// <inheritdoc />
-    public void Accept(INodeVisitor visitor) 
+    public void Accept(INodeVisitor visitor)
         => visitor.Visit(this);
 }

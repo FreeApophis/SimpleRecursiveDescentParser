@@ -85,7 +85,6 @@ public class LambdaCalculusParserTest
         var printVisitor = new NormalFormVisitor();
         lambdaExpression.Accept(printVisitor);
 
-
         Assert.Equal("(λm.(λn.(λf.(λx.((m f) ((n f) x))))))", printVisitor.Result);
 
         Assert.IsType<Abstraction>(lambdaExpression);
@@ -97,6 +96,5 @@ public class LambdaCalculusParserTest
         var application = "λm.λn.λf.λx.m f (n f x";
 
         Assert.Throws<InvalidTokenException>(() => _parser.Parse(application));
-
     }
 }

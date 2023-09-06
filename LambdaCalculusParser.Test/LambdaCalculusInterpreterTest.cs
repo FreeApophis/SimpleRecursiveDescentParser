@@ -55,7 +55,6 @@ public class LambdaCalculusInterpreterTest
         var interpreter = new InterpreterVisitor();
         interpreter.Result.AndThen(expression => expression.Accept(interpreter));
 
-
         var printVisitor = new NormalFormVisitor();
         lambdaExpression.Accept(printVisitor);
 
@@ -79,7 +78,8 @@ public class LambdaCalculusInterpreterTest
         var printVisitor = new NormalFormVisitor();
         interpreter.Result.AndThen(expression => expression.Accept(printVisitor));
 
-        Assert.Collection(events.Events,
+        Assert.Collection(
+            events.Events,
             e => Assert.Equal("α", e),
             e => Assert.Equal("β", e));
 

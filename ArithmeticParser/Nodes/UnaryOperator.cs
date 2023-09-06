@@ -4,7 +4,7 @@ using Funcky.Lexer;
 namespace ArithmeticParser.Nodes;
 
 /// <summary>
-/// Represents a generic unary operator parse node of the abstract syntax tree (AST)
+/// Represents a generic unary operator parse node of the abstract syntax tree (AST).
 /// </summary>
 public class UnaryOperator : IParseNode
 {

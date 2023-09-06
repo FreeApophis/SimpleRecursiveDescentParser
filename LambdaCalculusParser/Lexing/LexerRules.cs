@@ -1,15 +1,11 @@
-﻿using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Funcky.Lexer;
-using Funcky.Monads;
 using LambdaCalculusParser.Tokens;
-using static Funcky.Functional;
 
 namespace LambdaCalculusParser.Lexing;
 
 /// <summary>
-/// This class represents the necessary lexer rules for the lambda calculus parser
+/// This class represents the necessary lexer rules for the lambda calculus parser.
 /// </summary>
 public static class LexerRules
 {
@@ -18,8 +14,6 @@ public static class LexerRules
             .AddRule(char.IsWhiteSpace, ScanWhiteSpace)
             .AddRule(c => c is '\\' or 'λ', CreateLambdaToken)
             .AddRule(IsAllowedForIdentifier, ScanIdentifier)
-            .AddSimpleRule<LambdaToken>("\\")
-            .AddSimpleRule<LambdaToken>("λ")
             .AddSimpleRule<DotToken>(".")
             .AddSimpleRule<OpenParenthesisToken>("(")
             .AddSimpleRule<ClosedParenthesisToken>(")")
@@ -54,7 +48,6 @@ public static class LexerRules
 
         return builder.Build(new IdentifierToken(builder.CurrentToken));
     }
-
 
     private static bool IsAllowedForIdentifier(char identifierCharacter)
     {

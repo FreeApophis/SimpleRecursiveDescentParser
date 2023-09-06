@@ -4,7 +4,7 @@ using Funcky.Lexer;
 namespace ArithmeticParser.Nodes;
 
 /// <summary>
-/// Represents a generic binary operator parse node of the abstract syntax tree (AST)
+/// Represents a generic binary operator parse node of the abstract syntax tree (AST).
 /// </summary>
 public class BinaryOperator : IParseNode
 {
@@ -20,10 +20,15 @@ public class BinaryOperator : IParseNode
 
     /// <inheritdoc />
     public Position Position { get; }
+
     public IParseNode LeftOperand { get; set; }
+
     public IParseNode RightOperand { get; set; }
+
     public Associativity Associativity { get; }
+
     public bool Commutative { get; }
+
     public Precedence Precedence { get; }
 
     /// <inheritdoc />
@@ -31,5 +36,4 @@ public class BinaryOperator : IParseNode
     {
         visitor.Visit(this);
     }
-
 }

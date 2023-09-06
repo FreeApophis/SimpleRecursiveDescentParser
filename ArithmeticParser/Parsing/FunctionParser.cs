@@ -19,7 +19,7 @@ public class FunctionParser
         _expressionParser = expressionParser;
     }
 
-    public IParseNode Parse(ILexemeWalker walker) 
+    public IParseNode Parse(ILexemeWalker walker)
         => walker.Pop() is { Token: IdentifierToken } lexeme
             ? ParseFunction(walker, lexeme)
             : throw new ArgumentNullException();
@@ -33,7 +33,7 @@ public class FunctionParser
         return new FunctionNode(functionLexeme, openParenthesis, parameters, closedParenthesis);
     }
 
-    private ImmutableList<IParseNode> ParseNextParameter(ILexemeWalker walker, ImmutableList<IParseNode> parameters) 
+    private ImmutableList<IParseNode> ParseNextParameter(ILexemeWalker walker, ImmutableList<IParseNode> parameters)
         => walker.NextIs<CommaToken>()
             ? ParseNextParameter(walker, ParseParameter(walker, parameters))
             : parameters;

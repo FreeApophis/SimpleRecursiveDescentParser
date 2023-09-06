@@ -16,7 +16,6 @@ public class FactorParser
     private readonly VariableParser _variableParser;
     private readonly FunctionParser _functionParser;
 
-
     public FactorParser(ExpressionParser expressionParser, VariableParser variableParser, FunctionParser functionParser)
     {
         _expressionParser = expressionParser;
@@ -24,15 +23,15 @@ public class FactorParser
         _functionParser = functionParser;
     }
 
-    public IParseNode Parse(ILexemeWalker walker) 
-        => walker.Peek().Token switch
+    public IParseNode Parse(ILexemeWalker walker)
+        => walker.Peek() switch
         {
-            NumberToken => CreateNumberNode(walker),
-            IdentifierToken => ParseFunctionOrVariable(walker),
+            { Token: NumberToken } => CreateNumberNode(walker),
+            { Token: IdentifierToken } => ParseFunctionOrVariable(walker),
             _ => ParseParenthesisExpression(walker),
         };
 
-    private IParseNode ParseFunctionOrVariable(ILexemeWalker walker) 
+    private IParseNode ParseFunctionOrVariable(ILexemeWalker walker)
         => walker.NextIs<OpenParenthesisToken>(1)
             ? _functionParser.Parse(walker)
             : _variableParser.Parse(walker);
@@ -46,7 +45,7 @@ public class FactorParser
         return result;
     }
 
-    private static NumberNode CreateNumberNode(ILexemeWalker walker) 
+    private static NumberNode CreateNumberNode(ILexemeWalker walker)
         => walker.Pop() is { Token: NumberToken } lexeme
             ? new NumberNode(lexeme)
             : throw new Exception("Expecting Real number but got something else");

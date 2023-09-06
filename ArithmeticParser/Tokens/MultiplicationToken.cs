@@ -2,6 +2,6 @@
 
 public class MultiplicationToken : OperatorToken
 {
-    public override string ToString() 
+    public override string ToString()
         => "Multiplication Operator";
 }

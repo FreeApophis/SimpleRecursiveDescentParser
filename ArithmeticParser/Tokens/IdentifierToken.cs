@@ -13,5 +13,4 @@ public class IdentifierToken : IToken
 
     public override string ToString()
         => $"Identifier: {Name}";
-
 }

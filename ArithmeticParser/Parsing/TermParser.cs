@@ -25,11 +25,11 @@ public class TermParser
             : result;
 
     private IParseNode NextToken(ILexemeWalker walker, IParseNode result, Lexeme lexeme)
-        => lexeme.Token switch
+        => lexeme switch
         {
-            DivideToken _ => new DivisionOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
-            MultiplicationToken _ => new MultiplicationOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
-            ModuloToken _ => new ModuloOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
-            _ => result
+            { Token: DivideToken } => new DivisionOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
+            { Token: MultiplicationToken } => new MultiplicationOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
+            { Token: ModuloToken } => new ModuloOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
+            _ => result,
         };
 }

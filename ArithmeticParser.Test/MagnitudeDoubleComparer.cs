@@ -1,6 +1,6 @@
 ﻿namespace ArithmeticParser.Test;
 
-class MagnitudeDoubleComparer : IEqualityComparer<double>
+public class MagnitudeDoubleComparer : IEqualityComparer<double>
 {
     private readonly double _maxDelta;
 
@@ -8,6 +8,7 @@ class MagnitudeDoubleComparer : IEqualityComparer<double>
     {
         _maxDelta = maxDelta;
     }
+
     public bool Equals(double x, double y)
     {
         return x - y < _maxDelta;
@@ -15,6 +16,6 @@ class MagnitudeDoubleComparer : IEqualityComparer<double>
 
     public int GetHashCode(double obj)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }

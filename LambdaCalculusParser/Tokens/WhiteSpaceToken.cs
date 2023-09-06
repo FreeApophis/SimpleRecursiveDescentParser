@@ -1,5 +1,4 @@
-﻿
-using Funcky.Lexer.Token;
+﻿using Funcky.Lexer.Token;
 
 namespace LambdaCalculusParser.Tokens;
 

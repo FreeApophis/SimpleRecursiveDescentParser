@@ -2,6 +2,6 @@
 
 public class CommaToken : ParenthesisToken
 {
-    public override string ToString() 
+    public override string ToString()
         => "Comma";
 }

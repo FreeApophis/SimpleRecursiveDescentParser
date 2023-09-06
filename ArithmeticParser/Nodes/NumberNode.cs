@@ -9,7 +9,7 @@ public class NumberNode : IParseNode
 {
     internal NumberNode(Lexeme lexeme)
     {
-        if (lexeme.Token is NumberToken number)
+        if (lexeme is { Token: NumberToken number })
         {
             Number = number.Value;
             Position = lexeme.Position;
@@ -18,13 +18,14 @@ public class NumberNode : IParseNode
 
     /// <inheritdoc />
     public Position Position { get; }
+
     public double Number { get; }
 
     /// <inheritdoc />
-    public virtual void Accept(INodeVisitor visitor) 
+    public virtual void Accept(INodeVisitor visitor)
         => visitor.Visit(this);
 
     /// <inheritdoc />
-    public override string ToString() 
+    public override string ToString()
         => Number.ToString(CultureInfo.InvariantCulture);
 }

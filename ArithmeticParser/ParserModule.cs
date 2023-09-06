@@ -15,6 +15,6 @@ public class ParserModule : Module
         builder.RegisterType<FactorParser>().AsSelf().SingleInstance();
         builder.RegisterType<FunctionParser>().AsSelf().SingleInstance();
         builder.RegisterType<VariableParser>().AsSelf().SingleInstance();
-        builder.Register(context => LexerRules.GetRules());
+        builder.Register(_ => LexerRules.GetRules());
     }
 }

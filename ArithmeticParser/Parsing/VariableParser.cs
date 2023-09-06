@@ -10,11 +10,11 @@ namespace ArithmeticParser.Parsing;
 /// </summary>
 public class VariableParser
 {
-    public IParseNode Parse(ILexemeWalker walker) 
+    public IParseNode Parse(ILexemeWalker walker)
         => ParseIdentifier(walker.Pop());
 
     private static IParseNode ParseIdentifier(Lexeme lexeme)
-        => lexeme.Token is IdentifierToken
+        => lexeme is { Token: IdentifierToken }
             ? new VariableNode(lexeme)
             : throw new ArgumentNullException();
 }

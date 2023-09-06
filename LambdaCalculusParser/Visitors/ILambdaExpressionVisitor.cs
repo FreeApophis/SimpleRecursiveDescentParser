@@ -9,5 +9,4 @@ public interface ILambdaExpressionVisitor
     void Visit(Application application);
 
     void Visit(Variable variable);
-
 }

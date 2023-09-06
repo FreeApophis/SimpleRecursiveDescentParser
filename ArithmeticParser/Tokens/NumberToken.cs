@@ -11,6 +11,6 @@ public class NumberToken : IToken
 
     public double Value { get; }
 
-    public override string ToString() 
+    public override string ToString()
         => $"Number: {Value}";
 }

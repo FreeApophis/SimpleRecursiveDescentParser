@@ -13,5 +13,4 @@ public class ParserContext
     public ILexemeWalker Walker { get; }
 
     public Stack<Variable> BoundVariables { get; } = new();
-
 }
