@@ -1,24 +1,23 @@
 ﻿using LambdaCalculusParser.Visitors;
 
-namespace LambdaCalculusParser.Test
+namespace LambdaCalculusParser.Test;
+
+class ReductionEventCollector
 {
-    class ReductionEventCollector
+    public List<string> Events { get; } = new();
+
+    public void OnAlphaReductionEvent(object sender, AlphaReductionEventArgs e)
     {
-        public List<string> Events { get; } = new();
+        Events.Add("α");
+    }
 
-        public void OnAlphaReductionEvent(object sender, AlphaReductionEventArgs e)
-        {
-            Events.Add("α");
-        }
+    public void OnBetaReductionEvent(object sender, BetaReductionEventArgs e)
+    {
+        Events.Add("β");
+    }
 
-        public void OnBetaReductionEvent(object sender, BetaReductionEventArgs e)
-        {
-            Events.Add("β");
-        }
-
-        public void OnEtaReductionEvent(object sender, EtaReductionEventArgs e)
-        {
-            Events.Add("η");
-        }
+    public void OnEtaReductionEvent(object sender, EtaReductionEventArgs e)
+    {
+        Events.Add("η");
     }
 }

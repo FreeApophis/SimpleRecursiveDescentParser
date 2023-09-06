@@ -1,8 +1,7 @@
 ﻿using Funcky.Lexer.Token;
 
-namespace LambdaCalculusParser.Tokens
+namespace LambdaCalculusParser.Tokens;
+
+public class ClosedParenthesisToken : IToken
 {
-    public class ClosedParenthesisToken : IToken
-    {
-    }
 }

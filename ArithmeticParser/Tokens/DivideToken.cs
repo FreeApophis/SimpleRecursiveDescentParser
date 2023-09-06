@@ -1,8 +1,7 @@
-﻿namespace ArithmeticParser.Tokens
+﻿namespace ArithmeticParser.Tokens;
+
+public class DivideToken : OperatorToken
 {
-    public class DivideToken : OperatorToken
-    {
-        public override string ToString() 
-            => "Division Operator";
-    }
+    public override string ToString() 
+        => "Division Operator";
 }

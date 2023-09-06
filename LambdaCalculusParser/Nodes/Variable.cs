@@ -2,29 +2,28 @@
 using Funcky.Monads;
 using LambdaCalculusParser.Visitors;
 
-namespace LambdaCalculusParser.Nodes
+namespace LambdaCalculusParser.Nodes;
+
+public class Variable : ILambdaExpression
 {
-    public class Variable : ILambdaExpression
+    public string Name { get; }
+    public Option<int> DeBruinIndex { get; }
+
+    public Variable(string name, Option<int> deBruinIndex = default)
     {
-        public string Name { get; }
-        public Option<int> DeBruinIndex { get; }
+        Name = name;
+        DeBruinIndex = deBruinIndex;
+    }
 
-        public Variable(string name, Option<int> deBruinIndex = default)
-        {
-            Name = name;
-            DeBruinIndex = deBruinIndex;
-        }
+    public void Accept(ILambdaExpressionVisitor visitor)
+    {
+        visitor.Visit(this);
+    }
 
-        public void Accept(ILambdaExpressionVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
+    public Position Position { get; }
 
-        public Position Position { get; }
-
-        public override string ToString()
-        {
-            return $"{nameof(Variable)}: {this.ToNormalForm()}";
-        }
+    public override string ToString()
+    {
+        return $"{nameof(Variable)}: {this.ToNormalForm()}";
     }
 }

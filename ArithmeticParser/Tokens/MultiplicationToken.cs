@@ -1,8 +1,7 @@
-﻿namespace ArithmeticParser.Tokens
+﻿namespace ArithmeticParser.Tokens;
+
+public class MultiplicationToken : OperatorToken
 {
-    public class MultiplicationToken : OperatorToken
-    {
-        public override string ToString() 
-            => "Multiplication Operator";
-    }
+    public override string ToString() 
+        => "Multiplication Operator";
 }

@@ -1,8 +1,7 @@
 ﻿using Funcky.Lexer.Token;
 
-namespace ArithmeticParser.Tokens
+namespace ArithmeticParser.Tokens;
+
+public class WhiteSpaceToken : IToken
 {
-    public class WhiteSpaceToken : IToken
-    {
-    }
 }

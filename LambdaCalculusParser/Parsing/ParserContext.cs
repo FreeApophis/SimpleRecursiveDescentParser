@@ -1,18 +1,17 @@
 ﻿using Funcky.Lexer;
 using LambdaCalculusParser.Nodes;
 
-namespace LambdaCalculusParser
+namespace LambdaCalculusParser;
+
+public class ParserContext
 {
-    public class ParserContext
+    public ParserContext(ILexemeWalker walker)
     {
-        public ParserContext(ILexemeWalker walker)
-        {
-            Walker = walker;
-        }
-
-        public ILexemeWalker Walker { get; }
-
-        public Stack<Variable> BoundVariables { get; } = new();
-
+        Walker = walker;
     }
+
+    public ILexemeWalker Walker { get; }
+
+    public Stack<Variable> BoundVariables { get; } = new();
+
 }

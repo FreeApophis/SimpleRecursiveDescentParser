@@ -1,12 +1,11 @@
 ﻿using Funcky.Lexer;
 using LambdaCalculusParser.Visitors;
 
-namespace LambdaCalculusParser.Nodes
-{
-    public interface ILambdaExpression
-    {
-        void Accept(ILambdaExpressionVisitor visitor);
+namespace LambdaCalculusParser.Nodes;
 
-        Position Position { get; }
-    }
+public interface ILambdaExpression
+{
+    void Accept(ILambdaExpressionVisitor visitor);
+
+    Position Position { get; }
 }

@@ -1,16 +1,15 @@
 ﻿using LambdaCalculusParser.Visitors;
 
-namespace LambdaCalculusParser.Nodes
+namespace LambdaCalculusParser.Nodes;
+
+public static class LambdaExpressionExtension
 {
-    public static class LambdaExpressionExtension
+    public static string ToNormalForm(this ILambdaExpression lambdaExpression)
     {
-        public static string ToNormalForm(this ILambdaExpression lambdaExpression)
-        {
-            var normalFormVisitor = new NormalFormVisitor();
+        var normalFormVisitor = new NormalFormVisitor();
 
-            lambdaExpression.Accept(normalFormVisitor);
+        lambdaExpression.Accept(normalFormVisitor);
 
-            return normalFormVisitor.Result;
-        }
+        return normalFormVisitor.Result;
     }
 }

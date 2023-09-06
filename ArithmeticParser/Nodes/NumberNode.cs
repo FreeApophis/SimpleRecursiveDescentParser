@@ -3,29 +3,28 @@ using ArithmeticParser.Tokens;
 using ArithmeticParser.Visitors;
 using Funcky.Lexer;
 
-namespace ArithmeticParser.Nodes
+namespace ArithmeticParser.Nodes;
+
+public class NumberNode : IParseNode
 {
-    public class NumberNode : IParseNode
+    internal NumberNode(Lexeme lexeme)
     {
-        internal NumberNode(Lexeme lexeme)
+        if (lexeme.Token is NumberToken number)
         {
-            if (lexeme.Token is NumberToken number)
-            {
-                Number = number.Value;
-                Position = lexeme.Position;
-            }
+            Number = number.Value;
+            Position = lexeme.Position;
         }
-
-        /// <inheritdoc />
-        public Position Position { get; }
-        public double Number { get; }
-
-        /// <inheritdoc />
-        public virtual void Accept(INodeVisitor visitor) 
-            => visitor.Visit(this);
-
-        /// <inheritdoc />
-        public override string ToString() 
-            => Number.ToString(CultureInfo.InvariantCulture);
     }
+
+    /// <inheritdoc />
+    public Position Position { get; }
+    public double Number { get; }
+
+    /// <inheritdoc />
+    public virtual void Accept(INodeVisitor visitor) 
+        => visitor.Visit(this);
+
+    /// <inheritdoc />
+    public override string ToString() 
+        => Number.ToString(CultureInfo.InvariantCulture);
 }

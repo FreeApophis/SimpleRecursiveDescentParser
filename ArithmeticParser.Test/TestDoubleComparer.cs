@@ -1,21 +1,20 @@
-﻿namespace ArithmeticParser.Test
+﻿namespace ArithmeticParser.Test;
+
+class MagnitudeDoubleComparer : IEqualityComparer<double>
 {
-    class MagnitudeDoubleComparer : IEqualityComparer<double>
+    private readonly double _maxDelta;
+
+    public MagnitudeDoubleComparer(double maxDelta)
     {
-        private readonly double _maxDelta;
+        _maxDelta = maxDelta;
+    }
+    public bool Equals(double x, double y)
+    {
+        return x - y < _maxDelta;
+    }
 
-        public MagnitudeDoubleComparer(double maxDelta)
-        {
-            _maxDelta = maxDelta;
-        }
-        public bool Equals(double x, double y)
-        {
-            return x - y < _maxDelta;
-        }
-
-        public int GetHashCode(double obj)
-        {
-            throw new System.NotImplementedException();
-        }
+    public int GetHashCode(double obj)
+    {
+        throw new System.NotImplementedException();
     }
 }

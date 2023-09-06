@@ -1,21 +1,20 @@
 ﻿using ArithmeticParser.Visitors;
 using Funcky.Lexer;
 
-namespace ArithmeticParser.Nodes
+namespace ArithmeticParser.Nodes;
+
+public class MinusOperator : BinaryOperator
 {
-    public class MinusOperator : BinaryOperator
+    internal MinusOperator(IParseNode leftOperand, IParseNode rightOperand, Position position) :
+        base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Line, position)
     {
-        internal MinusOperator(IParseNode leftOperand, IParseNode rightOperand, Position position) :
-            base(leftOperand, rightOperand, Associativity.Left, false, Precedence.Line, position)
-        {
-        }
-
-        /// <inheritdoc />
-        public override void Accept(INodeVisitor visitor) 
-            => visitor.Visit(this);
-
-        /// <inheritdoc />
-        public override string ToString()
-            => "-";
     }
+
+    /// <inheritdoc />
+    public override void Accept(INodeVisitor visitor) 
+        => visitor.Visit(this);
+
+    /// <inheritdoc />
+    public override string ToString()
+        => "-";
 }

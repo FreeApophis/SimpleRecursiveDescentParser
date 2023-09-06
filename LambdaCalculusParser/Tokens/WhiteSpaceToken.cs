@@ -1,9 +1,8 @@
 ﻿
 using Funcky.Lexer.Token;
 
-namespace LambdaCalculusParser.Tokens
+namespace LambdaCalculusParser.Tokens;
+
+public class WhiteSpaceToken : IToken
 {
-    public class WhiteSpaceToken : IToken
-    {
-    }
 }

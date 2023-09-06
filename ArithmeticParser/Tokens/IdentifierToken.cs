@@ -1,18 +1,17 @@
 ﻿using Funcky.Lexer.Token;
 
-namespace ArithmeticParser.Tokens
+namespace ArithmeticParser.Tokens;
+
+public class IdentifierToken : IToken
 {
-    public class IdentifierToken : IToken
+    public IdentifierToken(string name)
     {
-        public IdentifierToken(string name)
-        {
-            Name = name;
-        }
-
-        public string Name { get; }
-
-        public override string ToString()
-            => $"Identifier: {Name}";
-
+        Name = name;
     }
+
+    public string Name { get; }
+
+    public override string ToString()
+        => $"Identifier: {Name}";
+
 }

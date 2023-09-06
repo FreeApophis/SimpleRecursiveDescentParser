@@ -1,16 +1,15 @@
 ﻿using Autofac;
 
-namespace ArithmeticParser.Test
+namespace ArithmeticParser.Test;
+
+internal class CompositionRoot
 {
-    internal class CompositionRoot
+    public IContainer Build()
     {
-        public IContainer Build()
-        {
-            var builder = new ContainerBuilder();
+        var builder = new ContainerBuilder();
 
-            builder.RegisterModule(new ParserModule());
+        builder.RegisterModule(new ParserModule());
 
-            return builder.Build();
-        }
+        return builder.Build();
     }
 }

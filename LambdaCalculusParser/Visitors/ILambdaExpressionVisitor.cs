@@ -1,14 +1,13 @@
 ﻿using LambdaCalculusParser.Nodes;
 
-namespace LambdaCalculusParser.Visitors
+namespace LambdaCalculusParser.Visitors;
+
+public interface ILambdaExpressionVisitor
 {
-    public interface ILambdaExpressionVisitor
-    {
-        void Visit(Abstraction abstraction);
+    void Visit(Abstraction abstraction);
 
-        void Visit(Application application);
+    void Visit(Application application);
 
-        void Visit(Variable variable);
+    void Visit(Variable variable);
 
-    }
 }

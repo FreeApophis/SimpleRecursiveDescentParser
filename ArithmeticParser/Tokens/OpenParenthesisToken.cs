@@ -1,8 +1,7 @@
-﻿namespace ArithmeticParser.Tokens
+﻿namespace ArithmeticParser.Tokens;
+
+public class OpenParenthesisToken : ParenthesisToken
 {
-    public class OpenParenthesisToken : ParenthesisToken
-    {
-        public override string ToString() 
-            => "Opening Parenthesis";
-    }
+    public override string ToString() 
+        => "Opening Parenthesis";
 }
