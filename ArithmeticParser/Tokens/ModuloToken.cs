@@ -1,8 +1,6 @@
-﻿using Messerli.Lexer.Tokens;
-
-namespace ArithmeticParser.Tokens
+﻿namespace ArithmeticParser.Tokens
 {
-    class ModuloToken : IToken
+    class ModuloToken : OperatorToken
     {
         public override string ToString() 
             => "Modulo Operator";

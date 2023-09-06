@@ -1,8 +1,8 @@
-﻿using System;
-using ArithmeticParser.Lexing;
+﻿using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
-using Messerli.Lexer;
+using Funcky.Lexer;
+using Funcky.Lexer.Extensions;
 
 namespace ArithmeticParser.Parsing
 {
@@ -24,7 +24,7 @@ namespace ArithmeticParser.Parsing
             _functionParser = functionParser;
         }
 
-        public IParseNode Parse(ITokenWalker walker) 
+        public IParseNode Parse(ILexemeWalker walker) 
             => walker.Peek().Token switch
             {
                 NumberToken => CreateNumberNode(walker),
@@ -32,12 +32,12 @@ namespace ArithmeticParser.Parsing
                 _ => ParseParenthesisExpression(walker),
             };
 
-        private IParseNode ParseFunctionOrVariable(ITokenWalker walker) 
+        private IParseNode ParseFunctionOrVariable(ILexemeWalker walker) 
             => walker.NextIs<OpenParenthesisToken>(1)
                 ? _functionParser.Parse(walker)
                 : _variableParser.Parse(walker);
 
-        private IParseNode ParseParenthesisExpression(ITokenWalker walker)
+        private IParseNode ParseParenthesisExpression(ILexemeWalker walker)
         {
             walker.ExpectOpeningParenthesis();
             var result = _expressionParser.Parse(walker);
@@ -46,7 +46,7 @@ namespace ArithmeticParser.Parsing
             return result;
         }
 
-        private static NumberNode CreateNumberNode(ITokenWalker walker) 
+        private static NumberNode CreateNumberNode(ILexemeWalker walker) 
             => walker.Pop() is { Token: NumberToken } lexeme
                 ? new NumberNode(lexeme)
                 : throw new Exception("Expecting Real number but got something else");

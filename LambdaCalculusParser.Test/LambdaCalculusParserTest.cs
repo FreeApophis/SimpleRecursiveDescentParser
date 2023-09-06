@@ -1,11 +1,8 @@
-﻿using ArithmeticParser.Lexing;
-using ArithmeticParser.Tokens;
+﻿using Funcky.Lexer.Exceptions;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Tokens;
 using LambdaCalculusParser.Visitors;
-using Messerli.Lexer;
-using Messerli.Lexer.Exceptions;
 using Xunit;
 
 namespace LambdaCalculusParser.Test
@@ -22,23 +19,20 @@ namespace LambdaCalculusParser.Test
         [Fact]
         public void GivenLambdaCalculusSourceTheTokenizerGivesAUsefulTokenStream()
         {
-            var tokenWalker = TokenWalker.Create<EpsilonToken>(LexerRules.GetRules());
+            var walker = LexerRules.GetRules().Scan(@"λs.(λz.(s z))").Walker;
 
-            tokenWalker.Scan(@"λs.(λz.(s z))");
-
-            Assert.IsType<LambdaToken>(tokenWalker.Pop().Token);
-            Assert.IsType<IdentifierToken>(tokenWalker.Pop().Token);
-            Assert.IsType<DotToken>(tokenWalker.Pop().Token);
-            Assert.IsType<OpenParenthesisToken>(tokenWalker.Pop().Token);
-            Assert.IsType<LambdaToken>(tokenWalker.Pop().Token);
-            Assert.IsType<IdentifierToken>(tokenWalker.Pop().Token);
-            Assert.IsType<DotToken>(tokenWalker.Pop().Token);
-            Assert.IsType<OpenParenthesisToken>(tokenWalker.Pop().Token);
-            Assert.IsType<IdentifierToken>(tokenWalker.Pop().Token);
-            Assert.IsType<WhiteSpaceToken>(tokenWalker.Pop().Token);
-            Assert.IsType<IdentifierToken>(tokenWalker.Pop().Token);
-            Assert.IsType<ClosedParenthesisToken>(tokenWalker.Pop().Token);
-            Assert.IsType<ClosedParenthesisToken>(tokenWalker.Pop().Token);
+            Assert.IsType<LambdaToken>(walker.Pop().Token);
+            Assert.IsType<IdentifierToken>(walker.Pop().Token);
+            Assert.IsType<DotToken>(walker.Pop().Token);
+            Assert.IsType<OpenParenthesisToken>(walker.Pop().Token);
+            Assert.IsType<LambdaToken>(walker.Pop().Token);
+            Assert.IsType<IdentifierToken>(walker.Pop().Token);
+            Assert.IsType<DotToken>(walker.Pop().Token);
+            Assert.IsType<OpenParenthesisToken>(walker.Pop().Token);
+            Assert.IsType<IdentifierToken>(walker.Pop().Token);
+            Assert.IsType<IdentifierToken>(walker.Pop().Token);
+            Assert.IsType<ClosedParenthesisToken>(walker.Pop().Token);
+            Assert.IsType<ClosedParenthesisToken>(walker.Pop().Token);
         }
 
         [Fact]
@@ -101,7 +95,6 @@ namespace LambdaCalculusParser.Test
         public void FailTest()
         {
             var application = "λm.λn.λf.λx.m f (n f x";
-
 
             Assert.Throws<InvalidTokenException>(() => _parser.Parse(application));
 

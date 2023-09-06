@@ -1,5 +1,5 @@
-﻿using LambdaCalculusParser.Visitors;
-using Messerli.Lexer;
+﻿using Funcky.Lexer;
+using LambdaCalculusParser.Visitors;
 
 namespace LambdaCalculusParser.Nodes
 {

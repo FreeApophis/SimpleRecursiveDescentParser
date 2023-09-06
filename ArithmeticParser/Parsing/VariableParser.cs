@@ -1,7 +1,6 @@
-﻿using System;
-using ArithmeticParser.Nodes;
+﻿using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
-using Messerli.Lexer;
+using Funcky.Lexer;
 
 namespace ArithmeticParser.Parsing
 {
@@ -11,7 +10,7 @@ namespace ArithmeticParser.Parsing
     /// </summary>
     public class VariableParser
     {
-        public IParseNode Parse(ITokenWalker walker) 
+        public IParseNode Parse(ILexemeWalker walker) 
             => ParseIdentifier(walker.Pop());
 
         private static IParseNode ParseIdentifier(Lexeme lexeme)

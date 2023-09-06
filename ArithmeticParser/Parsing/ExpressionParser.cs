@@ -1,8 +1,8 @@
-﻿using System;
-using ArithmeticParser.Lexing;
+﻿using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
-using Messerli.Lexer;
+using Funcky.Lexer;
+using Funcky.Lexer.Extensions;
 
 namespace ArithmeticParser.Parsing
 {
@@ -15,15 +15,15 @@ namespace ArithmeticParser.Parsing
         // Break the dependency cycle
         public TermParser? TermParser { get; set; }
 
-        public IParseNode Parse(ITokenWalker walker) 
+        public IParseNode Parse(ILexemeWalker walker) 
             => ParseNextTerm(walker, ParseFirstTerm(walker));
 
-        private IParseNode ParseNextTerm(ITokenWalker walker, IParseNode result) 
+        private IParseNode ParseNextTerm(ILexemeWalker walker, IParseNode result) 
             => walker.NextIsLineOperator()
                 ? ParseNextTerm(walker, NextTerm(walker, result))
                 : result;
 
-        private IParseNode NextTerm(ITokenWalker walker, IParseNode result)
+        private IParseNode NextTerm(ILexemeWalker walker, IParseNode result)
             => walker.Pop() switch
             {
                 { Token: MinusToken } lexeme => new MinusOperator(result, SafeTermParser.Parse(walker), lexeme.Position),
@@ -31,7 +31,7 @@ namespace ArithmeticParser.Parsing
                 _ => result
             };
 
-        private IParseNode ParseFirstTerm(ITokenWalker walker)
+        private IParseNode ParseFirstTerm(ILexemeWalker walker)
             => walker.NextIs<MinusToken>()
                 ? ParseUnaryMinus(walker)
                 : SafeTermParser.Parse(walker);
@@ -39,10 +39,10 @@ namespace ArithmeticParser.Parsing
         private TermParser SafeTermParser 
             => TermParser ?? throw new Exception("Term Parser should be injected by the DI container, but is null");
 
-        private IParseNode ParseUnaryMinus(ITokenWalker walker) 
+        private IParseNode ParseUnaryMinus(ILexemeWalker walker) 
             => ParseUnaryMinusTerm(walker, walker.Pop());
 
-        private IParseNode ParseUnaryMinusTerm(ITokenWalker walker, Lexeme lexeme) 
+        private IParseNode ParseUnaryMinusTerm(ILexemeWalker walker, Lexeme lexeme) 
             => new UnaryMinusOperator(SafeTermParser.Parse(walker), lexeme.Position);
     }
 }

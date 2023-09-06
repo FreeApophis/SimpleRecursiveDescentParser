@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using LambdaCalculusParser.Visitors;
+﻿using LambdaCalculusParser.Visitors;
 
 namespace LambdaCalculusParser.Test
 {

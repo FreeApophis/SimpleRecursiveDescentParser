@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using Funcky.Lexer;
 using LambdaCalculusParser.Nodes;
-using Messerli.Lexer;
 
 namespace LambdaCalculusParser
 {
     public class ParserContext
     {
-        public ParserContext(ITokenWalker tokenWalker)
+        public ParserContext(ILexemeWalker walker)
         {
-            TokenWalker = tokenWalker;
+            Walker = walker;
         }
-        public ITokenWalker TokenWalker { get; }
+
+        public ILexemeWalker Walker { get; }
+
         public Stack<Variable> BoundVariables { get; } = new();
 
     }

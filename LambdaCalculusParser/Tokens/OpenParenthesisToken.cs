@@ -1,6 +1,6 @@
-﻿using Messerli.Lexer.Tokens;
+﻿using Funcky.Lexer.Token;
 
-namespace ArithmeticParser.Lexing
+namespace LambdaCalculusParser.Tokens
 {
     public class OpenParenthesisToken : IToken
     {

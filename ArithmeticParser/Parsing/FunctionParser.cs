@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
-using Messerli.Lexer;
+using Funcky.Lexer;
+using Funcky.Lexer.Extensions;
 
 namespace ArithmeticParser.Parsing
 {
@@ -19,12 +19,12 @@ namespace ArithmeticParser.Parsing
             _expressionParser = expressionParser;
         }
 
-        public IParseNode Parse(ITokenWalker walker) 
+        public IParseNode Parse(ILexemeWalker walker) 
             => walker.Pop() is { Token: IdentifierToken } lexeme
                 ? ParseFunction(walker, lexeme)
                 : throw new ArgumentNullException();
 
-        private IParseNode ParseFunction(ITokenWalker walker, Lexeme functionLexeme)
+        private IParseNode ParseFunction(ILexemeWalker walker, Lexeme functionLexeme)
         {
             var openParenthesis = walker.Consume<OpenParenthesisToken>();
             var parameters = ParseNextParameter(walker, ImmutableList.Create(_expressionParser.Parse(walker)));
@@ -33,12 +33,12 @@ namespace ArithmeticParser.Parsing
             return new FunctionNode(functionLexeme, openParenthesis, parameters, closedParenthesis);
         }
 
-        private ImmutableList<IParseNode> ParseNextParameter(ITokenWalker walker, ImmutableList<IParseNode> parameters) 
+        private ImmutableList<IParseNode> ParseNextParameter(ILexemeWalker walker, ImmutableList<IParseNode> parameters) 
             => walker.NextIs<CommaToken>()
                 ? ParseNextParameter(walker, ParseParameter(walker, parameters))
                 : parameters;
 
-        private ImmutableList<IParseNode> ParseParameter(ITokenWalker walker, ImmutableList<IParseNode> parameters)
+        private ImmutableList<IParseNode> ParseParameter(ILexemeWalker walker, ImmutableList<IParseNode> parameters)
         {
             walker.Consume<CommaToken>();
             return parameters.Add(_expressionParser.Parse(walker));

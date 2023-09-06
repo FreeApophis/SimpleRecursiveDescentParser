@@ -21,6 +21,6 @@
     <ItemGroup>
         <PackageReference Include="Autofac" />
         <PackageReference Include="Funcky" />
-        <PackageReference Include="Messerli.Lexer" />
+        <PackageReference Include="Funcky.Lexer" />
     </ItemGroup>
 </Project>

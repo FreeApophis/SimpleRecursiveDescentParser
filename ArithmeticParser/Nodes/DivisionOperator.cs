@@ -1,5 +1,5 @@
 ﻿using ArithmeticParser.Visitors;
-using Messerli.Lexer;
+using Funcky.Lexer;
 
 namespace ArithmeticParser.Nodes
 {

@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Messerli.Lexer" />
+      <PackageReference Include="Funcky.Lexer" />
     </ItemGroup>
 
 </Project>

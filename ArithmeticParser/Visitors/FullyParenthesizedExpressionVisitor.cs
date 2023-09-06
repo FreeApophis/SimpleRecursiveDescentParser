@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using ArithmeticParser.Nodes;
 
 namespace ArithmeticParser.Visitors

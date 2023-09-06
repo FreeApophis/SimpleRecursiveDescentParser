@@ -1,6 +1,6 @@
-﻿using Messerli.Lexer.Tokens;
+﻿using Funcky.Lexer.Token;
 
-namespace ArithmeticParser.Tokens
+namespace LambdaCalculusParser.Tokens
 {
     public class IdentifierToken : IToken
     {
@@ -12,6 +12,5 @@ namespace ArithmeticParser.Tokens
         public string Name { get; }
 
         public override string ToString() => $"Identifier: {Name}";
-
     }
 }

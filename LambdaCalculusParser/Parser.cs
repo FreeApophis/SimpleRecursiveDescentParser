@@ -1,9 +1,9 @@
-﻿using System.Linq;
+﻿using Funcky.Lexer;
+using Funcky.Lexer.Extensions;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Parsing;
 using LambdaCalculusParser.Tokens;
-using Messerli.Lexer;
 
 namespace LambdaCalculusParser
 {
@@ -18,21 +18,22 @@ namespace LambdaCalculusParser
     public class Parser
     {
         private readonly ApplicationParser _applicationParser;
-        private readonly ParserContext _parserContext;
+        private readonly LexerRuleBook _ruleBook;
 
-        public Parser(TokenWalker tokenWalker, ApplicationParser applicationParser)
+        public Parser(LexerRuleBook ruleBook, ApplicationParser applicationParser)
         {
             _applicationParser = applicationParser;
-            _parserContext = new ParserContext(tokenWalker);
+            _ruleBook = ruleBook;
         }
 
         public ILambdaExpression Parse(string expression)
         {
-            _parserContext.TokenWalker.Scan(expression, lexemes => lexemes.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)));
+            var parserContext = new ParserContext(_ruleBook.Scan(expression).Walker);
 
-            var result = _applicationParser.Parse(_parserContext);
+            var result = _applicationParser.Parse(parserContext);
 
-            _parserContext.TokenWalker.Consume<EpsilonToken>();
+            // Are we really at the end?
+            parserContext.Walker.Consume<EpsilonToken>();
 
             return result;
         }
@@ -44,7 +45,7 @@ namespace LambdaCalculusParser
             var applicationParser = new ApplicationParser(expressionParser);
             expressionParser.ApplicationParser = applicationParser;
 
-            return new Parser(TokenWalker.Create<EpsilonToken>(LexerRules.GetRules()), applicationParser);
+            return new Parser(LexerRules.GetRules(), applicationParser);
         }
     }
 }

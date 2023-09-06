@@ -1,8 +1,8 @@
-﻿using Messerli.Lexer.Tokens;
+﻿using Funcky.Lexer.Token;
 
 namespace LambdaCalculusParser.Tokens
 {
-    public class EpsilonToken : IToken
+    public class EpsilonToken : IEpsilonToken
     {
     }
 }

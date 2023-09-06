@@ -1,5 +1,5 @@
 ﻿
-using Messerli.Lexer.Tokens;
+using Funcky.Lexer.Token;
 
 namespace LambdaCalculusParser.Tokens
 {

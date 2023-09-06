@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ArithmeticParser.Tokens;
-using Funcky.Extensions;
-using Messerli.Lexer;
-using Messerli.Lexer.Rules;
+﻿using ArithmeticParser.Tokens;
+using Funcky.Lexer;
 using static Funcky.Functional;
 
 namespace ArithmeticParser.Lexing
@@ -12,48 +7,46 @@ namespace ArithmeticParser.Lexing
     /// <summary>
     /// This class represents the necessary lexer rules for the arithmetic parser
     /// </summary>
-    public static class LexerRules 
+    public static class LexerRules
     {
-        public static IEnumerable<ILexerRule> GetRules()
-        {
-            yield return new LexerRule(char.IsWhiteSpace, ScanWhiteSpace);
-            yield return new LexerRule(c => char.IsDigit(c) || c == '.', ScanNumber);
-            yield return new LexerRule(char.IsLetter, ScanIdentifier);
-            yield return new SimpleLexerRule<MinusToken>("-");
-            yield return new SimpleLexerRule<PlusToken>("+");
-            yield return new SimpleLexerRule<MultiplicationToken>("*");
-            yield return new SimpleLexerRule<DivideToken>("/");
-            yield return new SimpleLexerRule<ModuloToken>("%");
-            yield return new SimpleLexerRule<PowerToken>("^");
-            yield return new SimpleLexerRule<OpenParenthesisToken>("(");
-            yield return new SimpleLexerRule<ClosedParenthesisToken>(")");
-            yield return new SimpleLexerRule<CommaToken>(",");
-        }
+        public static LexerRuleBook GetRules()
+            => LexerRuleBook.Builder
+                .AddRule(char.IsWhiteSpace, ScanWhiteSpace)
+                .AddRule(c => char.IsDigit(c) || c == '.', ScanNumber)
+                .AddRule(char.IsLetter, ScanIdentifier)
+                .AddSimpleRule<MinusToken>("-")
+                .AddSimpleRule<PlusToken>("+")
+                .AddSimpleRule<MultiplicationToken>("*")
+                .AddSimpleRule<DivideToken>("/")
+                .AddSimpleRule<ModuloToken>("%")
+                .AddSimpleRule<PowerToken>("^")
+                .AddSimpleRule<OpenParenthesisToken>("(")
+                .AddSimpleRule<ClosedParenthesisToken>(")")
+                .AddSimpleRule<CommaToken>(",")
+                .WithPostProcess(lexemes => lexemes.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)))
+                .WithEpsilonToken<EpsilonToken>()
+                .Build();
 
-        private static Lexeme ScanWhiteSpace(ILexerReader reader)
+        private static Lexeme ScanWhiteSpace(ILexemeBuilder builder)
         {
-            var startPosition = reader.Position;
-
-            while (reader.Peek().Match(none: false, some: char.IsWhiteSpace))
+            while (builder.Peek().Match(none: false, some: char.IsWhiteSpace))
             {
                 // we are not interested in what kind of whitespace, so we just discard the result
-                reader.Read();
+                builder.Discard();
             }
 
-            return new Lexeme(new WhiteSpaceToken(), new Position(startPosition, reader.Position - startPosition));
+            return builder.Build(new WhiteSpaceToken());
         }
 
-        private static Lexeme ScanNumber(ILexerReader reader)
+        private static Lexeme ScanNumber(ILexemeBuilder builder)
         {
-            var startPosition = reader.Position;
-            var stringBuilder = new StringBuilder();
             var decimalExists = false;
-            while (reader.Peek().Match(none: false, some: char.IsDigit) || reader.Peek().Match(none: false, some: c => c == '.'))
+            while (builder.Peek().Match(none: false, some: char.IsDigit) || builder.Peek().Match(none: false, some: c => c == '.'))
             {
-                var digit = reader.Read();
+                var digit = builder.Peek();
                 var isDot =
                     from d in digit
-                    select d == '.';
+                    select d is '.';
 
                 if (isDot.Match(none: false, some: Identity))
                 {
@@ -64,25 +57,22 @@ namespace ArithmeticParser.Lexing
                     decimalExists = true;
                 }
 
-                stringBuilder.Append(digit.Match(none: ' ', some: Identity));
+                builder.Retain();
             }
 
-
-            var parsedDouble = stringBuilder.ToString().ParseDoubleOrNone().Match(none: () => throw new Exception("Could not parse number: " + stringBuilder), some: Identity);
-
-            return new Lexeme(new NumberToken(parsedDouble), new Position(startPosition, reader.Position - startPosition));
+            return double.TryParse(builder.CurrentToken, out var number)
+                ? builder.Build(new NumberToken(number))
+                : throw new Exception("Could not parse number: " + builder.CurrentToken);
         }
 
-        private static Lexeme ScanIdentifier(ILexerReader reader)
+        private static Lexeme ScanIdentifier(ILexemeBuilder builder)
         {
-            var startPosition = reader.Position;
-            var stringBuilder = new StringBuilder();
-            while (reader.Peek().Match(false, char.IsLetterOrDigit))
+            while (builder.Peek().Match(false, char.IsLetterOrDigit))
             {
-                stringBuilder.Append(reader.Read().Match(none: ' ', some: Identity));
+                builder.Retain();
             }
 
-            return new Lexeme(new IdentifierToken(stringBuilder.ToString()), new Position(startPosition, reader.Position - startPosition));
+            return builder.Build(new IdentifierToken(builder.CurrentToken));
         }
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using ArithmeticParser.Lexing;
-using ArithmeticParser.Tokens;
+﻿using Funcky.Lexer.Extensions;
 using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
-using Messerli.Lexer;
+using LambdaCalculusParser.Tokens;
 
 namespace LambdaCalculusParser.Parsing
 {
@@ -22,13 +20,13 @@ namespace LambdaCalculusParser.Parsing
         /// </summary>
         public ILambdaExpression Parse(ParserContext parserContext)
         {
-            if (parserContext.TokenWalker.NextIs<LambdaToken>())
+            if (parserContext.Walker.NextIs<LambdaToken>())
             {
-                parserContext.TokenWalker.Consume<LambdaToken>();
-                if (parserContext.TokenWalker.Pop().Token is IdentifierToken variableName)
+                parserContext.Walker.Consume<LambdaToken>();
+                if (parserContext.Walker.Pop().Token is IdentifierToken variableName)
                 {
                     var variable = new Variable(variableName.Name);
-                    parserContext.TokenWalker.Consume<DotToken>();
+                    parserContext.Walker.Consume<DotToken>();
                     parserContext.BoundVariables.Push(variable);
                     var result = new Abstraction(variable, ApplicationParser.Parse(parserContext));
                     parserContext.BoundVariables.Pop();
@@ -39,17 +37,17 @@ namespace LambdaCalculusParser.Parsing
                 throw new Exception();
             }
 
-            if (parserContext.TokenWalker.NextIs<OpenParenthesisToken>())
+            if (parserContext.Walker.NextIs<OpenParenthesisToken>())
             {
-                parserContext.TokenWalker.Consume<OpenParenthesisToken>();
+                parserContext.Walker.Consume<OpenParenthesisToken>();
                 var result = ApplicationParser.Parse(parserContext);
-                parserContext.TokenWalker.Consume<ClosedParenthesisToken>();
+                parserContext.Walker.Consume<ClosedParenthesisToken>();
                 return result;
             }
 
-            if (parserContext.TokenWalker.NextIs<IdentifierToken>())
+            if (parserContext.Walker.NextIs<IdentifierToken>())
             {
-                var lexeme = parserContext.TokenWalker.Pop();
+                var lexeme = parserContext.Walker.Pop();
                 return new Variable(((IdentifierToken)lexeme.Token).Name);
             }
 

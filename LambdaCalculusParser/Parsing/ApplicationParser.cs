@@ -1,7 +1,7 @@
-﻿using LambdaCalculusParser.Lexing;
+﻿using Funcky.Lexer.Extensions;
+using LambdaCalculusParser.Lexing;
 using LambdaCalculusParser.Nodes;
 using LambdaCalculusParser.Tokens;
-using Messerli.Lexer;
 
 namespace LambdaCalculusParser.Parsing
 {
@@ -21,8 +21,8 @@ namespace LambdaCalculusParser.Parsing
         public ILambdaExpression Parse(ParserContext parserContext)
         {
             var result = _expressionParser.Parse(parserContext);
-            while (!parserContext.TokenWalker.NextIs<ClosedParenthesisToken>() &&
-                   !parserContext.TokenWalker.NextIs<EpsilonToken>())
+            while (!parserContext.Walker.NextIs<ClosedParenthesisToken>() &&
+                   !parserContext.Walker.NextIs<EpsilonToken>())
             {
                 result = new Application(result, _expressionParser.Parse(parserContext));
             }

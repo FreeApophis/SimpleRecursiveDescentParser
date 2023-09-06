@@ -1,6 +1,7 @@
 ﻿using ArithmeticParser.Nodes;
 using ArithmeticParser.Tokens;
-using Messerli.Lexer;
+using Funcky.Lexer;
+using Funcky.Lexer.Extensions;
 
 namespace ArithmeticParser.Parsing
 {
@@ -11,15 +12,15 @@ namespace ArithmeticParser.Parsing
         public PowerTermParser(FactorParser factorParser)
             => _factorParser = factorParser;
 
-        public IParseNode Parse(ITokenWalker walker)
+        public IParseNode Parse(ILexemeWalker walker)
             => ParseNextPowerToken(walker, _factorParser.Parse(walker));
 
-        private IParseNode ParseNextPowerToken(ITokenWalker walker, IParseNode result)
+        private IParseNode ParseNextPowerToken(ILexemeWalker walker, IParseNode result)
             => walker.NextIs<PowerToken>()
                 ? ParseNextPowerToken(walker, NextToken(walker, result, walker.Pop()))
                 : result;
 
-        private PowerOperator NextToken(ITokenWalker walker, IParseNode result, Lexeme lexeme)
+        private PowerOperator NextToken(ILexemeWalker walker, IParseNode result, Lexeme lexeme)
             => new(result, _factorParser.Parse(walker), lexeme.Position);
     }
 }

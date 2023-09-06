@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ArithmeticParser.Test
+﻿namespace ArithmeticParser.Test
 {
     class MagnitudeDoubleComparer : IEqualityComparer<double>
     {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using ArithmeticParser.Tokens;
 using ArithmeticParser.Visitors;
-using Messerli.Lexer;
+using Funcky.Lexer;
 
 namespace ArithmeticParser.Nodes
 {

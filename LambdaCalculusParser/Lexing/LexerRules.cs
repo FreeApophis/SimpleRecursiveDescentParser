@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Text.RegularExpressions;
-using ArithmeticParser.Lexing;
-using ArithmeticParser.Tokens;
+using Funcky.Lexer;
+using Funcky.Monads;
 using LambdaCalculusParser.Tokens;
-using Messerli.Lexer;
-using Messerli.Lexer.Rules;
 using static Funcky.Functional;
 
 namespace LambdaCalculusParser.Lexing
@@ -15,47 +13,48 @@ namespace LambdaCalculusParser.Lexing
     /// </summary>
     public static class LexerRules
     {
-        public static IEnumerable<ILexerRule> GetRules()
+        public static LexerRuleBook GetRules()
+            => LexerRuleBook.Builder
+                .AddRule(char.IsWhiteSpace, ScanWhiteSpace)
+                .AddRule(c => c is '\\' or 'λ', CreateLambdaToken)
+                .AddRule(IsAllowedForIdentifier, ScanIdentifier)
+                .AddSimpleRule<LambdaToken>("\\")
+                .AddSimpleRule<LambdaToken>("λ")
+                .AddSimpleRule<DotToken>(".")
+                .AddSimpleRule<OpenParenthesisToken>("(")
+                .AddSimpleRule<ClosedParenthesisToken>(")")
+                .WithPostProcess(lexemes => lexemes.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)))
+                .WithEpsilonToken<EpsilonToken>()
+                .Build();
+
+        private static Lexeme CreateLambdaToken(ILexemeBuilder builder)
         {
-            yield return new LexerRule(char.IsWhiteSpace, ScanWhiteSpace);
-            yield return new LexerRule(c => c is '\\' or 'λ', CreateLambdaToken);
-            yield return new LexerRule(IsAllowedForIdentifier, ScanIdentifier);
-            yield return new SimpleLexerRule<DotToken>(".");
-            yield return new SimpleLexerRule<OpenParenthesisToken>("(");
-            yield return new SimpleLexerRule<ClosedParenthesisToken>(")");
+            builder.Discard();
+
+            return builder.Build(new LambdaToken());
         }
 
-        private static Lexeme ScanWhiteSpace(ILexerReader reader)
+        private static Lexeme ScanWhiteSpace(ILexemeBuilder builder)
         {
-            var startPosition = reader.Position;
-
-            while (reader.Peek().Match(false, char.IsWhiteSpace))
+            while (builder.Peek().Match(false, char.IsWhiteSpace))
             {
                 // we are not interested in what kind of whitespace, so we just discard the result
-                reader.Read().AndThen(NoOperation);
+                builder.Discard();
             }
 
-            return new Lexeme(new WhiteSpaceToken(), new Position(startPosition, reader.Position - startPosition));
+            return builder.Build(new WhiteSpaceToken());
         }
 
-        private static Lexeme CreateLambdaToken(ILexerReader reader)
+        private static Lexeme ScanIdentifier(ILexemeBuilder builder)
         {
-            reader.Read().AndThen(NoOperation);
-
-            return new Lexeme(new LambdaToken(), new Position(reader.Position, 1));
-        }
-
-        private static Lexeme ScanIdentifier(ILexerReader reader)
-        {
-            var startPosition = reader.Position;
-            var stringBuilder = new StringBuilder();
-            while (reader.Peek().Match(none: false, some: IsAllowedForIdentifier)) 
+            while (builder.Peek().Match(none: false, some: IsAllowedForIdentifier))
             {
-                reader.Read().AndThen(stringBuilder.Append).AndThen(NoOperation);
+                builder.Retain();
             }
 
-            return new Lexeme(new IdentifierToken(stringBuilder.ToString()), new Position(startPosition, reader.Position - startPosition));
+            return builder.Build(new IdentifierToken(builder.CurrentToken));
         }
+
 
         private static bool IsAllowedForIdentifier(char identifierCharacter)
         {

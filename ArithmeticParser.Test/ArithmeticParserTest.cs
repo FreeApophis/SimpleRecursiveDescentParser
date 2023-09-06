@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using ArithmeticParser.Nodes;
+﻿using ArithmeticParser.Nodes;
 using ArithmeticParser.Visitors;
 using Autofac;
 using Xunit;

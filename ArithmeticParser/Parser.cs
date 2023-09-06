@@ -1,9 +1,7 @@
 ﻿using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Parsing;
-using ArithmeticParser.Tokens;
-using System.Linq;
-using Messerli.Lexer;
+using Funcky.Lexer;
 
 namespace ArithmeticParser
 {
@@ -22,18 +20,13 @@ namespace ArithmeticParser
     /// </summary>
     public class Parser
     {
-        private readonly TokenWalker _tokenWalker;
+        private readonly LexerRuleBook _ruleBook;
         private readonly ExpressionParser _expressionParser;
 
-        public Parser(TokenWalker tokenWalker, ExpressionParser expressionParser)
+        public Parser(LexerRuleBook ruleBook, ExpressionParser expressionParser)
         {
-            _tokenWalker = tokenWalker;
+            _ruleBook = ruleBook;
             _expressionParser = expressionParser;
-        }
-
-        public IParseNode Parse()
-        {
-            return _expressionParser.Parse(_tokenWalker);
         }
 
         public static Parser Create()
@@ -47,16 +40,10 @@ namespace ArithmeticParser
             var termParser = new TermParser(powerTermParser);
             expressionParser.TermParser = termParser;
 
-            return new Parser(TokenWalker.Create<EpsilonToken>(LexerRules.GetRules()), expressionParser);
+            return new Parser(LexerRules.GetRules(), expressionParser);
         }
-
-
 
         public IParseNode Parse(string expression)
-        {
-            _tokenWalker.Scan(expression, lexemes => lexemes.Where(t => t.Token.GetType() != typeof(WhiteSpaceToken)));
-
-            return Parse();
-        }
+            => _expressionParser.Parse(_ruleBook.Scan(expression).Walker);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Funcky.Monads;
+﻿using Funcky.Monads;
 using LambdaCalculusParser.Nodes;
 
 namespace LambdaCalculusParser.Visitors
