@@ -1,5 +1,6 @@
 ﻿using ArithmeticParser.Tokens;
 using Funcky.Lexer;
+using Funcky.Lexer.Exceptions;
 using static Funcky.Functional;
 
 namespace ArithmeticParser.Lexing;
@@ -52,7 +53,7 @@ public static class LexerRules
             {
                 if (decimalExists)
                 {
-                    throw new Exception("Multiple dots in decimal number");
+                    throw new LexerException("Multiple dots in decimal number");
                 }
 
                 decimalExists = true;
