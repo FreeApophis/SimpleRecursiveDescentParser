@@ -3,17 +3,11 @@ using LambdaCalculusParser.Visitors;
 
 namespace LambdaCalculusParser.Nodes;
 
-public class Application : ILambdaExpression
+public class Application(ILambdaExpression function, ILambdaExpression argument) : ILambdaExpression
 {
-    public Application(ILambdaExpression function, ILambdaExpression argument)
-    {
-        Function = function;
-        Argument = argument;
-    }
+    public ILambdaExpression Function { get; } = function;
 
-    public ILambdaExpression Function { get; }
-
-    public ILambdaExpression Argument { get; }
+    public ILambdaExpression Argument { get; } = argument;
 
     public Position Position { get; }
 

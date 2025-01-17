@@ -62,9 +62,10 @@ public static class LexerRules
             builder.Retain();
         }
 
-        return double.TryParse(builder.CurrentToken, out var number)
-            ? builder.Build(new NumberToken(number))
-            : throw new Exception("Could not parse number: " + builder.CurrentToken);
+        return builder.CurrentToken
+            .ParseDoubleOrNone()
+            .AndThen(number => builder.Build(new NumberToken(number)))
+            .GetOrElse(() => throw new Exception("Could not parse number: " + builder.CurrentToken));
     }
 
     private static Lexeme ScanIdentifier(ILexemeBuilder builder)

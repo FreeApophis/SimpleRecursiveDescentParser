@@ -4,17 +4,11 @@ using LambdaCalculusParser.Visitors;
 
 namespace LambdaCalculusParser.Nodes;
 
-public class Variable : ILambdaExpression
+public class Variable(string name, Option<int> deBruinIndex = default) : ILambdaExpression
 {
-    public Variable(string name, Option<int> deBruinIndex = default)
-    {
-        Name = name;
-        DeBruinIndex = deBruinIndex;
-    }
+    public string Name { get; } = name;
 
-    public string Name { get; }
-
-    public Option<int> DeBruinIndex { get; }
+    public Option<int> DeBruinIndex { get; } = deBruinIndex;
 
     public Position Position { get; }
 

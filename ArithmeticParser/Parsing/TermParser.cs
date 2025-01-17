@@ -9,15 +9,10 @@ namespace ArithmeticParser.Parsing;
 /// Parsing the following Production:
 /// Term       := Factor { ( "*" | "/" ) Factor }
 /// </summary>
-public class TermParser
+public class TermParser(PowerTermParser powerTermParser)
 {
-    private readonly PowerTermParser _powerTermParser;
-
-    public TermParser(PowerTermParser powerTermParser)
-        => _powerTermParser = powerTermParser;
-
     public IParseNode Parse(ILexemeWalker walker)
-        => ParseNextDot(walker, _powerTermParser.Parse(walker));
+        => ParseNextDot(walker, powerTermParser.Parse(walker));
 
     private IParseNode ParseNextDot(ILexemeWalker walker, IParseNode result)
         => walker.NextIsDotOperator()
@@ -27,9 +22,9 @@ public class TermParser
     private IParseNode NextToken(ILexemeWalker walker, IParseNode result, Lexeme lexeme)
         => lexeme switch
         {
-            { Token: DivideToken } => new DivisionOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
-            { Token: MultiplicationToken } => new MultiplicationOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
-            { Token: ModuloToken } => new ModuloOperator(result, _powerTermParser.Parse(walker), lexeme.Position),
+            { Token: DivideToken } => new DivisionOperator(result, powerTermParser.Parse(walker), lexeme.Position),
+            { Token: MultiplicationToken } => new MultiplicationOperator(result, powerTermParser.Parse(walker), lexeme.Position),
+            { Token: ModuloToken } => new ModuloOperator(result, powerTermParser.Parse(walker), lexeme.Position),
             _ => result,
         };
 }

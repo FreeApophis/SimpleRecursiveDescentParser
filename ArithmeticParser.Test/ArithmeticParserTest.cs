@@ -1,20 +1,16 @@
 ﻿using ArithmeticParser.Nodes;
 using ArithmeticParser.Visitors;
 using Autofac;
+using Funcky.Lexer.Exceptions;
 using Xunit;
 
 namespace ArithmeticParser.Test;
 
 public class ArithmeticParserTest
 {
-    private readonly Parser _parser;
-
-    public ArithmeticParserTest()
-    {
-        _parser = new CompositionRoot()
-            .Build()
-            .Resolve<Parser>();
-    }
+    private readonly Parser _parser = new CompositionRoot()
+        .Build()
+        .Resolve<Parser>();
 
     [Fact]
     public void ParseSimpleArithmeticExpressionCorrectly()
@@ -430,5 +426,13 @@ public class ArithmeticParserTest
         {
             Assert.True(false);
         }
+    }
+
+    [Fact]
+    public void ADigitHasOnlyOneDot()
+    {
+        var lexerException = Assert.Throws<LexerException>(() => _parser.Parse("5.17.22"));
+
+        Assert.Equal("Multiple dots in decimal number", lexerException.Message);
     }
 }

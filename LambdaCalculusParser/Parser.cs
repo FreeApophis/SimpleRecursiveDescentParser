@@ -16,22 +16,13 @@ namespace LambdaCalculusParser;
 ///
 /// The lambda can be either λ or \.
 /// </summary>
-public class Parser
+public class Parser(LexerRuleBook ruleBook, ApplicationParser applicationParser)
 {
-    private readonly ApplicationParser _applicationParser;
-    private readonly LexerRuleBook _ruleBook;
-
-    public Parser(LexerRuleBook ruleBook, ApplicationParser applicationParser)
-    {
-        _applicationParser = applicationParser;
-        _ruleBook = ruleBook;
-    }
-
     public ILambdaExpression Parse(string expression)
     {
-        var parserContext = new ParserContext(_ruleBook.Scan(expression).Walker);
+        var parserContext = new ParserContext(ruleBook.Scan(expression).Walker);
 
-        var result = _applicationParser.Parse(parserContext);
+        var result = applicationParser.Parse(parserContext);
 
         // Are we really at the end?
         parserContext.Walker.Consume<EpsilonToken>();

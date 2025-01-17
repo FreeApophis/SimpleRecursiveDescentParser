@@ -5,15 +5,10 @@ using Funcky.Lexer.Extensions;
 
 namespace ArithmeticParser.Parsing;
 
-public class PowerTermParser
+public class PowerTermParser(FactorParser factorParser)
 {
-    private readonly FactorParser _factorParser;
-
-    public PowerTermParser(FactorParser factorParser)
-        => _factorParser = factorParser;
-
     public IParseNode Parse(ILexemeWalker walker)
-        => ParseNextPowerToken(walker, _factorParser.Parse(walker));
+        => ParseNextPowerToken(walker, factorParser.Parse(walker));
 
     private IParseNode ParseNextPowerToken(ILexemeWalker walker, IParseNode result)
         => walker.NextIs<PowerToken>()
@@ -21,5 +16,5 @@ public class PowerTermParser
             : result;
 
     private PowerOperator NextToken(ILexemeWalker walker, IParseNode result, Lexeme lexeme)
-        => new(result, _factorParser.Parse(walker), lexeme.Position);
+        => new(result, factorParser.Parse(walker), lexeme.Position);
 }

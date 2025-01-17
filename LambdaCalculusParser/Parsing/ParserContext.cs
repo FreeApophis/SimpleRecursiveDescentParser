@@ -3,14 +3,9 @@ using LambdaCalculusParser.Nodes;
 
 namespace LambdaCalculusParser;
 
-public class ParserContext
+public class ParserContext(ILexemeWalker walker)
 {
-    public ParserContext(ILexemeWalker walker)
-    {
-        Walker = walker;
-    }
-
-    public ILexemeWalker Walker { get; }
+    public ILexemeWalker Walker { get; } = walker;
 
     public Stack<Variable> BoundVariables { get; } = new();
 }

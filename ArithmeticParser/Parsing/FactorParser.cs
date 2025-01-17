@@ -10,19 +10,11 @@ namespace ArithmeticParser.Parsing;
 /// Parsing the following Production:
 /// Factor     := RealNumber | "(" Expression ") | Variable | Function "
 /// </summary>
-public class FactorParser
+public class FactorParser(
+    ExpressionParser expressionParser,
+    VariableParser variableParser,
+    FunctionParser functionParser)
 {
-    private readonly ExpressionParser _expressionParser;
-    private readonly VariableParser _variableParser;
-    private readonly FunctionParser _functionParser;
-
-    public FactorParser(ExpressionParser expressionParser, VariableParser variableParser, FunctionParser functionParser)
-    {
-        _expressionParser = expressionParser;
-        _variableParser = variableParser;
-        _functionParser = functionParser;
-    }
-
     public IParseNode Parse(ILexemeWalker walker)
         => walker.Peek() switch
         {
@@ -33,13 +25,13 @@ public class FactorParser
 
     private IParseNode ParseFunctionOrVariable(ILexemeWalker walker)
         => walker.NextIs<OpenParenthesisToken>(1)
-            ? _functionParser.Parse(walker)
-            : _variableParser.Parse(walker);
+            ? functionParser.Parse(walker)
+            : variableParser.Parse(walker);
 
     private IParseNode ParseParenthesisExpression(ILexemeWalker walker)
     {
         walker.ExpectOpeningParenthesis();
-        var result = _expressionParser.Parse(walker);
+        var result = expressionParser.Parse(walker);
         walker.ExpectClosingParenthesis();
 
         return result;

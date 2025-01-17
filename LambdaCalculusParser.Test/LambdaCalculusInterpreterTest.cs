@@ -5,12 +5,7 @@ namespace LambdaCalculusParser.Test;
 
 public class LambdaCalculusInterpreterTest
 {
-    private readonly Parser _parser;
-
-    public LambdaCalculusInterpreterTest()
-    {
-        _parser = Parser.Create();
-    }
+    private readonly Parser _parser = Parser.Create();
 
     [Fact]
     public void GivenTheIdentifyFunctionParseAndInterpretToTheIdentifyFunction()

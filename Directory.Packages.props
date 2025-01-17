@@ -9,6 +9,7 @@
         <PackageVersion Include="Funcky.Lexer" Version="[1.0.0]" />
     </ItemGroup>
     <ItemGroup Label="Build Dependencies">
+        <PackageVersion Include="Messerli.CodeStyle" Version="[1.0.0]" />
     </ItemGroup>
     <ItemGroup Label="Test Dependencies">
         <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="[16.0.0, 17.0.0)" />

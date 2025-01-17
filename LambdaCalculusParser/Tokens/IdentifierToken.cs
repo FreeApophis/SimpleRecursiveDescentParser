@@ -2,14 +2,9 @@
 
 namespace LambdaCalculusParser.Tokens;
 
-public class IdentifierToken : IToken
+public class IdentifierToken(string name) : IToken
 {
-    public IdentifierToken(string name)
-    {
-        Name = name;
-    }
-
-    public string Name { get; }
+    public string Name { get; } = name;
 
     public override string ToString() => $"Identifier: {Name}";
 }

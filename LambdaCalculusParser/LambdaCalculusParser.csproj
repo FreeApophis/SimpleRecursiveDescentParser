@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net5.0</TargetFrameworks>
         <Description>Parser for Lambda Calculus</Description>
         <RepositoryUrl>https://github.com/FreeApophis/ArithmeticParser</RepositoryUrl>
-        <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Funcky.Lexer" />
+        <PackageReference Include="Funcky.Lexer" />
     </ItemGroup>
 
 </Project>

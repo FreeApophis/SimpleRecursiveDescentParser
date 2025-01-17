@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0;net5.0</TargetFrameworks>
+        <TargetFramework>net8.0</TargetFramework>
         <PackageId>SimpleArithmeticParser</PackageId>
         <Authors>Thomas Bruderer</Authors>
         <Company>apophis.ch</Company>
@@ -12,10 +12,9 @@
         <PackageProjectUrl>https://github.com/FreeApophis/ArithmeticParser</PackageProjectUrl>
         <Copyright>apophis@apophis.ch</Copyright>
         <PackageTags>parser</PackageTags>
-        <Version>1.2.1</Version>
+        <Version>1.2.2</Version>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

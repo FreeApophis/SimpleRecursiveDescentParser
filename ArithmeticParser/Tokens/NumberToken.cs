@@ -2,14 +2,9 @@
 
 namespace ArithmeticParser.Tokens;
 
-public class NumberToken : IToken
+public class NumberToken(double value) : IToken
 {
-    public NumberToken(double value)
-    {
-        Value = value;
-    }
-
-    public double Value { get; }
+    public double Value { get; } = value;
 
     public override string ToString()
         => $"Number: {Value}";

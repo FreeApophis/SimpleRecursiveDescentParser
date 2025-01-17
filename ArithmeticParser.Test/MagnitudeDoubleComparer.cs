@@ -1,17 +1,10 @@
 ﻿namespace ArithmeticParser.Test;
 
-public class MagnitudeDoubleComparer : IEqualityComparer<double>
+public class MagnitudeDoubleComparer(double maxDelta) : IEqualityComparer<double>
 {
-    private readonly double _maxDelta;
-
-    public MagnitudeDoubleComparer(double maxDelta)
-    {
-        _maxDelta = maxDelta;
-    }
-
     public bool Equals(double x, double y)
     {
-        return x - y < _maxDelta;
+        return x - y < maxDelta;
     }
 
     public int GetHashCode(double obj)

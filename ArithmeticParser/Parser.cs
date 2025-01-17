@@ -19,17 +19,8 @@ namespace ArithmeticParser;
 /// RealNumber := Digit{Digit} | [Digit] "." {Digit}
 /// Digit      := "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 /// </summary>
-public class Parser
+public class Parser(LexerRuleBook ruleBook, ExpressionParser expressionParser)
 {
-    private readonly LexerRuleBook _ruleBook;
-    private readonly ExpressionParser _expressionParser;
-
-    public Parser(LexerRuleBook ruleBook, ExpressionParser expressionParser)
-    {
-        _ruleBook = ruleBook;
-        _expressionParser = expressionParser;
-    }
-
     public static Parser Create()
     {
         // Create the object tree without DI Framework
@@ -45,6 +36,6 @@ public class Parser
     }
 
     public IParseNode Parse(string expression)
-        => _expressionParser.Parse(_ruleBook.Scan(expression).Walker);
+        => expressionParser.Parse(ruleBook.Scan(expression).Walker);
 
 }

@@ -10,15 +10,8 @@ namespace ArithmeticParser.Parsing;
 /// Parsing the following Production:
 /// Function   := Identifier "(" Expression { "," Expression } ")"
 /// </summary>
-public class FunctionParser
+public class FunctionParser(ExpressionParser expressionParser)
 {
-    private readonly ExpressionParser _expressionParser;
-
-    public FunctionParser(ExpressionParser expressionParser)
-    {
-        _expressionParser = expressionParser;
-    }
-
     public IParseNode Parse(ILexemeWalker walker)
         => walker.Pop() is { Token: IdentifierToken } lexeme
             ? ParseFunction(walker, lexeme)
@@ -27,7 +20,7 @@ public class FunctionParser
     private IParseNode ParseFunction(ILexemeWalker walker, Lexeme functionLexeme)
     {
         var openParenthesis = walker.Consume<OpenParenthesisToken>();
-        var parameters = ParseNextParameter(walker, ImmutableList.Create(_expressionParser.Parse(walker)));
+        var parameters = ParseNextParameter(walker, ImmutableList.Create(expressionParser.Parse(walker)));
         var closedParenthesis = walker.Consume<ClosedParenthesisToken>();
 
         return new FunctionNode(functionLexeme, openParenthesis, parameters, closedParenthesis);
@@ -41,6 +34,6 @@ public class FunctionParser
     private ImmutableList<IParseNode> ParseParameter(ILexemeWalker walker, ImmutableList<IParseNode> parameters)
     {
         walker.Consume<CommaToken>();
-        return parameters.Add(_expressionParser.Parse(walker));
+        return parameters.Add(expressionParser.Parse(walker));
     }
 }

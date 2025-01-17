@@ -9,12 +9,7 @@ namespace LambdaCalculusParser.Test;
 
 public class LambdaCalculusParserTest
 {
-    private readonly Parser _parser;
-
-    public LambdaCalculusParserTest()
-    {
-        _parser = Parser.Create();
-    }
+    private readonly Parser _parser = Parser.Create();
 
     [Fact]
     public void GivenLambdaCalculusSourceTheTokenizerGivesAUsefulTokenStream()

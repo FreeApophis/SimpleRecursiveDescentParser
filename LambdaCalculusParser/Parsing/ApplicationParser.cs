@@ -4,26 +4,19 @@ using LambdaCalculusParser.Tokens;
 
 namespace LambdaCalculusParser.Parsing;
 
-public class ApplicationParser
+public class ApplicationParser(ExpressionParser expressionParser)
 {
-    private readonly ExpressionParser _expressionParser;
-
-    public ApplicationParser(ExpressionParser expressionParser)
-    {
-        _expressionParser = expressionParser;
-    }
-
     /// <summary>
     /// Parsing the following Production:
     /// Application := Expression +
     /// </summary>
     public ILambdaExpression Parse(ParserContext parserContext)
     {
-        var result = _expressionParser.Parse(parserContext);
+        var result = expressionParser.Parse(parserContext);
         while (!parserContext.Walker.NextIs<ClosedParenthesisToken>() &&
                !parserContext.Walker.NextIs<EpsilonToken>())
         {
-            result = new Application(result, _expressionParser.Parse(parserContext));
+            result = new Application(result, expressionParser.Parse(parserContext));
         }
 
         return result;
