@@ -39,9 +39,9 @@ public class ExpressionParser
             ? ParseUnaryMinus(walker)
             : SafeTermParser.Parse(walker);
 
-    private IParseNode ParseUnaryMinus(ILexemeWalker walker)
+    private UnaryMinusOperator ParseUnaryMinus(ILexemeWalker walker)
         => ParseUnaryMinusTerm(walker, walker.Pop());
 
-    private IParseNode ParseUnaryMinusTerm(ILexemeWalker walker, Lexeme lexeme)
-        => new UnaryMinusOperator(SafeTermParser.Parse(walker), lexeme.Position);
+    private UnaryMinusOperator ParseUnaryMinusTerm(ILexemeWalker walker, Lexeme lexeme) =>
+        new(SafeTermParser.Parse(walker), lexeme.Position);
 }
