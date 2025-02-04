@@ -1,8 +1,9 @@
 ﻿using ArithmeticParser.Lexing;
 using ArithmeticParser.Nodes;
 using ArithmeticParser.Parsing;
-using Funcky;
+using ArithmeticParser.Tokens;
 using Funcky.Lexer;
+using Funcky.Lexer.Extensions;
 
 namespace ArithmeticParser;
 
@@ -36,6 +37,12 @@ public class Parser(LexerRuleBook ruleBook, ExpressionParser expressionParser)
     }
 
     public IParseNode Parse(string expression)
-        => expressionParser.Parse(ruleBook.Scan(expression).Walker);
+    {
+        var lexerResult = ruleBook.Scan(expression);
+        var result = expressionParser.Parse(lexerResult.Walker);
 
+        return lexerResult.Walker.NextIs<EpsilonToken>()
+            ? result
+            : throw new Exception("Additional lexemes after end of expression.");
+    }
 }

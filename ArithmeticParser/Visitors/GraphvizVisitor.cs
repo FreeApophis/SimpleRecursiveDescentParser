@@ -81,10 +81,8 @@ public class GraphvizVisitor : INodeVisitor
     {
         string parameters = ParameterList(op);
         EmitGraphvizNodeBegin($"{op.Name}({parameters})");
-        foreach (var parameter in op.Parameters)
-        {
-            parameter.Accept(this);
-        }
+
+        op.Parameters.ForEach(parameter => parameter.Accept(this));
 
         EmitGraphvizNodeEnd();
     }

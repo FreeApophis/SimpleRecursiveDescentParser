@@ -75,15 +75,12 @@ public class FullParenthesisVisitor : INodeVisitor
     {
         _resultBuilder.Append(op.Name);
         _resultBuilder.Append('(');
-        foreach (IParseNode parameter in op.Parameters)
-        {
-            parameter.Accept(this);
 
-            if (parameter != op.Parameters.Last())
-            {
-                _resultBuilder.Append(',');
-            }
-        }
+        _ = op.Parameters
+            .WithLast()
+            .Inspect(parameter => parameter.Value.Accept(this))
+            .Where(parameter => parameter.IsLast)
+            .Aggregate(_resultBuilder, (builder, _) => builder.Append(','));
 
         _resultBuilder.Append(')');
     }

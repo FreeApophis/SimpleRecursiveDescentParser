@@ -2,6 +2,4 @@
 
 namespace LambdaCalculusParser.Tokens;
 
-public class WhiteSpaceToken : IToken
-{
-}
+public class WhiteSpaceToken : IToken;

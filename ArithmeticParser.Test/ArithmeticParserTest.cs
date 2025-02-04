@@ -1,7 +1,6 @@
 ﻿using ArithmeticParser.Nodes;
 using ArithmeticParser.Visitors;
 using Autofac;
-using Funcky.Lexer.Exceptions;
 using Xunit;
 
 namespace ArithmeticParser.Test;
@@ -77,7 +76,7 @@ public class ArithmeticParserTest
     [Fact]
     public void ParseSimpleSubtractionCorrectly()
     {
-        var parseTree = _parser.Parse("100-1-2-3-4-5-6-7-8-9)");
+        var parseTree = _parser.Parse("100-1-2-3-4-5-6-7-8-9");
 
         var calculator = new CalculateVisitor();
         parseTree.Accept(calculator);
@@ -429,10 +428,34 @@ public class ArithmeticParserTest
     }
 
     [Fact]
-    public void ADigitHasOnlyOneDot()
+    public void MultipleDotsParseTwoMultipleLexemsThrowingAnUnparsedLexemException()
     {
-        var lexerException = Assert.Throws<LexerException>(() => _parser.Parse("5.17.22"));
+        var exception = Assert.Throws<Exception>(() => _parser.Parse("5.17.22"));
 
-        Assert.Equal("Multiple dots in decimal number", lexerException.Message);
+        Assert.Equal("Additional lexemes after end of expression.", exception.Message);
+    }
+
+    [Fact]
+    public void AdditionalClosingParenthesisThrowAnException()
+    {
+        var exception = Assert.Throws<Exception>(() => _parser.Parse("100-1-2-3-4-5-6-7-8-9)"));
+
+        Assert.Equal("Additional lexemes after end of expression.", exception.Message);
+    }
+
+    [Fact]
+    public void MissingTermAfterOperatorThrowAnException()
+    {
+        var exception = Assert.Throws<Exception>(() => _parser.Parse("100+"));
+
+        Assert.Equal("Expecting Real number or '(' in expression, instead got: ε", exception.Message);
+    }
+
+    [Fact]
+    public void MissingTermBeforeOperatorThrowAnExcetpion()
+    {
+        var exception = Assert.Throws<Exception>(() => _parser.Parse("*"));
+
+        Assert.Equal("Expecting Real number or '(' in expression, instead got: Multiplication Operator", exception.Message);
     }
 }

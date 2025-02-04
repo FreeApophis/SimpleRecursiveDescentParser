@@ -2,6 +2,4 @@
 
 namespace ArithmeticParser.Tokens;
 
-public class WhiteSpaceToken : IToken
-{
-}
+public class WhiteSpaceToken : IToken;

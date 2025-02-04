@@ -18,7 +18,7 @@ public class ExpressionParser
     private TermParser SafeTermParser
         => TermParser ?? throw new Exception("Term Parser should be injected by the DI container, but is null");
 
-    public IParseNode Parse(ILexemeWalker walker)
+    public IParseNode Parse(ILexemeWalker walker) 
         => ParseNextTerm(walker, ParseFirstTerm(walker));
 
     private IParseNode ParseNextTerm(ILexemeWalker walker, IParseNode result)

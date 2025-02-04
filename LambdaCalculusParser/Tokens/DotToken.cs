@@ -2,6 +2,4 @@
 
 namespace LambdaCalculusParser.Tokens;
 
-public class DotToken : IToken
-{
-}
+public class DotToken : IToken;

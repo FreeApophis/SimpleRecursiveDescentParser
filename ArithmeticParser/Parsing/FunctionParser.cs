@@ -20,7 +20,7 @@ public class FunctionParser(ExpressionParser expressionParser)
     private IParseNode ParseFunction(ILexemeWalker walker, Lexeme functionLexeme)
     {
         var openParenthesis = walker.Consume<OpenParenthesisToken>();
-        var parameters = ParseNextParameter(walker, ImmutableList.Create(expressionParser.Parse(walker)));
+        var parameters = ParseNextParameter(walker, [expressionParser.Parse(walker)]);
         var closedParenthesis = walker.Consume<ClosedParenthesisToken>();
 
         return new FunctionNode(functionLexeme, openParenthesis, parameters, closedParenthesis);

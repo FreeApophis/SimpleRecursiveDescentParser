@@ -7,4 +7,5 @@ namespace ArithmeticParser.Tokens;
 /// </summary>
 public class EpsilonToken : IEpsilonToken
 {
+    public override string ToString() => "ε";
 }

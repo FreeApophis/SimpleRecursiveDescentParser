@@ -1,5 +1,4 @@
 ﻿using Funcky.Lexer;
-using Funcky.Monads;
 using LambdaCalculusParser.Visitors;
 
 namespace LambdaCalculusParser.Nodes;

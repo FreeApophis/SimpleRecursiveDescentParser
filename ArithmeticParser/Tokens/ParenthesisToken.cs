@@ -2,6 +2,4 @@
 
 namespace ArithmeticParser.Tokens;
 
-public abstract class ParenthesisToken : IToken
-{
-}
+public abstract class ParenthesisToken : IToken;

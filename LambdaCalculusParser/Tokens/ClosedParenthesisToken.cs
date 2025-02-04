@@ -2,6 +2,4 @@
 
 namespace LambdaCalculusParser.Tokens;
 
-public class ClosedParenthesisToken : IToken
-{
-}
+public class ClosedParenthesisToken : IToken;

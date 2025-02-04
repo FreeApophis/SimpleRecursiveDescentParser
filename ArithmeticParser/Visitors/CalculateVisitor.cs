@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using ArithmeticParser.Nodes;
-using Funcky.Extensions;
 
 namespace ArithmeticParser.Visitors;
 

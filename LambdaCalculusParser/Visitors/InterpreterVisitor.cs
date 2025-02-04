@@ -1,19 +1,12 @@
-﻿using Funcky.Monads;
-using LambdaCalculusParser.Nodes;
+﻿using LambdaCalculusParser.Nodes;
 
 namespace LambdaCalculusParser.Visitors;
 
-public class AlphaReductionEventArgs
-{
-}
+public class AlphaReductionEventArgs;
 
-public class BetaReductionEventArgs
-{
-}
+public class BetaReductionEventArgs;
 
-public class EtaReductionEventArgs
-{
-}
+public class EtaReductionEventArgs;
 
 public class InterpreterVisitor : ILambdaExpressionVisitor
 {

@@ -2,6 +2,4 @@
 
 namespace LambdaCalculusParser.Tokens;
 
-public class EpsilonToken : IEpsilonToken
-{
-}
+public class EpsilonToken : IEpsilonToken;
